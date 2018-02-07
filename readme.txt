@@ -7,6 +7,9 @@ github : zhengshifeng/zheng19920313
 4.git checkout -b dev : 创建并切换分区
 5.git branch : 查看分区
 6.git checkout : 撤销
-7.git checkout master : 切换回主分支
+7.git checkout name : 切换分支
 8.git merge dev : 合并dev分区
-9.试试中文会不会乱码
+9.git branch name : 创建分支
+10.git checkout -b name : 创建并切换
+11.git branch -d name : 删除分支
+12.git merge name : 合并某分支到当前分支
