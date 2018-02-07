@@ -17,4 +17,4 @@ github : zhengshifeng/zheng19920313
 14.git stash : 隐藏当前工作现场
 15.git remote -v : 查看远程仓的详细信息
 16.git reflog : 查看历史记录的版本号
-
+17.git remote add origin "github项目路径" : 关联一个远程库
