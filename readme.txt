@@ -9,3 +9,4 @@ github : zhengshifeng/zheng19920313
 6.git checkout : 撤销
 7.git checkout master : 切换回主分支
 8.git merge dev : 合并dev分区
+9.试试中文会不会乱码
