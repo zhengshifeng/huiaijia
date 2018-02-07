@@ -1,11 +1,11 @@
-¿¿¿ : zhengshifeng/zhengshifeng@aliyun.com
+å®¢æˆ·ç«¯: zhengshifeng/zhengshifeng@aliyun.com
 github : zhengshifeng/zheng19920313
 
-1.git add : ¿¿¿¿¿¿
-2.git commit -m "": ¿¿¿¿¿¿
-3.git push origin master: ¿¿¿¿¿¿
-4.git checkout -b dev : ¿¿¿¿¿¿¿
-5.git branch : ¿¿¿¿
-6.git checkout : ¿¿
-7.git checkout master : ¿¿¿¿¿¿
-8.git merge dev : ¿¿¿¿¿¿¿dev¿¿
+1.git add : æäº¤æš‚å­˜åŒº
+2.git commit -m "": æäº¤æœ¬åœ°ä»“
+3.git push origin master: æäº¤è¿œç¨‹ä»“
+4.git checkout -b dev : åˆ›å»ºå¹¶åˆ‡æ¢åˆ†åŒº
+5.git branch : æŸ¥çœ‹åˆ†åŒº
+6.git checkout : æ’¤é”€
+7.git checkout master : åˆ‡æ¢å›ä¸»åˆ†æ”¯
+8.git merge dev : åˆå¹¶devåˆ†åŒº
