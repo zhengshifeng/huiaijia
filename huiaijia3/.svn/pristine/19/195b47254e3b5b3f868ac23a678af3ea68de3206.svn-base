@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderDetailsMapper" > 
+<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderDetails" >
+		<result column="id" property="id"/>
+		<result column="commodityName" property="commodityName"/>
+		<result column="totalMoney" property="totalMoney"/>
+		<result column="commodityListPrice" property="commodityListPrice"/>
+		<result column="number" property="number"/>
+		<result column="actualPayment" property="actualPayment"/>
+		<result column="feeWaiver" property="feeWaiver"/>
+		<result column="status" property="status"/>
+		<result column="source" property="source"/>
+		<result column="allSource" property="allSource"/>
+		<result column="remark3" property="remark3"/>
+		<result column="commodityType" property="commodityType"/>
+		<result column="promotionPrice" property="promotionPrice"/>
+		<result column="commodityNo" property="commodityNo"/>
+		<result column="afterSaleRecord" property="afterSaleRecord"/>
+		<result column="weight" property="weight"/>
+		<association property="orderId" column="orderId" javaType="com.flf.entity.HajOrder" select="com.flf.mapper.HajOrderMapper.queryById">
+			<result column="id" property="id"/>
+			<result column="orderNo" property="orderNo"/>
+			<result column="totalMoney" property="totalMoney"/>
+			<result column="number" property="number"/>
+			<result column="createTime" property="createTime" />
+			<result column="userId" property="userId"/>
+			<result column="status" property="status"/>
+			<result column="payStatus" property="payStatus"/>
+			<result column="handleStatus" property="handleStatus"/>
+			<result column="lockStatus" property="lockStatus"/>
+			<result column="deliveryTime" property="deliveryTime"/>
+			<result column="receiver" property="receiver"/>
+			<result column="address" property="address"/>
+			<result column="contactPhone" property="contactPhone"/>
+			<result column="actualPayment" property="actualPayment"/>
+			<result column="feeWaiver" property="feeWaiver"/>
+			<result column="postFee" property="postFee"/>
+			<result column="commodityCost" property="commodityCost"/>
+			<result column="points" property="points"/>
+			<result column="dispensingTip" property="dispensingTip"/>
+			<result column="source" property="source"/>
+			<result column="profitloss" property="profitloss"/>
+			<result column="delflag" property="delflag"/>
+			<result column="residential" property="residential"/>
+		</association>
+	</resultMap>
+
+	<select id="getChainDetailByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from haj_order_details where orderId = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- haj_order_details table all fields -->
+	<sql id="Base_Column_List" >
+		id,orderId,commodityName,totalMoney,commodityListPrice,number,actualPayment,feeWaiver,status,source,
+		allSource,remark3,commodityType,commodityNo,afterSaleRecord
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="condition.id != null and condition.id != ''" >
+				and id =  #{condition.id}
+			</if>
+			<if test="condition.orderId != null and condition.orderId != ''" >
+				and orderId =  #{condition.orderId}
+			</if>
+			<if test="condition.commodityName != null and condition.commodityName != ''" >
+				and commodityName =  #{condition.commodityName}
+			</if>
+			<if test="condition.totalMoney != null and condition.totalMoney != ''" >
+				and totalMoney =  #{condition.totalMoney}
+			</if>
+			<if test="condition.commodityListPrice != null and condition.commodityListPrice != ''" >
+				and commodityListPrice =  #{condition.commodityListPrice}
+			</if>
+			<if test="condition.number != null and condition.number != ''" >
+				and number =  #{condition.number}
+			</if>
+			<if test="condition.actualPayment != null and condition.actualPayment != ''" >
+				and actualPayment =  #{condition.actualPayment}
+			</if>
+			<if test="condition.feeWaiver != null and condition.feeWaiver != ''" >
+				and feeWaiver =  #{condition.feeWaiver}
+			</if>
+			<if test="condition.status != null and condition.status != ''" >
+				and status =  #{condition.status}
+			</if>
+			<if test="condition.source != null and condition.source != ''" >
+				and source =  #{condition.source}
+			</if>
+			<if test="condition.allSource != null and condition.allSource != ''" >
+				and allSource =  #{condition.allSource}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''" >
+				and remark3 =  #{condition.remark3}
+			</if>
+			<if test="condition.commodityType != null and condition.commodityType != ''" >
+				and commodityType =  #{condition.commodityType}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+	 	</selectKey>
+		insert into haj_order_details(id,orderId,commodityName,totalMoney,commodityListPrice,number,
+			actualPayment,feeWaiver,status,source,allSource,remark3,commodityType,promotionPrice,commodityNo,
+			afterSaleRecord,weight
+		) values (#{id},#{orderId.id},#{commodityName},#{totalMoney},#{commodityListPrice},#{number},
+			#{actualPayment},#{feeWaiver},#{status},#{source},#{allSource},#{remark3},#{commodityType},
+			#{promotionPrice},#{commodityNo},#{afterSaleRecord},#{weight}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object" >
+		update haj_order_details set
+			orderId=#{orderId},commodityName=#{commodityName},totalMoney=#{totalMoney},
+			commodityListPrice=#{commodityListPrice},number=#{number},actualPayment=#{actualPayment},
+			feeWaiver=#{feeWaiver},status=#{status},source=#{source},allSource=#{allSource},
+			remark3=#{remark3},commodityType=#{commodityType},promotionPrice=#{promotionPrice},
+			afterSaleRecord=#{afterSaleRecord}
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_order_details set
+		<trim  suffixOverrides="," >
+		<if test="orderId != null  ">
+			orderId=#{orderId},
+		</if>
+		<if test="commodityName != null  ">
+			commodityName=#{commodityName},
+		</if>
+		<if test="totalMoney != null  ">
+			totalMoney=#{totalMoney},
+		</if>
+		<if test="commodityListPrice != null  ">
+			commodityListPrice=#{commodityListPrice},
+		</if>
+		<if test="number != null  ">
+			number=#{number},
+		</if>
+		<if test="actualPayment != null  ">
+			actualPayment=#{actualPayment},
+		</if>
+		<if test="feeWaiver != null  ">
+			feeWaiver=#{feeWaiver},
+		</if>
+		<if test="status != null  ">
+			status=#{status},
+		</if>
+		<if test="source != null  ">
+			source=#{source},
+		</if>
+		<if test="allSource != null  ">
+			allSource=#{allSource},
+		</if>
+		<if test="remark3 != null  ">
+			remark3=#{remark3},
+		</if>
+		<if test="commodityType != null  ">
+			commodityType=#{commodityType},
+		</if>
+		<if test="promotionPrice != null  ">
+			promotionPrice=#{promotionPrice},
+		</if>
+		<if test="afterSaleRecord != null  ">
+			afterSaleRecord=#{afterSaleRecord},
+		</if>
+		</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_order_details where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryDetailById"  resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" />
+		from haj_order_details where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+		select count(1) from haj_order_details
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_order_details
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+		   order by  ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+		   ${limitClause}
+		</if>
+	</select>
+
+	<select id="listAllOrderDetails" resultType="java.util.HashMap"  parameterType="int">
+		SELECT o.id, ct.commodityAttr,ct1.typeName AS sbTypeName,ct.typeName AS scTypeName,
+			commodityName,number,actualPayment,source,allSource,c.commodityNo,c.originalPrice,
+			o.commodityListPrice,c.sku, c.weight, o.afterSaleRecord
+		FROM haj_order_details o
+		LEFT JOIN haj_commodity c ON c.commodityNo=o.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE o.orderId=#{orderId}
+	</select>
+	
+	<select id="listAllOrderDetails1" resultType="java.util.HashMap"  parameterType="Object">
+		SELECT ct.commodityAttr,ct1.typeName AS sbTypeName,ct.typeName AS scTypeName,
+			commodityName,number,actualPayment,source,allSource,c.commodityNo,c.originalPrice,
+			o.commodityListPrice,c.sku
+		FROM haj_order_details o
+		LEFT JOIN haj_commodity c ON c.commodityNo=o.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE o.orderId in
+		<foreach collection="orderIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		AND c.`orderClassification` IN ('A','B','C','D')
+		ORDER BY c.orderClassification
+	</select>
+	
+	<select id="listAllSysOrderDetails" resultType="java.util.HashMap"  parameterType="Object">
+		SELECT ct.commodityAttr,ct1.typeName AS sbTypeName,ct.typeName AS scTypeName,
+			commodityName,number,actualPayment,source,allSource,c.commodityNo,c.originalPrice,
+			o.commodityListPrice,c.sku
+		FROM haj_order_details o
+		LEFT JOIN haj_commodity c ON c.commodityNo=o.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE o.orderId in 
+		<foreach collection="orderIds" item="item" index="index"
+		      open="(" close=")" separator=",">
+		    	#{item}
+		    </foreach>
+		  AND c.`orderClassification` in 
+		  <foreach collection="classificationStr" item="item" index="index"
+		      open="(" close=")" separator=",">
+		    	#{item}
+		  </foreach>
+	</select>
+	
+	<select id="getsbTypeNamebyOrderId" resultType="String"  parameterType="Object">
+	SELECT GROUP_CONCAT(distinct(ct1.typeName)) AS sbTypeName
+		FROM haj_order_details o
+		LEFT JOIN haj_commodity c ON c.commodityNo=o.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE o.orderId in <foreach collection="orderIds" item="item" index="index"
+		      open="(" close=")" separator=",">
+		    	#{item}
+		    </foreach>
+	</select>
+	
+	<update id="updateDetailStatus" parameterType="Object" >
+		UPDATE haj_order_details SET STATUS=3
+		WHERE orderId IN (SELECT id FROM haj_order WHERE orderNo=#{orderNo})
+	</update>
+
+	<select id="getDetailByOrderId" resultType="java.util.HashMap"  parameterType="int">
+		SELECT c.`alias` AS commodityName, ct1.typeName,ct1.id AS typeID, ct1.description AS typeDescription,
+			d.`id`, d.`orderId`, d.`totalMoney`, d.`commodityListPrice`, d.`number`, d.`actualPayment`,
+			d.`feeWaiver`, d.`status`, d.`source`, d.`allSource`, d.`remark3`, d.`commodityType`, d.`promotionPrice`,
+			d.`commodityNo`,d.weight
+		FROM haj_order_details d
+		LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE d.orderId=#{orderId}
+	</select>
+ 
+  	<select id="getTodayOrderMoneyNoCommoidty" resultType="java.lang.Integer" parameterType="Object" >
+		SELECT count(d.`id`) as number  FROM haj_order_details d 
+		LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		where d.`orderId` =#{orderId} and ct.commodityAttr!=#{commodityAttr}
+	</select>
+
+	<select id="wmsSaleOrderDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT SUM(od.`number`) number, SUM(od.`actualPayment`) actualPayment, c.`sku` AS commodityNo
+		FROM haj_order_details od
+		LEFT JOIN haj_order o ON o.`id` = od.`orderId`
+		LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+		LEFT JOIN haj_commodity c ON c.`commodityNo` = od.`commodityNo`
+		WHERE o.`status` = 2 AND o.`delflag` = 0 AND u.`areaCode`= '100002'
+			AND LEFT(o.`deliveryTime`, 11) = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY),'%Y年%m月%d日')
+			AND c.`orderClassification` IN ('A','B','C','D')
+			AND u.`id` = #{userId}
+		GROUP BY u.`id`, c.`commodityNo`
+	</select>
+
+</mapper>

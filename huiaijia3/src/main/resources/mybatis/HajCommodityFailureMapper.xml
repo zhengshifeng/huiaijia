@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityFailureMapper">
+	
+	<select id="listPage" resultType="HashMap" parameterType="HajCommodityVo">
+		SELECT c.id, c.`commodityNo`, ctype.`commodityAttr`,
+			(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`)
+			parentTypeName, ctype.`typeName`, c.`name` commodityName, IFNULL(cf.`commodityId`, 0) failureCommodityId
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		INNER JOIN haj_commodity_type ctype1 ON ctype.parentId=ctype1.id
+		LEFT JOIN (
+			SELECT commodityId FROM haj_commodity_failure WHERE communityId=#{areasId}
+		) cf ON cf.commodityId=c.`id`
+		WHERE 1=1 AND ctype.display=1 AND ctype1.display=1
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%'))
+		</if>
+		ORDER BY c.shelves DESC, cf.`commodityId` DESC, c.recommend DESC, c.ishot DESC, c.familyPreferences DESC, c.id DESC
+	</select>
+	
+	<select id="isExist" resultType="Integer" parameterType="HajCommodityFailure">
+		SELECT id FROM haj_commodity_failure WHERE commodityId=#{commodityId} AND communityId=#{communityId} LIMIT 1
+	</select>
+	
+	<select id="getCommodityIdsByComnunityId" resultType="Integer" parameterType="Integer">
+		SELECT commodityId FROM haj_commodity_failure WHERE communityId=#{communityId}
+	</select>
+	
+	<insert id="add" parameterType="HajCommodityFailure">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO `haj_commodity_failure` (`commodityId`, `communityId`, `createTime`) 
+		VALUES (#{commodityId}, #{communityId}, #{createTime})
+	</insert>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM `haj_commodity_failure` WHERE `id`=#{id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajInviteCodeMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.invite.HajInviteCode">
+		<result column="id" property="id" />
+		<result column="memberId" property="memberId" />
+		<result column="memberMobile" property="memberMobile" />
+		<result column="inviteCode" property="inviteCode" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<!-- haj_invite_code table all fields -->
+	<sql id="Base_Column_List">
+		id, memberId, memberMobile, inviteCode, status, create_time, update_time
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.memberId != null and condition.memberId != ''">
+			AND memberId = #{condition.memberId}
+		</if>
+		<if test="condition.memberMobile != null and condition.memberMobile != ''">
+			AND memberMobile = #{condition.memberMobile}
+		</if>
+		<if test="condition.inviteCode != null and condition.inviteCode != ''">
+			AND inviteCode = #{condition.inviteCode}
+		</if>
+		<if test="condition.status != null and condition.status != ''">
+			AND status = #{condition.status}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND create_time = #{condition.createTime}
+		</if>
+		<if test="condition.updateTime != null and condition.updateTime != ''">
+			AND update_time = #{condition.updateTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="memberId != null and memberId != ''">
+			AND memberId = #{memberId}
+		</if>
+		<if test="memberMobile != null and memberMobile != ''">
+			AND memberMobile = #{memberMobile}
+		</if>
+		<if test="inviteCode != null and inviteCode != ''">
+			AND inviteCode = #{inviteCode}
+		</if>
+		<if test="status != null and status != ''">
+			AND status = #{status}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND create_time = #{createTime}
+		</if>
+		<if test="updateTime != null and updateTime != ''">
+			AND update_time = #{updateTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_invite_code(id, memberId, memberMobile, inviteCode, status, create_time, update_time)
+		VALUES(#{id}, #{memberId}, #{memberMobile}, #{inviteCode}, #{status}, now(), now())
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_invite_code SET memberId = #{memberId}, memberMobile = #{memberMobile}, inviteCode = #{inviteCode}, status = #{status}, create_time = now(), update_time = now() WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_invite_code SET 
+		<trim suffixOverrides=",">
+			<if test="memberId != null">
+				memberId = #{memberId},
+			</if>
+			<if test="memberMobile != null">
+				memberMobile = #{memberMobile},
+			</if>
+			<if test="inviteCode != null">
+				inviteCode = #{inviteCode},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_invite_code WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_invite_code WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_invite_code
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_invite_code
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultMap="BaseResultMap" parameterType="HajInviteCode">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		FROM haj_invite_code
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajInviteCode">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_invite_code
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+</mapper>

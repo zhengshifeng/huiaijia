@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajIngredientsReportTypeMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajIngredientsReportType">
+		<result column="id" property="id" />
+		<result column="typename" property="typename" />
+		<result column="typesort" property="typesort" />
+		<result column="typedirections" property="typedirections" />
+		<result column="typeimgs" property="typeimgs" />
+		<result column="createTime" property="createTime" />
+		<result column="endTime" property="endTime" />
+	</resultMap>
+
+	<!-- haj_ingredients_report_type table all fields -->
+	<sql id="Base_Column_List">
+		id, typename, typesort, typedirections, typeimgs, createTime, endTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.typename != null and condition.typename != ''">
+			AND typename = #{condition.typename}
+		</if>
+		<if test="condition.typesort != null and condition.typesort != ''">
+			AND typesort = #{condition.typesort}
+		</if>
+		<if test="condition.typedirections != null and condition.typedirections != ''">
+			AND typedirections = #{condition.typedirections}
+		</if>
+		<if test="condition.typeimgs != null and condition.typeimgs != ''">
+			AND typeimgs = #{condition.typeimgs}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			AND endTime = #{condition.endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="typename != null and typename != ''">
+			AND typename = #{typename}
+		</if>
+		<if test="typesort != null and typesort != ''">
+			AND typesort = #{typesort}
+		</if>
+		<if test="typedirections != null and typedirections != ''">
+			AND typedirections = #{typedirections}
+		</if>
+		<if test="typeimgs != null and typeimgs != ''">
+			AND typeimgs = #{typeimgs}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND endTime = #{endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_ingredients_report_type(id, typename, typesort, typedirections, typeimgs, createTime, endTime)
+		VALUES(#{id}, #{typename}, #{typesort}, #{typedirections}, #{typeimgs}, now(), #{endTime})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_ingredients_report_type SET typename = #{typename}, typesort = #{typesort}, typedirections = #{typedirections}, typeimgs = #{typeimgs}, endTime = #{endTime} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_ingredients_report_type SET 
+		<trim suffixOverrides=",">
+			<if test="typename != null">
+				typename = #{typename},
+			</if>
+			<if test="typesort != null">
+				typesort = #{typesort},
+			</if>
+			<if test="typedirections != null">
+				typedirections = #{typedirections},
+			</if>
+			<if test="typeimgs != null">
+				typeimgs = #{typeimgs},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_ingredients_report_type WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_ingredients_report_type WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_ingredients_report_type
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_ingredients_report_type
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajIngredientsReportType" parameterType="HajIngredientsReportType">
+		SELECT * FROM haj_ingredients_report_type
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajIngredientsReportType">
+		SELECT *
+		FROM haj_ingredients_report_type
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+</mapper>

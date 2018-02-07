@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajRechargePackageMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajRechargePackage">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="purchaseAmount" property="purchaseAmount" />
+		<result column="donationAmount" property="donationAmount" />
+		<result column="accountAmount" property="accountAmount" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+		<result column="purchaseNumber" property="purchaseNumber" />
+		<result column="sort" property="sort" />
+		<result column="remark" property="remark" />
+		<result column="internalRemark" property="internalRemark" />
+		<result column="createUser" property="createUser" />
+	</resultMap>
+
+	<resultMap id="BaseResultPageMap" type="com.flf.entity.HajRechargePackage">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="purchaseAmount" property="purchaseAmount" />
+		<result column="donationAmount" property="donationAmount" />
+		<result column="accountAmount" property="accountAmount" />
+		<result column="createTime" property="createTime" />
+		<result column="status" property="status" />
+		<result column="purchaseNumber" property="purchaseNumber" />
+		<result column="sort" property="sort" />
+		<result column="remark" property="remark" />
+		<result column="internalRemark" property="internalRemark" />
+		<result column="createUser" property="createUser" />
+		<result column="totalNumber" property="totalNumber" />
+	</resultMap>
+
+
+	<select id="listPageRechargePackage" parameterType="HajRechargePackage" resultMap="BaseResultPageMap">
+		SELECT A.* ,
+		COUNT(B.rechargePackageId) totalNumber
+		FROM haj_recharge_package A  LEFT JOIN  haj_recharge B  ON  A.id= B.rechargePackageId AND  B.rechargeStatus=1
+        where 1=1
+		<if test="name != null and name != ''">
+			and (A.id LIKE CONCAT('%', #{name}, '%')  or  A.name  LIKE CONCAT('%', #{name}, '%') )
+		</if>
+		<if test="status != null">
+			and A.status= #{status}
+		</if>
+		<if test="beginTime!=null and  beginTime!='' ">
+			and A.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null and  endTime!=''">
+			and  A.createTime&lt;=#{endTime}
+		</if>
+		GROUP BY A.id
+		ORDER BY A.createTime DESC, A.sort DESC, A.id DESC
+	</select>
+	<select id="getHajRechargePackageById" parameterType="java.lang.Integer" resultType="HajRechargePackage">
+		SELECT * FROM haj_recharge_package
+		WHERE  id=#{id}
+	</select>
+
+	<select id="getRechargePackageList"  resultType="HajRechargePackage">
+		SELECT * FROM haj_recharge_package
+		WHERE  status=0
+	</select>
+
+	<!-- 插入记录 -->
+	<insert id="insertRechargePackage" parameterType="HajRechargePackage" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_recharge_package(
+		id,name,purchaseAmount,donationAmount,accountAmount,createTime,status,purchaseNumber,sort,
+		remark,internalRemark,createUser
+		) values (#{id},#{name},#{purchaseAmount},#{donationAmount},#{accountAmount},now(),#{status},#{purchaseNumber},
+		#{sort},#{remark},#{internalRemark},#{createUser}
+		)
+	</insert>
+	<!-- 根据id，修改记录-->
+	<update id="updateRechargePackage" parameterType="HajRechargePackage" >
+		UPDATE haj_recharge_package
+		SET status=#{status}
+		WHERE id=#{id}
+	</update>
+
+
+</mapper>
+

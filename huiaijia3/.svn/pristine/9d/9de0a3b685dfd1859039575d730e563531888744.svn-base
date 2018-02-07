@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajRechargeMapper" > 
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajRecharge" >
+		<result column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="rechargeType" property="rechargeType"/>
+		<result column="createTime" property="createTime"/>
+		<result column="rechargeStatus" property="rechargeStatus"/>
+		<result column="money" property="money"/>
+		<result column="bankNo" property="bankNo"/>
+		<result column="prepay_id" property="prepay_id"/>
+		<result column="rechargeFor" property="rechargeFor"/>
+		<result column="notifyStatus" property="notifyStatus"/>
+		<result column="remark3" property="remark3"/>
+		<result column="refundNum" property="refundNum"/>
+		<result column="refundUpdateTime" property="refundUpdateTime"/>
+		<result column="isRefund" property="isRefund"/>
+		<result column="alipayTradeNo" property="alipayTradeNo"/>
+		<result column="paymentTarget" property="paymentTarget"/>
+		<result column="application" property="application"/>
+		<result column="rechargePackageId" property="rechargePackageId"/>
+		<result column="rechargePackageType" property="rechargePackageType"/>
+		<result column="accountAmount" property="accountAmount"/>
+	</resultMap>
+
+	<!-- haj_recharge table all fields -->
+	<sql id="Base_Column_List" >
+		id,userId,rechargeType,createTime,rechargeStatus,money,bankNo,prepay_id,rechargeFor,
+		notifyStatus,remark3,refundNum,refundUpdateTime,isRefund,alipayTradeNo,paymentTarget,
+		application
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="condition.id != null and condition.id != ''" >
+				and id =  #{condition.id}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''" >
+				and userId =  #{condition.userId}
+			</if>
+			<if test="condition.rechargeType != null and condition.rechargeType != ''" >
+				and rechargeType =  #{condition.rechargeType}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''" >
+				and createTime =  #{condition.createTime}
+			</if>
+			<if test="condition.rechargeStatus != null and condition.rechargeStatus != ''" >
+				and rechargeStatus =  #{condition.rechargeStatus}
+			</if>
+			<if test="condition.money != null and condition.money != ''" >
+				and money =  #{condition.money}
+			</if>
+			<if test="condition.bankNo != null and condition.bankNo != ''" >
+				and bankNo =  #{condition.bankNo}
+			</if>
+			<if test="condition.prepay_id != null and condition.prepay_id != ''" >
+				and prepay_id =  #{condition.prepay_id}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''" >
+				and remark3 =  #{condition.remark3}
+			</if>
+			<if test="condition.refundNum != null and condition.refundNum != ''" >
+				and refundNum =  #{condition.refundNum}
+			</if>
+			<if test="condition.refundUpdateTime != null and condition.refundUpdateTime != ''" >
+				and refundUpdateTime =  #{condition.refundUpdateTime}
+			</if>
+			<if test="condition.isRefund != null and condition.isRefund != ''" >
+				and isRefund =  #{condition.isRefund}
+			</if>
+			<if test="condition.alipayTradeNo != null and condition.alipayTradeNo != ''" >
+				and alipayTradeNo =  #{condition.alipayTradeNo}
+			</if>
+			<if test="condition.paymentTarget != null and condition.paymentTarget != null" >
+				and paymentTarget =  #{condition.paymentTarget}
+			</if>
+			<if test="condition.application != null">
+				and application =  #{condition.application}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_recharge(
+			id,userId,rechargeType,createTime,rechargeStatus,money,bankNo,prepay_id,rechargeFor,
+			notifyStatus,remark3,refundNum,refundUpdateTime,isRefund,paymentTarget,
+			application,rechargePackageId,rechargePackageType,accountAmount
+		) values (#{id},#{userId},#{rechargeType},now(),#{rechargeStatus},#{money},#{bankNo},#{prepay_id},
+			#{rechargeFor},#{notifyStatus},#{remark3},#{refundNum},#{refundUpdateTime},#{isRefund},#{paymentTarget},
+			#{application},#{rechargePackageId},#{rechargePackageType},#{accountAmount}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object" >
+		UPDATE haj_recharge
+		SET userId=#{userId},rechargeType=#{rechargeType},rechargeStatus=#{rechargeStatus},
+			money=#{money},bankNo=#{bankNo},prepay_id=#{prepay_id},rechargeFor=#{rechargeFor},
+			notifyStatus=#{notifyStatus},remark3=#{remark3},refundUpdateTime=#{refundUpdateTime},
+			refundNum=#{refundNum},isRefund=#{isRefund},paymentTarget=#{paymentTarget},application=#{application}
+		WHERE id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_recharge set
+		<trim  suffixOverrides="," >
+			<if test="userId != null  ">
+				userId=#{userId},
+			</if>
+			<if test="rechargeType != null  ">
+				rechargeType=#{rechargeType},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="rechargeStatus != null  ">
+				rechargeStatus=#{rechargeStatus},
+			</if>
+			<if test="money != null">
+				money=#{money},
+			</if>
+			<if test="bankNo != null">
+				bankNo=#{bankNo},
+			</if>
+			<if test="prepay_id != null">
+				prepay_id=#{prepay_id},
+			</if>
+			<if test="rechargeFor != null">
+				rechargeFor=#{rechargeFor},
+			</if>
+			<if test="notifyStatus != null">
+				notifyStatus=#{notifyStatus},
+			</if>
+			<if test="remark3 != null">
+				remark3=#{remark3},
+			</if>
+			<if test="refundNum != null">
+				refundNum=#{refundNum},
+			</if>
+			<if test="refundUpdateTime != null">
+				refundUpdateTime=#{refundUpdateTime},
+			</if>
+			<if test="isRefund != null">
+				isRefund=#{isRefund},
+			</if>
+			<if test="alipayTradeNo != null">
+				alipayTradeNo=#{alipayTradeNo},
+			</if>
+			<if test="paymentTarget != null">
+				paymentTarget=#{paymentTarget},
+			</if>
+			<if test="application != null">
+				application=#{application},
+			</if>
+		</trim>
+		WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_recharge where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" />
+		from haj_recharge where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+		select count(1) from haj_recharge
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_recharge
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+		   order by  ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+		   ${limitClause}
+		</if>
+	</select>
+	<update id="updateHajRecharge">
+		<!-- 如果是支付宝充值，在充值成功后需更新支付宝的充值单号alipayTradeNo，可用于退款 -->
+		UPDATE haj_recharge SET rechargeStatus=1
+		, alipayTradeNo=#{alipayTradeNo}
+		WHERE id=#{id} AND rechargeStatus=0 
+	</update>
+
+	<select id="getHajRechargeByPrepay_id" resultType="java.util.HashMap"  parameterType="String">
+		<!--SELECT userId,money,prepay_id FROM haj_recharge  WHERE prepay_id=#{prepay_id}  -->
+		SELECT userId,money,accountAmount,u.`residential` AS residential
+		FROM haj_recharge r
+		LEFT JOIN haj_front_user u ON u.id=r.`userId`
+		WHERE r.prepay_id=#{prepay_id}
+	</select>
+
+	<select id="listPage" resultType="HajRechargeVo" parameterType="HajRechargeVo">
+		SELECT r.*, u.`username`, u.mobilePhone
+		FROM haj_recharge r
+		LEFT JOIN haj_front_user u ON u.`id`=r.`userId`
+		WHERE 1=1 AND (rechargeFor = 1 OR rechargeFor = 0)
+		<if test="areaCode != null and areaCode != '' ">
+			and u.areaCode = #{areaCode}
+		</if>
+		<if test="rechargePackageType != null">
+			and r.rechargePackageType = #{rechargePackageType}
+		</if>
+		<if test="rechargeStatus != null" >
+			AND r.rechargeStatus = #{rechargeStatus}
+		</if>
+		<if test="prepay_id != null and prepay_id != ''" >
+			AND r.prepay_id = #{prepay_id}
+		</if>
+		<if test="bankNo != null and bankNo != ''" >
+			AND r.bankNo = #{bankNo}
+		</if>
+		<if test="username != null and username != ''" >
+			AND (u.`username` = #{username} OR u.mobilePhone = #{username})
+		</if>
+		<if test="rechargeMoney != null  and rechargeMoney != ''" >
+			AND r.money = #{rechargeMoney}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and r.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and r.createTime &lt;= #{endTime}
+		</if>
+		<if test="rechargeType != null and rechargeType != ''">
+			and r.rechargeType = #{rechargeType}
+		</if>
+		<if test="isRefund != null and isRefund != ''">
+			and r.isRefund = #{isRefund}
+		</if>
+		ORDER BY r.id DESC
+	</select>
+
+	<select id="queryTotalRecharge" resultType="java.util.HashMap" parameterType="Object">
+		SELECT SUM(sumMoney) AS sumMoney FROM (
+			SELECT r.money AS sumMoney FROM haj_recharge r
+			LEFT JOIN haj_front_user u ON u.`id`=r.`userId`
+			WHERE 1=1 AND r.`rechargeFor` IN (0, 1)
+			<if test="areaCode != null and areaCode != '' ">
+				and u.areaCode = #{areaCode}
+			</if>
+		     <if test="rechargePackageType != null">
+			 and r.rechargePackageType = #{rechargePackageType}
+		     </if>
+			<if test="rechargeStatus != null" >
+				AND r.rechargeStatus = #{rechargeStatus}
+			</if>
+			<if test="prepay_id != null and prepay_id != ''" >
+				AND r.prepay_id = #{prepay_id}
+			</if>
+			<if test="bankNo != null and bankNo != ''" >
+				AND r.bankNo = #{bankNo}
+			</if>
+			<if test="username != null and username != ''" >
+				AND (u.`username` = #{username} OR u.mobilePhone = #{username})
+			</if>
+			<if test="rechargeMoney != null  and rechargeMoney != ''" >
+				AND r.money = #{rechargeMoney}
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and r.createTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and r.createTime &lt;= #{endTime}
+			</if>
+			<if test="rechargeType != null and rechargeType != ''">
+				and r.rechargeType = #{rechargeType}
+			</if>
+		) a
+	</select>
+
+	<select id="queryRechargeListForRerund" resultMap="BaseResultMap" parameterType="Object">
+		SELECT r.*
+		FROM haj_recharge r
+		WHERE r.rechargeStatus=1 AND isRefund='0' AND r.`rechargeFor` IN (0, 1)
+		<if test="prepay_id != null and prepay_id != ''" >
+			AND r.prepay_id = #{prepay_id}
+		</if>
+		<if test="bankNo != null and bankNo != ''" >
+			AND r.bankNo = #{bankNo}
+		</if>
+		<if test="rechargePackageType != null">
+			and r.rechargePackageType = #{rechargePackageType}
+		</if>
+		<if test="username != null and username != ''" >
+			AND r.`userId` = (
+				SELECT `id` FROM haj_front_user u
+				WHERE u.`username` = #{username} OR u.mobilePhone = #{username}
+			)
+		</if>
+		<if test="rechargeMoney != null  and rechargeMoney != ''" >
+			AND r.money = #{rechargeMoney}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and r.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and r.createTime &lt;= #{endTime}
+		</if>
+		<if test="rechargeType != null and rechargeType != ''">
+			and r.rechargeType = #{rechargeType}
+		</if>
+		order by r.id desc
+	</select>
+
+	<select id="queryTotalRefund"  resultType="java.util.HashMap" parameterType="Object">
+		SELECT IFNULL(SUM(refundNum), 0) AS sumRefundNum FROM haj_recharge r
+		LEFT JOIN haj_front_user u ON u.`id`=r.`userId`
+		WHERE r.rechargeStatus=1 AND r.`rechargeFor` IN (0, 1)
+		<if test="prepay_id != null and prepay_id != ''" >
+			AND r.prepay_id = #{prepay_id}
+		</if>
+		<if test="bankNo != null and bankNo != ''" >
+			AND r.bankNo = #{bankNo}
+		</if>
+		<if test="rechargePackageType != null">
+			and r.rechargePackageType = #{rechargePackageType}
+		</if>
+		<if test="username != null and username != ''" >
+			AND (u.`username` = #{username} OR u.mobilePhone = #{username})
+		</if>
+		<if test="rechargeMoney != null  and rechargeMoney != ''" >
+			AND r.money = #{rechargeMoney}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and r.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and r.createTime &lt;= #{endTime}
+		</if>
+		<if test="rechargeType != null and rechargeType != ''">
+			and r.rechargeType = #{rechargeType}
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			and u.areaCode = #{areaCode}
+		</if>
+	</select>
+
+	<select id="getByOutTradeNo" resultMap="BaseResultMap" parameterType="String">
+		SELECT * FROM haj_recharge WHERE bankNo=#{out_trade_no} LIMIT 1
+	</select>
+
+</mapper>

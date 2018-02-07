@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderPaymentMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderPayment">
+		<result column="id" property="id" />
+		<result column="orderNo" property="orderNo" />
+		<result column="rechargeId" property="rechargeId" />
+	</resultMap>
+
+	<!-- haj_order_payment table all fields -->
+	<sql id="Base_Column_List">
+		id, orderNo, rechargeId
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.orderNo != null and condition.orderNo != ''">
+			AND orderNo = #{condition.orderNo}
+		</if>
+		<if test="condition.rechargeId != null and condition.rechargeId != ''">
+			AND rechargeId = #{condition.rechargeId}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND orderNo = #{orderNo}
+		</if>
+		<if test="rechargeId != null and rechargeId != ''">
+			AND rechargeId = #{rechargeId}
+		</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_order_payment(id, orderNo, rechargeId)
+		VALUES(#{id}, #{orderNo}, #{rechargeId})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_order_payment SET orderNo = #{orderNo}, rechargeId = #{rechargeId} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_order_payment SET 
+		<trim suffixOverrides=",">
+			<if test="orderNo != null">
+				orderNo = #{orderNo},
+			</if>
+			<if test="rechargeId != null">
+				rechargeId = #{rechargeId},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_order_payment WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询 订单支付表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_order_payment WHERE id = #{id}
+	</select>
+
+	<!-- 订单支付表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_order_payment
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询订单支付表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_order_payment
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="list" resultType="HajOrderPaymentVo" parameterType="HajOrderPaymentVo">
+		SELECT
+			o.`orderNo`, o.`mobilePhone`, o.`paymentWay`, o.`status` orderStatus, o.`paymentTime`, o.`refundTime`,
+			(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) actualPayment,
+			(SELECT SUM(os.`money`) totalRefund
+				FROM haj_order_sale os
+				WHERE os.`orderId`=o.`id` AND os.`isdeal` = 1
+				GROUP BY os.`orderId`
+			) AS totalRefund,
+			(SELECT r.`bankNo` FROM haj_recharge r WHERE r.`id` = op.`rechargeId`) tradeNo
+		FROM (
+			SELECT o.`id`, o.`orderNo`, o.`paymentWay`,o.`actualPayment`,o.`dispensingTip`,o.`postFee`,
+				o.`status`,o.`paymentTime`, o.`refundTime`, u.mobilePhone
+			FROM haj_order o
+			LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+			WHERE o.`delflag` = 0 AND (o.`isGrouponOrder` = 0 OR o.`isGrouponOrder` = 1)
+			<if test="paymentWay != null and paymentWay != ''">
+				AND o.`paymentWay` = #{paymentWay}
+			</if>
+			<if test="orderStatus != null and orderStatus != ''">
+				<if test="orderStatus == 1">
+					AND (o.`status` = 1 OR o.`status` = 9)
+				</if>
+				<if test="orderStatus > 1">
+					AND o.`status` > 1 AND o.`status` != 9
+				</if>
+			</if>
+			<if test="isRefund != null and isRefund != ''">
+				AND (o.`status`= 6
+						OR (SELECT COUNT(*) FROM haj_order_sale os WHERE os.`orderId`=o.`id` AND os.`isdeal`=1) > 0 )
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				AND u.`areaCode` = #{areaCode}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''">
+				AND u.`mobilePhone` = #{mobilePhone}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND o.`orderNo` = #{orderNo}
+			</if>
+			<if test="dateStart != null and dateStart != ''">
+				<if test="dateEnd != null and dateEnd != ''">
+					AND o.`paymentTime` BETWEEN #{dateStart} AND #{dateEnd}
+				</if>
+			</if>
+			ORDER BY o.`id` DESC LIMIT #{page.currentResult},#{page.showCount}
+		) AS o
+		LEFT JOIN haj_order_payment op ON op.`orderNo` = o.`orderNo`
+	</select>
+
+	<select id="getCount" parameterType="HajOrderPayment" resultType="Integer">
+		SELECT COUNT(*) FROM haj_order_payment op
+		WHERE op.`orderNo` = #{orderNo} AND op.`rechargeId` = #{rechargeId}
+	</select>
+
+	<select id="getHajRechargeByOrderNo" resultType="HajRecharge">
+		SELECT r.`id`, r.`bankNo`, r.`prepay_id`, r.`alipayTradeNo`
+		FROM haj_order_payment op
+		LEFT JOIN haj_recharge r ON r.`id` = op.`rechargeId`
+		WHERE op.`orderNo` = #{orderNo}
+		LIMIT 1
+	</select>
+	
+	<select id="listOrderPaid" resultType="HajOrderPaymentVo" parameterType="HajOrderPaymentVo">
+		SELECT o.`id`, o.`orderNo`, (o.`actualPayment` + o.`dispensingTip` + o.`postFee`) actualPayment
+		FROM haj_order o
+		<if test="(areaCode != null and areaCode != '') or (mobilePhone != null and mobilePhone != '')">
+			LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+		</if>
+		WHERE o.`delflag` = 0 AND (o.`isGrouponOrder` = 0 OR o.`isGrouponOrder` = 1)
+		<if test="paymentWay != null and paymentWay != ''">
+			AND o.`paymentWay` = #{paymentWay}
+		</if>
+		<if test="orderStatus != null and orderStatus != ''">
+			<if test="orderStatus == 1">
+				AND (o.`status` = 1 OR o.`status` = 9)
+			</if>
+			<if test="orderStatus > 1">
+				AND o.`status` > 1 AND o.`status` != 9
+			</if>
+		</if>
+		<if test="isRefund != null and isRefund != ''">
+			AND (o.`status`= 6 OR (SELECT COUNT(*) FROM haj_order_sale os WHERE os.`orderId`=o.`id` AND os.`isdeal`=1) > 0 )
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND o.`orderNo` = #{orderNo}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			<if test="dateEnd != null and dateEnd != ''">
+				AND o.`paymentTime` BETWEEN #{dateStart} AND #{dateEnd}
+			</if>
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND u.`areaCode` = #{areaCode}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND u.`mobilePhone` = #{mobilePhone}
+		</if>
+	</select>
+
+	<select id="calcOrderRefund" resultType="BigDecimal" parameterType="HajOrderPaymentVo">
+		SELECT IFNULL(SUM(os.`money`), 0.00) totalRefund
+		FROM haj_order_sale os
+		LEFT JOIN haj_order o ON o.`id` = os.`orderId`
+		<if test="(areaCode != null and areaCode != '') or (mobilePhone != null and mobilePhone != '')">
+			LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+		</if>
+		WHERE o.`delflag` = 0 AND (o.`isGrouponOrder` = 0 OR o.`isGrouponOrder` = 1)
+		<if test="paymentWay != null and paymentWay != ''">
+			AND o.`paymentWay` = #{paymentWay}
+		</if>
+		<if test="orderStatus != null and orderStatus != ''">
+			<if test="orderStatus == 1">
+				AND (o.`status` = 1 OR o.`status` = 9)
+			</if>
+			<if test="orderStatus > 1">
+				AND o.`status` > 1 AND o.`status` != 9
+			</if>
+		</if>
+		<if test="isRefund != null and isRefund != ''">
+			AND (o.`status`= 6 OR (SELECT COUNT(*) FROM haj_order_sale os WHERE os.`orderId`=o.`id` AND os.`isdeal`=1) > 0 )
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND o.`orderNo` = #{orderNo}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			<if test="dateEnd != null and dateEnd != ''">
+				AND o.`paymentTime` BETWEEN #{dateStart} AND #{dateEnd}
+			</if>
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND u.`areaCode` = #{areaCode}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND u.`mobilePhone` = #{mobilePhone}
+		</if>
+	</select>
+
+</mapper>   

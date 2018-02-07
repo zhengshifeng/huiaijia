@@ -1,0 +1,52 @@
+package com.flf.entity;
+
+public class HajCommunityPersionVo extends HajCommunityPersion {
+	private static final long serialVersionUID = 1L;
+
+	private String province;
+	private String city;
+	private String community;
+	private String cancalNumber;// 取消会员数量
+	private String commonNumber;// 普通会员数量
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCommunity() {
+		return community;
+	}
+
+	public void setCommunity(String community) {
+		this.community = community;
+	}
+
+	public String getCancalNumber() {
+		return cancalNumber;
+	}
+
+	public void setCancalNumber(String cancalNumber) {
+		this.cancalNumber = cancalNumber;
+	}
+
+	public String getCommonNumber() {
+		return commonNumber;
+	}
+
+	public void setCommonNumber(String commonNumber) {
+		this.commonNumber = commonNumber;
+	}
+
+}

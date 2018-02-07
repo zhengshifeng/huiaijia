@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajIngredientsReportConfMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajIngredientsReportConf">
+		<result column="id" property="id" />
+		<result column="repid" property="repid" />
+		<result column="catename" property="catename" />
+		<result column="catesort" property="catesort" />
+		<result column="description" property="description" />
+		<result column="cateimgs" property="cateimgs" />
+		<result column="createTime" property="createTime" />
+		<result column="endTime" property="endTime" />
+	</resultMap>
+
+	<!-- haj_ingredients_report_conf table all fields -->
+	<sql id="Base_Column_List">
+		id, repid, catename, catesort, description, cateimgs, createTime, endTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.repid != null and condition.repid != ''">
+			AND repid = #{condition.repid}
+		</if>
+		<if test="condition.catename != null and condition.catename != ''">
+			AND catename = #{condition.catename}
+		</if>
+		<if test="condition.catesort != null and condition.catesort != ''">
+			AND catesort = #{condition.catesort}
+		</if>
+		<if test="condition.description != null and condition.description != ''">
+			AND description = #{condition.description}
+		</if>
+		<if test="condition.cateimgs != null and condition.cateimgs != ''">
+			AND cateimgs = #{condition.cateimgs}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			AND endTime = #{condition.endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="repid != null and repid != ''">
+			AND repid = #{repid}
+		</if>
+		<if test="catename != null and catename != ''">
+			AND catename = #{catename}
+		</if>
+		<if test="catesort != null and catesort != ''">
+			AND catesort = #{catesort}
+		</if>
+		<if test="description != null and description != ''">
+			AND description = #{description}
+		</if>
+		<if test="cateimgs != null and cateimgs != ''">
+			AND cateimgs = #{cateimgs}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND endTime = #{endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_ingredients_report_conf(id, repid, catename, catesort, description, cateimgs, createTime, endTime)
+		VALUES(#{id}, #{repid}, #{catename}, #{catesort}, #{description}, #{cateimgs}, now(), #{endTime})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_ingredients_report_conf SET repid = #{repid}, catename = #{catename}, catesort = #{catesort}, description = #{description}, cateimgs = #{cateimgs}, endTime = #{endTime} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_ingredients_report_conf SET 
+		<trim suffixOverrides=",">
+			<if test="repid != null">
+				repid = #{repid},
+			</if>
+			<if test="catename != null">
+				catename = #{catename},
+			</if>
+			<if test="catesort != null">
+				catesort = #{catesort},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="cateimgs != null">
+				cateimgs = #{cateimgs},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_ingredients_report_conf WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_ingredients_report_conf WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_ingredients_report_conf
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_ingredients_report_conf
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajIngredientsReportConf" parameterType="HajIngredientsReportConf">
+		SELECT * FROM haj_ingredients_report_conf
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajIngredientsReportConf">
+		SELECT *
+		FROM haj_ingredients_report_conf
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+
+	<!--获取编辑页回显的 分类对象集合-->
+	<select id="getByReportId" resultType="HajIngredientsReportConfVo" parameterType="Integer">
+		SELECT *
+		FROM haj_ingredients_report_conf
+		WHERE repid=#{reportId}
+		ORDER BY catesort ASC
+	</select>
+
+
+	<!--获取分类对象-->
+	<select id="getByConfId" resultType="HajIngredientsReportConfVo" parameterType="Integer">
+		SELECT *
+		FROM haj_ingredients_report_conf
+		WHERE id=#{confId}
+
+	</select>
+
+</mapper>

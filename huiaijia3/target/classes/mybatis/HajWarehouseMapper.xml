@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajWarehouseMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.flf.entity.HajWarehouse" >
+	<result column="id" property="id"/>
+	<result column="whcode" property="whcode"/>
+	<result column="whname" property="whname"/>
+	<result column="createTime" property="createTime"/>
+	<result column="region" property="region"/>
+	<result column="remark" property="remark"/>
+</resultMap>
+       
+<!-- haj_warehouse table all fields -->
+<sql id="Base_Column_List" >
+	 id,whcode,whname,createTime,region,remark
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="condition.id != null and condition.id != ''" >
+	    and id =  #{condition.id}
+	</if>
+	<if test="condition.whcode != null and condition.whcode != ''" >
+	    and whcode =  #{condition.whcode}
+	</if>
+	<if test="condition.whname != null and condition.whname != ''" >
+	    and whname =  #{condition.whname}
+	</if>
+	<if test="condition.createTime != null and condition.createTime != ''" >
+	    and createTime =  #{condition.createTime}
+	</if>
+	<if test="condition.region != null and condition.region != ''" >
+	    and region =  #{condition.region}
+	</if>
+	<if test="condition.remark != null and condition.remark != ''" >
+	    and remark =  #{condition.remark}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into haj_warehouse(id,whcode,whname,createTime,region,remark)
+ values(#{id},#{whcode},#{whname},now(),#{region},#{remark})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update haj_warehouse set whcode=#{whcode},whname=#{whname},region=#{region},remark=#{remark} where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update haj_warehouse set 
+	<trim  suffixOverrides="," >
+	<if test="whcode != null  ">
+		whcode=#{whcode},
+	</if>
+	<if test="whname != null  ">
+		whname=#{whname},
+	</if>
+	<if test="createTime != null  ">
+		createTime=#{createTime},
+	</if>
+	<if test="region != null  ">
+		region=#{region},
+	</if>
+	<if test="remark != null  ">
+		remark=#{remark},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from haj_warehouse where id = #{id}
+</delete>
+ 
+<!-- 根据id查询  -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from haj_warehouse where id = #{id}
+</select>
+
+<!--  列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from haj_warehouse 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from haj_warehouse 
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by  ${orderByClause}
+    </if>
+    <if test="limitClause != null and limitClause != ''" >
+       ${limitClause}
+    </if>
+</select>
+
+ <select id="listPageHajWarehouse" resultType="java.util.HashMap" parameterType="Object">
+ 	 SELECT * from haj_warehouse  WHERE 1=1
+ 	<if test="areaCode != null and areaCode != ''" >
+			and region  =  #{areaCode}
+	</if>
+    <if test="whcode != null and whcode != ''" >
+			and whcode  =  #{whcode}
+	</if>
+	 <if test="whname != null and whname != ''" >
+			and whname  =  #{whname}
+	</if>
+	order by id desc
+	
+ </select>
+  	
+  	
+  <select id="getWareHouseByName" resultType="java.util.HashMap" parameterType="Object"> 
+   SELECT * from haj_warehouse WHERE  whname = #{whname}
+  </select>	
+  
+  <select id="getAllWareHouseList" resultType="java.util.HashMap" parameterType="Object"> 
+   SELECT * from haj_warehouse WHERE 1=1 
+	<if test="areaCode != null and areaCode != ''" >
+			and region  =  #{areaCode}
+	</if>
+	
+  </select>	
+</mapper>   

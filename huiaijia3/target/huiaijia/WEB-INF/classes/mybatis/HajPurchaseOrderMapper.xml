@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajPurchaseOrderMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajPurchaseOrder">
+		<result column="id" property="id" />
+		<result column="purchaseNo" property="purchaseNo" />
+		<result column="commodityNo" property="commodityNo" />
+		<result column="createTime" property="createTime" />
+		<result column="number" property="number" />
+		<result column="price" property="price" />
+		<result column="money" property="money" />
+		<result column="version" property="version" />
+		<result column="saleMoney" property="saleMoney" />
+	</resultMap>
+
+	<!-- haj_purchase_order table all fields -->
+	<sql id="Base_Column_List">
+		id,purchaseNo,commodityNo,createTime,number,price,money,version,saleMoney
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.purchaseNo != null and condition.purchaseNo != ''">
+				and purchaseNo = #{condition.purchaseNo}
+			</if>
+			<if test="condition.commodityNo != null and condition.commodityNo != ''">
+				and commodityNo = #{condition.commodityNo}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.number != null and condition.number != ''">
+				and number = #{condition.number}
+			</if>
+			<if test="condition.price != null and condition.price != ''">
+				and price = #{condition.price}
+			</if>
+			<if test="condition.money != null and condition.money != ''">
+				and money = #{condition.money}
+			</if>
+			<if test="condition.version != null and condition.version != ''">
+				and version = #{condition.version}
+			</if>
+			<if test="condition.saleMoney != null and condition.saleMoney != ''">
+				and saleMoney = #{condition.saleMoney}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into
+		haj_purchase_order(id,purchaseNo,commodityNo,createTime,number,price,money,version,saleMoney)
+		values(#{id},#{purchaseNo},#{commodityNo},#{createTime},#{number},#{price},#{money},#{version},#{saleMoney})
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_purchase_order set
+		purchaseNo=#{purchaseNo},commodityNo=#{commodityNo},number=#{number},price=#{price},money=#{money},version=#{version}
+		where id=#{id} and version=#{version}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_purchase_order set
+		<trim suffixOverrides=",">
+			<if test="purchaseNo != null  ">
+				purchaseNo=#{purchaseNo},
+			</if>
+			<if test="commodityNo != null  ">
+				commodityNo=#{commodityNo},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="number != null  ">
+				number=#{number},
+			</if>
+			<if test="price != null  ">
+				price=#{price},
+			</if>
+			<if test="money != null  ">
+				money=#{money},
+			</if>
+			<if test="version != null  ">
+				version=#{version},
+			</if>
+			<if test="saleMoney != null  ">
+				saleMoney=#{saleMoney}
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_purchase_order where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_purchase_order where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from haj_purchase_order
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_purchase_order
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getPurchaseOrderBy" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT * FROM haj_purchase_order WHERE commodityNo =
+		#{commodityNo} AND TO_DAYS(createTime) = TO_DAYS(NOW())
+	</select>
+
+	<select id="excelHebingDetail" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT c.sku,po.id,po.commodityNo,ct.commodityAttr,c.name,ct.typeName AS sTypeName,
+			ct1.typeName AS bTypeName,(select `name`  from `haj_supply_chain` where cloudsSupplierId=c.`supplyChain` ) as
+		supplyChain,sum(po.number) as number,
+			po.price,sum(po.money) as money, sum(po.saleMoney) as saleMoney, c.weight, c.`praise`
+		FROM haj_purchase_order po
+		LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		
+		<if test="supplyChain != null and supplyChain != '' ">
+			LEFT JOIN	haj_supply_chain hsc ON hsc.cloudsSupplierId=c.supplyChain
+		</if>
+		
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="supplyChain != null and supplyChain != '' ">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		GROUP BY commodityNo
+		order by po.createTime desc
+	</select>
+	
+	
+	<select id="listAllpurchaseList" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT po.id,po.commodityNo,ct.commodityAttr,c.name,c.weight,ct.typeName AS sTypeName,ct1.typeName AS bTypeName,
+			(select `name`  from `haj_supply_chain` where cloudsSupplierId=c.`supplyChain` ) as
+		supplyChain, po.createTime, po.number, po.price, po.money, po.purchaseNo, po.createTime,
+			po.saleMoney, c.`praise`,c.sku
+		FROM haj_purchase_order po
+		LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		<if test="supplyChain != null and supplyChain != '' ">
+			LEFT JOIN	haj_supply_chain hsc ON hsc.cloudsSupplierId=c.supplyChain
+		</if>
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="supplyChain != null and supplyChain != '' ">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		order by po.createTime desc
+	</select>
+
+	<select id="listPageOrder" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT po.id,po.commodityNo,ct.commodityAttr,c.name,ct.typeName AS
+		sTypeName,ct1.typeName AS bTypeName,(select `name`  from `haj_supply_chain` where cloudsSupplierId=c.`supplyChain` ) as
+		supplyChain,po.createTime,po.number,po.price,po.money,po.purchaseNo,c.weight,po.saleMoney
+		FROM haj_purchase_order po LEFT JOIN haj_commodity c ON
+		c.commodityNo=po.commodityNo LEFT JOIN haj_commodity_type ct ON
+		ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+		
+		<if test="supplyChain != null and supplyChain != '' ">
+			LEFT JOIN	haj_supply_chain hsc ON hsc.cloudsSupplierId=c.supplyChain
+		</if>
+		 WHERE 1=1
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			<bind name="commodityName" value="'%' + _parameter.commodityNo + '%'" />
+			and (po.commodityNo = #{commodityNo} or c.name like  #{commodityName})
+		</if>
+		<if test="supplyChain != null and supplyChain != '' ">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		order by po.createTime desc
+	</select>
+
+
+	<select id="querylistAllOrderCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		SELECT count(1) FROM haj_purchase_order po LEFT JOIN haj_commodity c
+		ON c.commodityNo=po.commodityNo LEFT JOIN haj_commodity_type ct ON
+		ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id WHERE 1=1
+		<if test="condition.purchaseNo != null and condition.purchaseNo != ''">
+			and po.purchaseNo = #{condition.purchaseNo}
+		</if>
+		<if test="condition.commodityNo != null and condition.commodityNo != ''">
+			and po.commodityNo = #{condition.commodityNo}
+		</if>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause} desc
+		</if>
+	</select>
+
+	<update id="updatePurchaseOrderByVersion" parameterType="Object" >
+		update haj_purchase_order set
+		number=number+#{number},money=money+#{money},version=version+1 where
+		id=#{id} and version=#{version}
+	</update>
+
+	<select id="queryTotalPurchase" resultType="java.util.HashMap" parameterType="Object">
+		SELECT SUM(number) AS sumNumber,SUM(money) AS sumMoney,COUNT(1) AS totalCount,
+			sum(saleMoney) as sumSaleMoney
+		FROM (
+			SELECT sum(po.number) as number,sum(po.money) as money,sum(po.saleMoney) AS saleMoney
+			FROM haj_purchase_order po
+			<if test="areaCode != null and areaCode != ''
+				or commodityNo != null and commodityNo != ''
+				or sTypeName != null and sTypeName != ''
+				or bTypeName != null and bTypeName != ''
+				or supplyChain != null and supplyChain != ''
+				or beginTime != null and beginTime != ''
+				or endTime != null and endTime != ''
+				or commodityAttr != null and commodityAttr != ''">
+				LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+				LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+				LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+				LEFT JOIN haj_supply_chain hsc ON hsc.cloudsSupplierId=c.supplyChain
+			</if>
+			WHERE 1=1
+			<if test="areaCode != null and areaCode != '' ">
+				and c.areaCode = #{areaCode}
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and po.createTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and po.createTime &lt;= #{endTime}
+			</if>
+			<if test="commodityNo != null and commodityNo != ''">
+				and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+			</if>
+			<if test="supplyChain != null and supplyChain != '' ">
+				and hsc.name = #{supplyChain}
+			</if>
+			<if test="bTypeName != null and bTypeName != ''">
+				and ct1.id = #{bTypeName}
+			</if>
+			<if test="sTypeName != null and sTypeName != ''">
+				and ct.typeName = #{sTypeName}
+			</if>
+			<if test="commodityAttr != null and commodityAttr != ''">
+				and ct.commodityAttr = #{commodityAttr}
+			</if>
+			GROUP BY po.commodityNo
+		) a
+	</select>
+
+	<select id="listPageToDayPurchaseList" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT cast((a.packageWeight*(100+a.wastageRate)/100) as decimal(9,2)) AS 'weightofvegetable',a.createTime,a.commodityAttr,a.sTypeName,a.bTypeName,a.name ,a.number,a.packedWeight,a.grossWeight,a.wastageRate,a.packageWeight  FROM 
+		 (SELECT c.id,DATE_SUB(DATE_FORMAT(o.createTime, '%y:%m:%d'),INTERVAL 1 DAY),o.createTime,ct.commodityAttr,ct.typeName AS sTypeName,ct1.typeName AS bTypeName,
+		 c.name,SUM(d.number) AS number,
+		 c.packedWeight,c.grossWeight,SUM(d.number)*c.packedWeight AS packageWeight, ( SELECT wastageRate FROM haj_commodity_wastage_rate 
+		 WHERE createTime=DATE_SUB(DATE_FORMAT(o.createTime, '%y:%m:%d'),INTERVAL 1 DAY) AND commodityId=c.id ) AS wastageRate
+		 FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN 
+		 haj_commodity c ON c.commodityNo=d.commodityNo LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+		 WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.status=2 AND o.delflag=0 
+		 AND c.selfPackaging=1 
+		 
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="commodityNo != null and commodityNo != ''">
+			and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if> GROUP BY c.commodityNo  ) a
+	</select>
+	
+	<select id="excelToDayPurchase" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT IFNULL(CAST((a.packageWeight*(100+a.wastageRate)/100) AS DECIMAL(9,2)),0) AS 'weightofvegetable',a.createTime,a.commodityAttr,a.sTypeName,a.bTypeName,a.name ,a.number,a.packedWeight,a.grossWeight,IFNULL(a.wastageRate,0) as wastageRate,a.packageWeight  FROM 
+		 (SELECT c.id,DATE_SUB(DATE_FORMAT(o.createTime, '%y:%m:%d'),INTERVAL 1 DAY),o.createTime,ct.commodityAttr,ct.typeName AS sTypeName,ct1.typeName AS bTypeName,
+		 c.name,SUM(d.number) AS number,
+		 c.packedWeight,c.grossWeight,SUM(d.number)*c.packedWeight AS packageWeight, ( SELECT wastageRate FROM haj_commodity_wastage_rate 
+		 WHERE createTime=DATE_SUB(DATE_FORMAT(o.createTime, '%y:%m:%d'),INTERVAL 1 DAY) AND commodityId=c.id ) AS wastageRate
+		 FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN 
+		 haj_commodity c ON c.commodityNo=d.commodityNo LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+		 WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.status=2 AND o.delflag=0 
+		 AND c.selfPackaging=1 
+		 
+		 <if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="commodityNo != null and commodityNo != ''">
+			and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if> GROUP BY c.commodityNo  ) a
+	</select>
+
+	<select id="jdWmsPoOrder" resultType="HajPurchaseOrder">
+		SELECT c.`sku` AS commodityNo, SUM(od.`number`) number
+		FROM haj_order_details od
+		LEFT JOIN haj_order o ON o.`id` = od.`orderId`
+		LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+		LEFT JOIN haj_commodity c ON c.`commodityNo` = od.`commodityNo`
+		WHERE o.`status` = 2 AND o.`delflag` = 0 AND u.`areaCode`= '100002'
+		 	AND LEFT(o.`deliveryTime`, 11) = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY),'%Y年%m月%d日')
+			AND c.`orderClassification` IN ('A','B','C','D')
+		GROUP BY c.`commodityNo`
+</select>
+
+</mapper>   

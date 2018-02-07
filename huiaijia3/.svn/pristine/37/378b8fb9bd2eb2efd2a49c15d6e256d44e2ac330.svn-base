@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajWithdrawalsMapper" > 
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajWithdrawals" >
+		<result column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="money" property="money"/>
+		<result column="createTime" property="createTime"/>
+		<result column="status" property="status"/>
+		<result column="isConfirm" property="isConfirm"/>
+		<result column="operationTime" property="operationTime"/>
+		<result column="remark" property="remark"/>
+	</resultMap>
+
+	<!-- haj_withdrawals table all fields -->
+	<sql id="Base_Column_List" >
+		id,userId,money,createTime,status,isConfirm,operationTime,remark
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim  suffixOverrides="," >
+			<if test="id != null and id != ''" >
+				and id =  #{id}
+			</if>
+			<if test="userId != null and userId != ''" >
+				and userId =  #{userId}
+			</if>
+			<if test="money != null and money != ''" >
+				and money =  #{money}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+				and createTime =  #{createTime}
+			</if>
+			<if test="status != null and status != ''" >
+				and status =  #{status}
+			</if>
+			<if test="isConfirm != null and isConfirm != ''" >
+				and isConfirm =  #{isConfirm}
+			</if>
+			<if test="operationTime != null and operationTime != ''" >
+				and operationTime =  #{operationTime}
+			</if>
+			<if test="remark != null and remark != ''" >
+				and remark =  #{remark}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_withdrawals(id,userId,money,createTime,status,isConfirm,operationTime,remark)
+		values(#{id},#{userId},#{money},now(),#{status},#{isConfirm},#{operationTime},#{remark})
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object" >
+		update haj_withdrawals set userId=#{userId},money=#{money},status=#{status},isConfirm=#{isConfirm},operationTime=#{operationTime},remark=#{remark} where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_withdrawals set
+		<trim  suffixOverrides="," >
+		<if test="userId != null  ">
+			userId=#{userId},
+		</if>
+		<if test="money != null  ">
+			money=#{money},
+		</if>
+		<if test="createTime != null  ">
+			createTime=#{createTime},
+		</if>
+		<if test="status != null  ">
+			status=#{status},
+		</if>
+		<if test="isConfirm != null  ">
+			isConfirm=#{isConfirm},
+		</if>
+		<if test="operationTime != null  ">
+			operationTime=#{operationTime},
+		</if>
+		<if test="remark != null  ">
+			remark=#{remark},
+		</if>
+		</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_withdrawals where id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" />
+		from haj_withdrawals where id = #{id}
+	</select>
+
+	<!--  列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_withdrawals
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_withdrawals
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+		   order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPageAllOrder" parameterType="Object" resultType="java.util.HashMap">
+		SELECT u.id AS userId,w.id,u.mobilePhone,w.money,w.createTime,w.status,w.isConfirm,w.operationTime,w.remark
+		FROM haj_withdrawals w LEFT JOIN haj_front_user u ON u.id=w.userId
+		where 1=1
+		<if test="mobilePhone != null and mobilePhone != ''" >
+			and u.mobilePhone  =  #{mobilePhone}
+		</if>
+		<if test="status != null" >
+			and w.status  =  #{status}
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			and (u.areaCode =  #{areaCode} OR u.areaCode IS NULL OR u.areaCode	= '')
+		</if>
+		order by w.id desc
+	</select>
+
+	<update id="updateWithdrawals" parameterType="Object">
+		update haj_withdrawals set isConfirm = 1 ,status = #{status} ,remark=#{remark},operationTime=#{operationTime} where id=#{id}
+	</update>
+
+	<select id="exportWithdrawals" parameterType="Object" resultType="java.util.HashMap">
+		SELECT u.id AS userId,w.id,u.mobilePhone,w.money,w.createTime,w.status,w.isConfirm,w.operationTime,w.remark
+		FROM haj_withdrawals w LEFT JOIN haj_front_user u ON u.id=w.userId
+		where 1=1
+		<if test="mobilePhone != null and mobilePhone != ''" >
+			and u.mobilePhone  =  #{mobilePhone}
+		</if>
+		<if test="status != null" >
+			and w.status  =  #{status}
+		</if>
+		order by w.id desc
+	</select>
+</mapper>

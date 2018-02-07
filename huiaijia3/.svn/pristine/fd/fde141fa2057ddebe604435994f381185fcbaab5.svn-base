@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityGroupBuyingMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodityGroupBuying">
+		<result column="id" property="id" />
+		<result column="commodityId" property="commodityId" />
+		<result column="cutOffTime" property="cutOffTime" />
+		<result column="deliveryTime" property="deliveryTime" />
+		<result column="listPic" property="listPic" />
+		<result column="sliderPic" property="sliderPic" />
+		<result column="detailPic" property="detailPic" />
+	</resultMap>
+
+	<!-- haj_commodity_group_buying table all fields -->
+	<sql id="Base_Column_List">
+		id, commodityId, cutOffTime, deliveryTime, listPic, sliderPic, detailPic
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.commodityId != null and condition.commodityId != ''">
+			AND commodityId = #{condition.commodityId}
+		</if>
+		<if test="condition.cutOffTime != null and condition.cutOffTime != ''">
+			AND cutOffTime = #{condition.cutOffTime}
+		</if>
+		<if test="condition.deliveryTime != null and condition.deliveryTime != ''">
+			AND deliveryTime = #{condition.deliveryTime}
+		</if>
+		<if test="condition.listPic != null and condition.listPic != ''">
+			AND listPic = #{condition.listPic}
+		</if>
+		<if test="condition.sliderPic != null and condition.sliderPic != ''">
+			AND sliderPic = #{condition.sliderPic}
+		</if>
+		<if test="condition.detailPic != null and condition.detailPic != ''">
+			AND detailPic = #{condition.detailPic}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="commodityId != null and commodityId != ''">
+			AND commodityId = #{commodityId}
+		</if>
+		<if test="cutOffTime != null and cutOffTime != ''">
+			AND cutOffTime = #{cutOffTime}
+		</if>
+		<if test="deliveryTime != null and deliveryTime != ''">
+			AND deliveryTime = #{deliveryTime}
+		</if>
+		<if test="listPic != null and listPic != ''">
+			AND listPic = #{listPic}
+		</if>
+		<if test="sliderPic != null and sliderPic != ''">
+			AND sliderPic = #{sliderPic}
+		</if>
+		<if test="detailPic != null and detailPic != ''">
+			AND detailPic = #{detailPic}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_commodity_group_buying(id, commodityId, cutOffTime, deliveryTime, listPic, sliderPic, detailPic)
+		VALUES(#{id}, #{commodityId}, #{cutOffTime}, #{deliveryTime}, #{listPic}, #{sliderPic}, #{detailPic})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_commodity_group_buying SET commodityId = #{commodityId}, cutOffTime = #{cutOffTime}, deliveryTime = #{deliveryTime}, listPic = #{listPic}, sliderPic = #{sliderPic}, detailPic = #{detailPic} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_commodity_group_buying SET 
+		<trim suffixOverrides=",">
+			<if test="commodityId != null">
+				commodityId = #{commodityId},
+			</if>
+			<if test="cutOffTime != null">
+				cutOffTime = #{cutOffTime},
+			</if>
+			<if test="deliveryTime != null">
+				deliveryTime = #{deliveryTime},
+			</if>
+			<if test="listPic != null">
+				listPic = #{listPic},
+			</if>
+			<if test="sliderPic != null">
+				sliderPic = #{sliderPic},
+			</if>
+			<if test="detailPic != null">
+				detailPic = #{detailPic},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_commodity_group_buying WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_group_buying WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_commodity_group_buying
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_group_buying
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCommodityGroupBuying" parameterType="HajCommodityGroupBuying">
+		SELECT * FROM haj_commodity_group_buying
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajCommodityGroupBuying">
+		SELECT c.id, c.`name`, c.`alias`, c.`description`, c.`originalPrice`,
+			IFNULL(c.`salesVolume`, 0) salesVolume, c.`discountWord`,
+			cgb.`listPic`, DATE_FORMAT(cgb.`deliveryTime`, '%Y-%m-%d %H:%i:%s') deliveryTime,
+			DATE_FORMAT(cgb.`cutOffTime`, '%Y-%m-%d %H:%i:%s') cutOffTime
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.`typeId`
+		LEFT JOIN haj_commodity_type ct1 ON ct1.id=ct.`parentId`
+		LEFT JOIN haj_commodity_group_buying cgb ON cgb.`commodityId` = c.`id`
+		WHERE ct.`display` = 1 AND ct1.`display` = 1 AND ct.`commodityAttr` = '团购' AND c.`shelves` = 1
+			AND c.`areaCode` = #{areaCode}
+		ORDER BY c.`sort` ASC, cgb.`cutOffTime` ASC, c.`id` DESC
+		LIMIT 0, 100
+	</select>
+
+	<select id="detail4app" resultType="HashMap" parameterType="HajCommodityGroupBuying">
+		SELECT c.id, c.`name`, c.`alias`, c.`description`, c.`marketPrice`, c.`originalPrice`,
+			IFNULL(c.`salesVolume`, 0) salesVolume, c.`smallPic`, c.`discountWord`, c.`discountWord`,
+			c.`weight`, c.`producer`,
+			ct1.`commodityAttr`, ct1.`typeName` parentTypeName, ct.`typeName`,
+			ct1.`description` AS typeDescription,
+			cgb.`sliderPic`, cgb.`detailPic`,
+			DATE_FORMAT(cgb.`deliveryTime`, '%Y-%m-%d %H:%i:%s') deliveryTime,
+			DATE_FORMAT(cgb.`cutOffTime`, '%Y-%m-%d %H:%i:%s') cutOffTime
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.`typeId`
+		LEFT JOIN haj_commodity_type ct1 ON ct1.id=ct.`parentId`
+		LEFT JOIN haj_commodity_group_buying cgb ON cgb.`commodityId` = c.`id`
+		WHERE ct.`display` = 1 AND ct1.`display` = 1 AND c.`shelves` = 1
+			AND c.`id` = #{commodityId}
+	</select>
+
+	<select id="getByCommodityId" resultType="HajCommodityGroupBuyingVo" parameterType="Integer">
+		SELECT c.`id` AS commodityId, c.`name` AS commodityName, cgb.`id`, cgb.`cutOffTime`,
+			cgb.`deliveryTime`, cgb.`listPic`, cgb.`sliderPic`, cgb.`detailPic`
+		FROM haj_commodity_group_buying cgb
+		LEFT JOIN haj_commodity c ON c.`id` = cgb.`commodityId`
+		WHERE cgb.`commodityId` = #{commodityId} LIMIT 1
+	</select>
+
+</mapper>

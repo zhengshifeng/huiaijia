@@ -1,0 +1,9 @@
+redis.ip=115.29.170.224
+redis.port=6379
+redis.password=Huiaijia123456
+redis.timeout=15000
+redis.usePool=true 
+redis.maxIdle=6
+redis.minEvictableIdleTimeMillis=300000
+redis.numTestsPerEvictionRun=3
+redis.timeBetweenEvictionRunsMillis=60000

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityPromotionAreaMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodityPromotionArea">
+		<result column="id" property="id" />
+		<result column="commodityId" property="commodityId" />
+		<result column="areaId" property="areaId" />
+	</resultMap>
+
+	<!-- haj_commodity_promotion_area table all fields -->
+	<sql id="Base_Column_List">
+		id, commodityId, areaId
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.commodityId != null and condition.commodityId != ''">
+			AND commodityId = #{condition.commodityId}
+		</if>
+		<if test="condition.areaId != null and condition.areaId != ''">
+			AND areaId = #{condition.areaId}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="commodityId != null and commodityId != ''">
+			AND commodityId = #{commodityId}
+		</if>
+		<if test="areaId != null and areaId != ''">
+			AND areaId = #{areaId}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_commodity_promotion_area(id, commodityId, areaId)
+		VALUES(#{id}, #{commodityId}, #{areaId})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_commodity_promotion_area SET commodityId = #{commodityId}, areaId = #{areaId} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_commodity_promotion_area SET 
+		<trim suffixOverrides=",">
+			<if test="commodityId != null">
+				commodityId = #{commodityId},
+			</if>
+			<if test="areaId != null">
+				areaId = #{areaId},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_commodity_promotion_area WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询 商品与商品专区中间表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_promotion_area WHERE id = #{id}
+	</select>
+
+	<!-- 商品与商品专区中间表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_commodity_promotion_area
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询商品与商品专区中间表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_promotion_area
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCommodityPromotionArea" parameterType="HajCommodityPromotionArea">
+		SELECT * FROM haj_commodity_promotion_area
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<!--插入数据时，判断数据是否存在，如果不存在就插入否则不做处理-->
+	<insert id="saveToCommodityZone" parameterType="HajCommodityPromotionArea">
+		INSERT INTO haj_commodity_promotion_area(commodityId,areaId)
+		SELECT
+		#{commodityId},#{areaId}
+		FROM DUAL
+		WHERE NOT EXISTS(SELECT 1 FROM haj_commodity_promotion_area hcpa
+							WHERE hcpa.commodityId = #{commodityId} AND hcpa.areaId = #{areaId})
+	</insert>
+
+	<!--从指定专区中删除指定商品-->
+	<delete id="deleteCommodityFromTheZone" parameterType="HajCommodityPromotionArea">
+		DELETE FROM haj_commodity_promotion_area WHERE commodityId = #{commodityId}   AND  areaId = #{areaId}
+	</delete>
+
+</mapper>   

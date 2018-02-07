@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityTypeMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodityType">
+		<result column="id" property="id" />
+		<result column="typeName" property="typeName" />
+		<result column="description" property="description" />
+		<result column="parentId" property="parentId" />
+		<result column="commodityAttr" property="commodityAttr" />
+		<result column="icon" property="icon" />
+		<result column="sort" property="sort" />
+		<result column="remark1" property="remark1" />
+		<result column="remark2" property="remark2" />
+		<result column="remark3" property="remark3" />
+		<result column="display" property="display" />
+		<result column="categoryId" property="categoryId" />
+	</resultMap>
+
+	<resultMap id="ResultMapList" type="com.flf.entity.HajCommodityTypeVo">
+		<result column="id" property="id" />
+		<result column="typeName" property="typeName" />
+		<result column="description" property="description" />
+		<result column="parentId" property="parentId" />
+		<result column="commodityAttr" property="commodityAttr" />
+		<result column="icon" property="icon" />
+		<result column="sort" property="sort" />
+		<result column="remark1" property="remark1" />
+		<result column="remark2" property="remark2" />
+		<result column="remark3" property="remark3" />
+		<result column="display" property="display" />
+		<result column="categoryId" property="categoryId" />
+		<collection property="subList" ofType="HajCommodityType" select="getSubList" column="id"/>
+	</resultMap>
+
+	<!-- haj_commodity_type table all fields -->
+	<sql id="Base_Column_List">
+		id,typeName,description,parentId,commodityAttr,icon,sort,display,categoryId
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.typeName != null and condition.typeName != ''">
+				and typeName = #{condition.typeName}
+			</if>
+			<if test="condition.description != null and condition.description != ''">
+				and description = #{condition.description}
+			</if>
+			<if test="condition.parentId != null and condition.parentId != ''">
+				and parentId = #{condition.parentId}
+			</if>
+			<if
+				test="condition.commodityAttr != null and condition.commodityAttr != ''">
+				and commodityAttr = #{condition.commodityAttr}
+			</if>
+			<if test="condition.remark1 != null and condition.remark1 != ''">
+				and remark1 = #{condition.remark1}
+			</if>
+			<if test="condition.remark2 != null and condition.remark2 != ''">
+				and remark2 = #{condition.remark2}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''">
+				and remark3 = #{condition.remark3}
+			</if>
+			<if test="condition.display != null and condition.display != ''">
+				and display = #{condition.display}
+			</if>
+			<if test="condition.categoryId != null and condition.categoryId != ''">
+				and categoryId = #{condition.categoryId}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		haj_commodity_type(
+			id,typeName,description,parentId,commodityAttr,icon,sort,remark1,remark2,remark3,display,categoryId
+		) values(
+			#{id},#{typeName},#{description},#{parentId},#{commodityAttr},#{icon},#{sort},
+			#{remark1},#{remark2},#{remark3},#{display},#{categoryId}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_commodity_type set typeName=#{typeName},description=#{description},parentId=#{parentId},
+			commodityAttr=#{commodityAttr},icon=#{icon},sort=#{sort},remark1=#{remark1},remark2=#{remark2},
+			remark3=#{remark3},display=#{display},categoryId=#{categoryId}
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_commodity_type set
+		<trim suffixOverrides=",">
+			<if test="typeName != null  ">
+				typeName=#{typeName},
+			</if>
+			<if test="description != null  ">
+				description=#{description},
+			</if>
+			<if test="parentId != null  ">
+				parentId=#{parentId},
+			</if>
+			<if test="commodityAttr != null  ">
+				commodityAttr=#{commodityAttr},
+			</if>
+			<if test="icon != null  ">
+				icon=#{icon},
+			</if>
+			<if test="sort != null  ">
+				icon=#{sort},
+			</if>
+			<if test="remark1 != null  ">
+				remark1=#{remark1},
+			</if>
+			<if test="remark2 != null  ">
+				remark2=#{remark2},
+			</if>
+			<if test="remark3 != null  ">
+				remark3=#{remark3},
+			</if>
+			<if test="display != null  ">
+				display=#{display},
+			</if>
+			<if test="categoryId != null  ">
+				categoryId=#{categoryId},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_commodity_type where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_commodity_type where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from haj_commodity_type
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM haj_commodity_type
+		<include refid="Example_Where_Clause" />
+		ORDER BY sort ASC
+		<if test="orderByClause != null and orderByClause != ''">
+			, ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+	       ${limitClause}
+	    </if>
+	</select>
+
+	<select id="getCommodityTypeByParentId" resultMap="BaseResultMap"
+		parameterType="int">
+		SELECT t.id, t.typeName, t.description, t.commodityAttr, t.parentId, t.sort, t.display
+		FROM haj_commodity_type t WHERE t.parentId=#{id} ORDER BY t.sort ASC
+	</select>
+
+	<select id="getCommodityTypeByParentIdApp" resultMap="BaseResultMap"
+		parameterType="int">
+		SELECT t.id, t.typeName, t.description, t.commodityAttr, t.parentId, t.sort, t.display, t.icon
+		FROM haj_commodity_type t WHERE t.parentId=#{id} AND t.display=1 ORDER BY t.sort ASC
+	</select>
+	
+	<select id="getCommodityTypeId" parameterType="Object"
+		resultType="java.util.HashMap">
+		SELECT id,name FROM haj_commodity WHERE typeId=#{typeId} and shelves=1 
+		<if test="communityId != null and communityId > 0">
+		AND id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{communityId}
+		)
+		</if>
+	</select>
+
+	<update id="destoryCommodityTypeId" parameterType="int">
+		UPDATE haj_commodity SET typeId = 0
+		WHERE typeId = #{typeId} OR typeId IN (
+			SELECT id FROM haj_commodity_type
+			WHERE parentId=#{typeId}
+		)
+	</update>
+	
+	<select id="getCommodityParentType" resultMap="BaseResultMap">
+		select * from haj_commodity_type where parentId = 0
+	</select>
+	
+	<select id="getBigTypeByattr" resultMap="BaseResultMap" parameterType="String">
+		select * from haj_commodity_type
+		where commodityAttr = #{commodityAttr} and parentId = 0
+		ORDER BY sort ASC
+	</select>
+	
+	<select id="getCommodityByTypeName" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM haj_commodity_type WHERE typeName=#{typeName} LIMIT 1
+	</select>
+	
+	<select id="isTypeExist" parameterType="Object" resultType="HajCommodityType">
+		SELECT t.`id`, t.`typeName`, t.`commodityAttr`, t.`parentId` FROM haj_commodity_type t 
+		LEFT JOIN haj_commodity_type t1 ON t1.id=t.`parentId`
+		WHERE t1.`commodityAttr`=#{commodityAttr} AND t1.`typeName`=#{parentType} 
+			AND t.`typeName`=#{type}
+	</select>
+	
+	<select id="getTypeCount" parameterType="HajCommodityType" resultType="Integer">
+		SELECT COUNT(*) FROM haj_commodity_type t 
+		WHERE t.`commodityAttr`=#{commodityAttr} AND t.`parentId`=#{parentId} 
+			AND t.`typeName`=#{typeName}
+		<if test="id != null" >
+	       AND t.id != #{id}
+	    </if>
+	</select>
+
+	<select id="getParentTypeByAttr" parameterType="HajCommodityType" resultType="HajCommodityType">
+		SELECT ctp.*
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.`id` = c.`typeId`
+		LEFT JOIN haj_commodity_type ctp ON ctp.`id` = ct.parentId
+		WHERE c.`invalid` = 0
+			AND ctp.`commodityAttr` = #{commodityAttr}
+		<if test="areaCode != null">
+			AND c.`areaCode` = #{areaCode}
+		</if>
+		GROUP BY ctp.id
+	</select>
+
+	<select id="getTypeByPid" parameterType="HajCommodityType" resultType="HajCommodityType">
+		SELECT ct.*
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.`id` = c.`typeId`
+		WHERE c.`invalid` = 0
+		AND ct.`parentId` = #{id}
+		<if test="areaCode != null">
+			AND c.`areaCode` = #{areaCode}
+		</if>
+		GROUP BY ct.id
+	</select>
+
+	<select id="getCommodityByType" parameterType="HajCommodityType" resultType="HashMap">
+		SELECT c.`id`, c.`commodityNo`, c.`name`, c.`typeId` FROM haj_commodity c WHERE c.`invalid` = 0
+		AND c.`typeId` = #{id}
+		<if test="areaCode != null">
+			AND c.`areaCode` = #{areaCode}
+		</if>
+		ORDER BY c.`name`
+	</select>
+
+	<select id="getByCategoryId" parameterType="Integer" resultType="HajCommodityType">
+		SELECT ct.id, ct.`typeName`, ct.`description`, ct.`commodityAttr`, ct.`sort`
+		FROM `haj_commodity_type` ct
+		WHERE ct.`categoryId` = #{categoryId} AND ct.`display` = 1
+		ORDER BY ct.`sort`
+	</select>
+
+	<select id="getChildren" parameterType="Integer" resultType="HajCommodityType">
+		SELECT ct.id, ct.`typeName`, ct.`description`, ct.`commodityAttr`, ct.`sort`, ct.`icon`
+		FROM `haj_commodity_type` ct
+		WHERE ct.`parentId` = #{parentId} AND ct.`display` = 1
+		ORDER BY ct.`sort`
+	</select>
+
+	<select id="list" parameterType="String" resultMap="ResultMapList">
+		SELECT ct.`id`, ct.`typeName`, ct.`description`, ct.`commodityAttr`, ct.`parentId`,
+			ct.`categoryId`, ct.`sort`, ct.`display`,
+			(SELECT ctg.`name` FROM haj_category ctg WHERE ctg.`id` = ct.`categoryId`) remark1
+		FROM `haj_commodity_type` ct
+		WHERE ct.`commodityAttr` = #{attr} AND ct.`parentId` = 0
+		ORDER BY ct.`sort` ASC
+	</select>
+
+	<select id="getSubList" parameterType="Integer" resultType="HajCommodityType">
+		SELECT ct.`id`, ct.`typeName`, ct.`description`, ct.`commodityAttr`, ct.`parentId`,
+			ct.`categoryId`, ct.`sort`, ct.`display`
+		FROM `haj_commodity_type` ct
+		WHERE ct.`parentId` = #{parentId}
+		ORDER BY ct.`sort` ASC
+	</select>
+
+	<select id="listAll" resultType="HajCommodityType">
+		SELECT ct.`id`, ct.`parentId`, ct.`typeName`, ct.`commodityAttr`
+		FROM haj_commodity_type ct
+		ORDER BY ct.`parentId` ASC, ct.`id` ASC
+	</select>
+
+</mapper>   

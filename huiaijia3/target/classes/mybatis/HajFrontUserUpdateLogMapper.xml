@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajFrontUserUpdateLogMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajFrontUserUpdateLog">
+		<result column="id" property="id" />
+		<result column="record" property="record" />
+		<result column="createTime" property="createTime" />
+		<result column="frontUserId" property="frontUserId" />
+		<result column="operator" property="operator" />
+	</resultMap>
+
+	<!-- haj_front_user_update_log table all fields -->
+	<sql id="Base_Column_List">
+		id,record,createTime,frontUserId,operator
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			and id = #{condition.id}
+		</if>
+		<if test="condition.record != null and condition.record != ''">
+			and record = #{condition.record}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			and createTime = #{condition.createTime}
+		</if>
+		<if test="condition.frontUserId != null and condition.frontUserId != ''">
+			and frontUserId = #{condition.frontUserId}
+		</if>
+		<if test="condition.operator != null and condition.operator != ''">
+			and operator = #{condition.operator}
+		</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_front_user_update_log(id,record,createTime,frontUserId,operator)
+ 		values(#{id},#{record},now(),#{frontUserId},#{operator})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_front_user_update_log set record=#{record},operatorId=#{operatorId} where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_front_user_update_log set 
+	<trim  suffixOverrides="," >
+	<if test="record != null  ">
+		record=#{record},
+	</if>
+	<if test="createTime != null  ">
+		createTime=#{createTime},
+	</if>
+	<if test="operatorId != null  ">
+		operatorId=#{operatorId},
+	</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_front_user_update_log where id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" /> 
+		from haj_front_user_update_log where id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_front_user_update_log
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_front_user_update_log
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajFrontUserUpdateLog" parameterType="HajFrontUserUpdateLog">
+		SELECT id, record, createTime, operator
+		FROM haj_front_user_update_log
+		WHERE 1=1 AND frontUserId=#{frontUserId} ORDER BY id DESC
+	</select>
+
+</mapper>   

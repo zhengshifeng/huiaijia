@@ -1,0 +1,124 @@
+package com.flf.service.impl;
+
+import com.base.service.BaseServiceImpl;
+import com.flf.entity.HajCouponInfo;
+import com.flf.entity.HajCouponSendUser;
+import com.flf.entity.HajFrontUser;
+import com.flf.mapper.HajCouponSendUserMapper;
+import com.flf.mapper.HajFrontUserMapper;
+import com.flf.service.HajCouponSendUserService;
+import com.flf.util.Tools;
+import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.flf.util.ExcelUtil.getCellValue;
+
+/**
+ * 
+ * <br>
+ * <b>功能：</b>HajCouponSendUserService<br>
+ */
+@Service("hajCouponSendUserService")
+public class HajCouponSendUserServiceImpl extends BaseServiceImpl implements HajCouponSendUserService {
+	private final static Logger log = Logger.getLogger(HajCouponSendUserServiceImpl.class);
+	
+	@Autowired
+	private HajCouponSendUserMapper dao;
+
+	@Autowired
+	private HajFrontUserMapper frontUserMapper;
+
+	@Override
+	public HajCouponSendUserMapper getDao() {
+		return dao;
+	}
+
+	@Override
+	public List<HajCouponSendUser> listPage(HajCouponSendUser po) {
+		return dao.listPage(po);
+	}
+
+	@Override
+	public void deleteByCoupon(Integer couponId) {
+		dao.deleteByCoupon(couponId);
+	}
+
+	@Override
+	public String batchImport(String filePath, HajCouponInfo couponInfo) throws IOException {
+		XSSFWorkbook xwb = new XSSFWorkbook(filePath);
+
+		// 读取第一张sheet表格内容
+		XSSFSheet sheet = xwb.getSheetAt(0);
+		xwb.close();// 记得关闭流
+
+		XSSFRow row;
+		String content;
+		HajFrontUser frontUser;
+		List<Integer> userList = new ArrayList<>();
+		StringBuilder errorUsers = new StringBuilder("第");
+		for (int i = (sheet.getFirstRowNum() + 1), rows = sheet.getPhysicalNumberOfRows(); i < rows; i++) {
+			row = sheet.getRow(i);
+			if (row == null) {
+				continue;
+			}
+
+			// 一次只能导入1000条数据
+			if (rows > 1000) {
+				errorUsers = new StringBuilder("单次导入的数据行不能超过1000行");
+				log.info("单次导入的数据行超过1000行，已阻止！");
+				break;
+			}
+
+			try {
+				content = getCellValue(row.getCell(0));
+				if (Tools.isEmpty(content)) {
+					continue;
+				}
+				frontUser = frontUserMapper.getUserByMobile(content);
+				if (frontUser != null) {
+					if (couponInfo.getMemberLimit() != null && couponInfo.getMemberLimit() > 0) {
+						if (!couponInfo.getMemberLimit().toString().equals(frontUser.getIsmember())) {
+							errorUsers.append(i+1).append(',');
+						} else {
+							userList.add(frontUser.getId());
+						}
+					} else {
+						userList.add(frontUser.getId());
+					}
+				} else {
+					errorUsers.append(i+1).append(',');
+				}
+			} catch (Exception e) {
+				log.info(e.getMessage(), e);
+			}
+		}
+		if (errorUsers.indexOf(",") > 0) {
+			errorUsers = new StringBuilder(errorUsers.substring(0, errorUsers.length()-1));
+			errorUsers.append("行的用户不满足优惠券领取的条件");
+		} else if (errorUsers.toString().equals("第")) {
+			errorUsers = new StringBuilder();
+			if (userList.size() > 0) {
+				// 因为之前可能存在发放失败，但是coupon_send_user表中已经导入成功的数据。因此导入之前先清掉这些数据。
+				dao.deleteByCoupon(couponInfo.getId());
+				dao.addBatch(userList, couponInfo.getId());
+			} else {
+				errorUsers = new StringBuilder("未读取到表格中的用户数据，发放失败");
+			}
+		}
+		return errorUsers.toString();
+	}
+
+	@Override
+	public List<Integer> listSendUserByCoupon(Integer couponId) {
+		return dao.listSendUserByCoupon(couponId);
+	}
+
+}

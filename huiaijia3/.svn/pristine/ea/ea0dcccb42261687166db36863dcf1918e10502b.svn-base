@@ -1,0 +1,88 @@
+package com.flf.service.impl;
+
+import com.base.service.BaseServiceImpl;
+import com.flf.entity.HajCommodity;
+import com.flf.entity.HajCommodityCategory;
+import com.flf.mapper.HajCommodityCategoryMapper;
+import com.flf.mapper.HajCommodityMapper;
+import com.flf.service.HajCommodityCategoryService;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * 
+ * <br>
+ * <b>功能：</b>HajCommodityCategoryService<br>
+ */
+@Service("hajCommodityCategoryService")
+public class HajCommodityCategoryServiceImpl extends BaseServiceImpl implements HajCommodityCategoryService {
+	private final static Logger log = Logger.getLogger(HajCommodityCategoryServiceImpl.class);
+	
+	@Autowired
+	private HajCommodityCategoryMapper dao;
+
+	@Autowired
+	private HajCommodityMapper hcDao;
+ 
+	@Override
+	public HajCommodityCategoryMapper getDao() {
+		return dao;
+	}
+
+	@Override
+	public List<HajCommodityCategory> listPage(HajCommodityCategory po) {
+		return dao.listPage(po);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> list4app(HajCommodityCategory dto) {
+		return dao.list4app(dto);
+	}
+
+
+	/**
+	 * 批量添加商品到三级类目中
+	 * @param list
+	 */
+	@Override
+	public void saveCommoditysToThreeCate(List<HajCommodityCategory> list) {
+		for (HajCommodityCategory comcate:list) {
+			dao.saveCommoditysToThreeCate(comcate);
+			//修改商品加入类目的状态 : 0未加入,非0已加入
+			HajCommodity commodity =hcDao.queryById(comcate.getCommodityId());
+			if (commodity.getIsaddcate()==null) {
+				commodity.setIsaddcate(1);
+			}else{
+				commodity.setIsaddcate(commodity.getIsaddcate()+1);
+			}
+
+			hcDao.update(commodity);
+		}
+	}
+
+
+	/**
+	 * 批量移除类目中的商品
+	 * @param list
+	 */
+	@Override
+	public void deleteCommodityFromCategory(List<HajCommodityCategory> list) {
+		for (HajCommodityCategory comcate:list) {
+			dao.deleteCommodityFromCategory(comcate);
+			//修改商品加入类目的状态 : 0未加入,非0已加入
+			HajCommodity commodity =hcDao.queryById(comcate.getCommodityId());
+			if (commodity.getIsaddcate()==null || commodity.getIsaddcate()<1) {
+				commodity.setIsaddcate(0);
+			}else{
+				commodity.setIsaddcate(commodity.getIsaddcate()-1);
+			}
+			hcDao.update(commodity);
+		}
+	}
+
+
+}

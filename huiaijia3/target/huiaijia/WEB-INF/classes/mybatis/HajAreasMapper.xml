@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajAreasMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajAreas">
+		<result column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="p_code" property="pCode" />
+		<result column="level" property="level" />
+	</resultMap>
+
+	<!-- haj_areas table all fields -->
+	<sql id="Base_Column_List">
+		id,code,name,p_code,level
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.code != null and condition.code != ''">
+				and code = #{condition.code}
+			</if>
+			<if test="condition.name != null and condition.name != ''">
+				and name = #{condition.name}
+			</if>
+			<if test="condition.pCode != null and condition.pCode != ''">
+				and p_code = #{condition.pCode}
+			</if>
+			<if test="condition.level != null and condition.level != ''">
+				and level = #{condition.level}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_areas(id,code,name,p_code,level)
+		values(#{id},#{code},#{name},#{pCode},#{level})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_areas set
+		code=#{code},name=#{name},p_code=#{pCode},level=#{level}
+		where
+		id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_areas set
+		<trim suffixOverrides=",">
+			<if test="code != null  ">
+				code=#{code},
+			</if>
+			<if test="name != null  ">
+				name=#{name},
+			</if>
+			<if test="pCode != null  ">
+				p_code=#{pCode},
+			</if>
+			<if test="level != null  ">
+				level=#{level},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_areas where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_areas where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_areas
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_areas
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getAreaByPCode" parameterType="String" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM haj_areas WHERE p_code=#{pCode}
+	</select>
+
+	<select id="getAreaByCode" parameterType="String" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM haj_areas WHERE code=#{code}
+	</select>
+
+	<select id="getCodeByAreas" parameterType="Object" resultType="HajAreas">
+		SELECT a1.`id`, a1.`code`, a1.`name`, a1.`p_code` pCode, a1.`level`, a1.`wms_code`
+		FROM haj_areas a1
+			LEFT JOIN haj_areas a2 ON a2.`code`=a1.`p_code`
+			LEFT JOIN haj_areas a3 ON a3.`code`=a2.`p_code`
+		WHERE a1.`level`=2 AND a3.`name`=#{province} AND a2.`name`=#{city} 
+			AND a1.`name`=#{community} LIMIT 1
+	</select>
+
+	<!-- 查询所有城市列表 -->
+	<select id="listCity" resultType="HajAreas">
+		SELECT id, `code`, `name`, p_code FROM haj_areas WHERE `level` = 1
+	</select>
+	
+	<select id="getAreaProvinceList" resultType="HajAreas">
+		SELECT * FROM haj_areas where level=0
+	</select>
+
+	<select id="getAreaByCity" resultType="HajAreas">
+		SELECT a.`id`, a.`code`, a.`name` FROM haj_areas a
+		WHERE a.`name` = #{city} AND `level` = 1
+		LIMIT 1
+	</select>
+
+	<select id="getTotalByCode" parameterType="String" resultType="Integer">
+		SELECT id FROM `haj_areas` WHERE code = #{code}
+	</select>
+
+</mapper>   
+

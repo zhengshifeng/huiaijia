@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommunityPersionMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommunityPersion">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="communityName" property="communityName" />
+		<result column="serviceTime" property="serviceTime" />
+		<result column="telphone" property="telphone" />
+		<result column="createTime" property="createTime" />
+		<result column="deliveryRate" property="deliveryRate" />
+		<result column="status" property="status" />
+		<result column="number" property="number" />
+		<result column="photoPath" property="photoPath" />
+		<result column="address" property="address" />
+		<result column="activationTime" property="activationTime" />
+		<result column="registererNumber" property="registererNumber" />
+		<result column="membersNumber" property="membersNumber" />
+		<result column="memberStatus" property="memberStatus" />
+		<result column="level" property="level" />
+		<result column="cellAccess" property="cellAccess" />
+		<result column="pickUpContact" property="pickUpContact" />
+		<result column="hajCellAccess" property="hajCellAccess" />
+		<result column="hajPickUpContact" property="hajPickUpContact" />
+		<result column="planMemberNumber" property="planMemberNumber" />
+		<result column="communityCode" property="communityCode" />
+		<result column="orderSales" property="orderSales" />
+		<result column="orderSalesPhone" property="orderSalesPhone" />
+		<result column="appointmentNum" property="appointmentNum" />
+		<result column="cooperationBegin" property="cooperationBegin" />
+		<result column="cooperationOver" property="cooperationOver" />
+		<result column="cooperationStatus" property="cooperationStatus" />
+		<result column="afterSalePhoto" property="afterSalePhoto" />
+		<result column="tip" property="tip" />
+		<result column="version" property="version" />
+		<result column="longitude" property="longitude" />
+		<result column="latitude" property="latitude" />
+		<result column="addressSpecification" property="addressSpecification" />
+		<result column="completeNotes" property="completeNotes" />
+		<result column="needPostFee" property="needPostFee" />
+		<result column="sorterId" property="sorterId" />
+		<result column="whcode" property="whcode" />
+		<result column="floor" property="floor" />
+		<result column="wxcode" property="wxcode" />
+		<result column="afterServiceWechatId" property="afterServiceWechatId" />
+		<result column="distributionStatus" property="distributionStatus" />
+	</resultMap>
+
+	<!-- haj_community_persion table all fields -->
+	<sql id="Base_Column_List">
+		id,name,communityName,serviceTime,telphone,createTime,deliveryRate,status,number,photoPath,address,
+		activationTime,registererNumber,membersNumber,memberStatus,level,cellAccess,pickUpContact,hajCellAccess,
+		hajPickUpContact,planMemberNumber,communityCode,orderSales,orderSalesPhone,appointmentNum,cooperationBegin,
+		cooperationOver,cooperationStatus,afterSalePhoto,tip,version,longitude,latitude,addressSpecification,
+		completeNotes,needPostFee,sorterId,whcode,floor,wxcode,distributionStatus,afterServiceWechatId
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.name != null and condition.name != ''">
+				and name = #{condition.name}
+			</if>
+			<if test="condition.communityName != null and condition.communityName != ''">
+				and communityName = #{condition.communityName}
+			</if>
+			<if test="condition.serviceTime != null and condition.serviceTime != ''">
+				and serviceTime = #{condition.serviceTime}
+			</if>
+			<if test="condition.telphone != null and condition.telphone != ''">
+				and telphone = #{condition.telphone}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.deliveryRate != null and condition.deliveryRate != ''">
+				and deliveryRate = #{condition.deliveryRate}
+			</if>
+			<if test="condition.status != null and condition.status != ''">
+				and status = #{condition.status}
+			</if>
+			<if test="condition.number != null and condition.number != ''">
+				and number = #{condition.number}
+			</if>
+			<if test="condition.photoPath != null and condition.photoPath != ''">
+				and photoPath = #{condition.photoPath}
+			</if>
+			<if test="condition.address != null and condition.address != ''">
+				and address = #{condition.address}
+			</if>
+			<if test="condition.activationTime != null and condition.activationTime != ''">
+				and activationTime = #{condition.activationTime}
+			</if>
+			<if test="condition.registererNumber != null and condition.registererNumber != ''">
+				and registererNumber = #{condition.registererNumber}
+			</if>
+			<if test="condition.membersNumber != null and condition.membersNumber != ''">
+				and membersNumber = #{condition.membersNumber}
+			</if>
+			<if test="condition.memberStatus != null and condition.memberStatus != ''">
+				and memberStatus = #{condition.memberStatus}
+			</if>
+			<if test="condition.level != null and condition.level != ''">
+				and level = #{condition.level}
+			</if>
+			<if test="condition.cellAccess != null and condition.cellAccess != ''">
+				and cellAccess = #{condition.cellAccess}
+			</if>
+			<if test="condition.pickUpContact != null and condition.pickUpContact != ''">
+				and pickUpContact = #{condition.pickUpContact}
+			</if>
+			<if test="condition.hajCellAccess != null and condition.hajCellAccess != ''">
+				and hajCellAccess = #{condition.hajCellAccess}
+			</if>
+			<if test="condition.hajPickUpContact != null and condition.hajPickUpContact != ''">
+				and hajPickUpContact = #{condition.hajPickUpContact}
+			</if>
+			<if test="condition.planMemberNumber != null and condition.planMemberNumber != ''">
+				and planMemberNumber = #{condition.planMemberNumber}
+			</if>
+			<if test="condition.communityCode != null and condition.communityCode != ''">
+				and communityCode = #{condition.communityCode}
+			</if>
+			<if test="condition.orderSales != null and condition.orderSales != ''">
+				and orderSales = #{condition.orderSales}
+			</if>
+			<if test="condition.orderSalesPhone != null and condition.orderSalesPhone != ''">
+				and orderSalesPhone = #{condition.orderSalesPhone}
+			</if>
+			<if test="condition.appointmentNum != null and condition.appointmentNum != ''">
+				and appointmentNum = #{condition.appointmentNum}
+			</if>
+			<if test="condition.cooperationBegin != null and condition.cooperationBegin != ''">
+				and cooperationBegin = #{condition.cooperationBegin}
+			</if>
+			<if test="condition.cooperationOver != null and condition.cooperationOver != ''">
+				and cooperationOver = #{condition.cooperationOver}
+			</if>
+			<if test="condition.cooperationStatus != null and condition.cooperationStatus != ''">
+				and cooperationStatus = #{condition.cooperationStatus}
+			</if>
+			<if test="condition.afterSalePhoto != null and condition.afterSalePhoto != ''">
+				and afterSalePhoto = #{condition.afterSalePhoto}
+			</if>
+			<if test="condition.tip != null and condition.tip != ''">
+				and tip = #{condition.tip}
+			</if>
+			<if test="condition.version != null and condition.version != ''">
+				and version = #{condition.version}
+			</if>
+			<if test="condition.addressSpecification != null and condition.addressSpecification != ''">
+				and addressSpecification = #{condition.addressSpecification}
+			</if>
+			<if test="condition.completeNotes != null and condition.completeNotes != ''">
+				and completeNotes = #{condition.completeNotes}
+			</if>
+			<if test="condition.needPostFee != null">
+				and needPostFee = #{condition.needPostFee}
+			</if>
+			<if test="condition.sorterId != null">
+				and sorterId = #{condition.sorterId}
+			</if>
+			<if test="condition.floor != null">
+				and floor = #{condition.floor}
+			</if>
+			<if test="condition.afterServiceWechatId != null">
+				and afterServiceWechatId = #{condition.afterServiceWechatId}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		haj_community_persion(
+			id,name,communityName,serviceTime,telphone,createTime,deliveryRate,status,
+			number,photoPath,address,activationTime,registererNumber,membersNumber,memberStatus,level,
+			cellAccess,pickUpContact,hajCellAccess,hajPickUpContact,planMemberNumber,communityCode,
+			orderSales,orderSalesPhone,appointmentNum,cooperationBegin,cooperationOver,cooperationStatus,
+			afterSalePhoto,tip,version,longitude,latitude,addressSpecification,completeNotes,needPostFee,
+			sorterId,whcode,floor,wxcode,distributionStatus,afterServiceWechatId
+		) values (
+			#{id},#{name},#{communityName},#{serviceTime},#{telphone},now(),#{deliveryRate},#{status},
+			#{number},#{photoPath},#{address},#{activationTime},#{registererNumber},#{membersNumber},#{memberStatus},#{level},
+			#{cellAccess},#{pickUpContact},#{hajCellAccess},#{hajPickUpContact},#{planMemberNumber},#{communityCode},
+			#{orderSales},#{orderSalesPhone},#{appointmentNum},#{cooperationBegin},#{cooperationOver},#{cooperationStatus},
+			#{afterSalePhoto},#{tip},#{version},#{longitude},#{latitude},#{addressSpecification},#{completeNotes},#{needPostFee},
+			#{sorterId},#{whcode},#{floor},#{wxcode},#{distributionStatus},#{afterServiceWechatId}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_community_persion
+		set name=#{name},communityName=#{communityName},serviceTime=#{serviceTime},telphone=#{telphone},
+			deliveryRate=#{deliveryRate},status=#{status},number=#{number},photoPath=#{photoPath},
+			address=#{address},activationTime=#{activationTime},registererNumber=#{registererNumber},
+			membersNumber=#{membersNumber},memberStatus=#{memberStatus},level=#{level},cellAccess=#{cellAccess},
+			pickUpContact=#{pickUpContact},hajCellAccess=#{hajCellAccess},hajPickUpContact=#{hajPickUpContact},
+			planMemberNumber=#{planMemberNumber},communityCode=#{communityCode},orderSales=#{orderSales},
+			orderSalesPhone=#{orderSalesPhone},appointmentNum=#{appointmentNum},cooperationBegin=#{cooperationBegin},
+			cooperationOver=#{cooperationOver},cooperationStatus=#{cooperationStatus},afterSalePhoto=#{afterSalePhoto},
+			tip=#{tip},version=#{version},longitude=#{longitude},latitude=#{latitude},version=version+1,
+			addressSpecification=#{addressSpecification},completeNotes=#{completeNotes},needPostFee=#{needPostFee},
+			whcode = #{whcode},floor = #{floor},afterServiceWechatId = #{afterServiceWechatId}
+		where id=#{id} and version=#{version}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_community_persion set
+		<trim suffixOverrides=",">
+			<if test="name != null  ">
+				name=#{name},
+			</if>
+			<if test="communityName != null  ">
+				communityName=#{communityName},
+			</if>
+			<if test="serviceTime != null  ">
+				serviceTime=#{serviceTime},
+			</if>
+			<if test="telphone != null  ">
+				telphone=#{telphone},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="deliveryRate != null  ">
+				deliveryRate=#{deliveryRate},
+			</if>
+			<if test="status != null  ">
+				status=#{status},
+			</if>
+			<if test="number != null  ">
+				number=#{number},
+			</if>
+			<if test="photoPath != null  ">
+				photoPath=#{photoPath},
+			</if>
+			<if test="address != null  ">
+				address=#{address},
+			</if>
+			<if test="activationTime != null  ">
+				activationTime=#{activationTime},
+			</if>
+			<if test="registererNumber != null  ">
+				registererNumber=#{registererNumber},
+			</if>
+			<if test="membersNumber != null  ">
+				membersNumber=#{membersNumber},
+			</if>
+			<if test="memberStatus != null  ">
+				memberStatus=#{memberStatus},
+			</if>
+			<if test="level != null  ">
+				level=#{level},
+			</if>
+			<if test="cellAccess != null  ">
+				cellAccess=#{cellAccess},
+			</if>
+			<if test="pickUpContact != null  ">
+				pickUpContact=#{pickUpContact},
+			</if>
+			<if test="hajCellAccess != null  ">
+				hajCellAccess=#{hajCellAccess},
+			</if>
+			<if test="hajPickUpContact != null  ">
+				hajPickUpContact=#{hajPickUpContact},
+			</if>
+			<if test="planMemberNumber != null  ">
+				planMemberNumber=#{planMemberNumber},
+			</if>
+			<if test="communityCode != null  ">
+				communityCode=#{communityCode},
+			</if>
+			<if test="orderSales != null  ">
+				orderSales=#{orderSales},
+			</if>
+			<if test="orderSalesPhone != null  ">
+				orderSalesPhone=#{orderSalesPhone},
+			</if>
+			<if test="appointmentNum != null  ">
+				appointmentNum=#{appointmentNum},
+			</if>
+			<if test="cooperationBegin != null and cooperationBegin != ''">
+				cooperationBegin = #{cooperationBegin},
+			</if>
+			<if test="cooperationOver != null and cooperationOver != ''">
+				cooperationOver = #{cooperationOver},
+			</if>
+			<if test="cooperationStatus != null and cooperationStatus != ''">
+				cooperationStatus = #{cooperationStatus},
+			</if>
+			<if test="afterSalePhoto != null and afterSalePhoto != ''">
+				afterSalePhoto = #{afterSalePhoto},
+			</if>
+			<if test="tip != null and tip != ''">
+				tip = #{tip},
+			</if>
+			<if test="version != null and version != ''">
+				version = #{version} + 1,
+			</if>
+			<if test="longitude != null and longitude != ''">
+				longitude = #{longitude},
+			</if>
+			<if test="latitude != null and latitude != ''">
+				latitude = #{latitude},
+			</if>
+			<if test="addressSpecification != null and addressSpecification != ''">
+				addressSpecification = #{addressSpecification},
+			</if>
+			<if test="completeNotes != null and completeNotes != ''">
+				completeNotes = #{completeNotes},
+			</if>
+			<if test="needPostFee != null">
+				needPostFee = #{needPostFee},
+			</if>
+			<if test="sorterId != null">
+				sorterId = #{sorterId},
+			</if>
+			<if test="whcode != null">
+				whcode = #{whcode},
+			</if>
+			<if test="floor != null">
+				floor = #{floor},
+			</if>
+			<if test="wxcode != null">
+				wxcode = #{wxcode},
+			</if>
+			<if test="distributionStatus != null">
+				distributionStatus = #{distributionStatus},
+			</if>
+			<if test="afterServiceWechatId != null">
+				afterServiceWechatId = #{afterServiceWechatId},
+			</if>
+		</trim>
+		where id=#{id} and version=#{version}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_community_persion where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_community_persion where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_community_persion
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_community_persion
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<!-- 后台小区管理查询条件 -->
+	<sql id="backstage_Where_Clause">
+
+		<trim suffixOverrides=",">
+			<if test="communityName != null and communityName != ''">
+				and (c.communityName LIKE CONCAT('%', #{communityName}, '%') or c.id = #{communityName})
+			</if>
+			<if test="status != null">
+				and c.status = #{status}
+			</if>
+			<if test="membersNumber != null and membersNumber != ''">
+				and c.membersNumber = #{membersNumber}
+			</if>
+			<if test="level != null and level != ''">
+				and c.level = #{level}
+			</if>
+			<if test="planMemberNumber != null and planMemberNumber != ''">
+				and c.planMemberNumber = #{planMemberNumber}
+			</if>
+			<if test="memberStatus != null and memberStatus != ''">
+				and c.memberStatus = #{memberStatus}
+			</if>
+			<if test="communityCode != null and communityCode != ''">
+				and c.communityCode = #{communityCode}
+			</if>
+			<if test="sorterId != null and sorterId != ''">
+				and c.sorterId = #{sorterId}
+			</if>
+		</trim>
+
+	</sql>
+
+	<select id="listPageVillage" resultType="java.util.HashMap" parameterType="Object">
+	 	SELECT c.`id`, c.`communityName`, c.`planMemberNumber`, c.`memberStatus`, c.`needPostFee` ,
+			ar1.name as cityName, c.afterServiceWechatId,
+			(SELECT COUNT(*) FROM haj_front_user WHERE residential = c.`communityName` AND villageId = c.id ) registererNumber,
+			(SELECT COUNT(*) FROM haj_front_user WHERE residential = c.`communityName` AND villageId = c.id  AND ismember='2') appointmentNum,
+			(SELECT COUNT(*) FROM haj_front_user WHERE residential = c.`communityName` AND villageId = c.id  AND ismember='3') membersNumber,
+			(SELECT COUNT(*) FROM haj_front_user WHERE residential = c.`communityName` AND villageId = c.id  AND ismember='4') cancalNumber,
+			(SELECT COUNT(*) FROM haj_front_user WHERE residential = c.`communityName` AND villageId = c.id  AND ismember='5') commonNumber,
+			(SELECT cs.`sorterName` FROM haj_community_sorter cs WHERE cs.`id`=c.`sorterId`) sorterName
+		FROM haj_community_persion c
+		LEFT JOIN haj_areas ar ON c.communityCode=ar.code
+		LEFT JOIN haj_areas ar1 ON ar1.code=ar.p_code
+		WHERE 1=1
+		<include refid="backstage_Where_Clause"></include>
+		<if test="areaCode != null and areaCode != ''" >
+			and ar.p_code  =  #{areaCode}
+		</if>
+		<if test="createTimeMin != null and createTimeMin != ''">
+			and c.createTime  &gt;= #{createTimeMin}
+		</if>
+		<if test="createTimeMax != null and createTimeMax != ''">
+			and c.createTime  &lt; DATE_SUB(STR_TO_DATE(#{createTimeMax}, '%Y-%m-%d'),INTERVAL -1 DAY)
+		</if>
+		<if test="activationTimeMin != null and activationTimeMin != ''">
+			and c.activationTime &gt;=  #{activationTimeMin}
+		</if>
+		<if test="activationTimeMax != null and activationTimeMax != ''">
+			and c.activationTime &lt;  DATE_SUB(STR_TO_DATE(#{activationTimeMax} , '%Y-%m-%d'),INTERVAL -1 DAY)
+		</if>
+		<if test="distributionStatus != null ">
+			and c.distributionStatus = #{distributionStatus}
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause} DESC,
+		</if>
+		c.`id` DESC
+	</select>
+
+	<select id="villageCount" resultType="java.util.HashMap" parameterType="Object">
+		 SELECT c.id, c.communityName,
+		(SELECT COUNT(1) AS hisOrderNum FROM haj_order o 
+		LEFT JOIN haj_front_user u ON u.id=o.userId WHERE STATUS=4 AND delflag=0 and u.`villageId` = c.`id`) as hisOrderNum,
+		(SELECT SUM(IFNULL(actualPayment+dispensingTip+postFee,0)) FROM haj_order o 
+		LEFT JOIN haj_front_user u ON u.id=o.userId WHERE STATUS=4 AND delflag=0 and u.`villageId` = c.`id`) AS orderTotalMoney,
+		(SELECT SUM(IFNULL(profitloss,0)) FROM haj_order o 
+		LEFT JOIN haj_front_user u ON u.id=o.userId WHERE STATUS=4 AND delflag=0 and u.`villageId` = c.`id`)  AS profitlossTotalMoney,
+		
+		(SELECT COUNT(1) AS lastSevenDaysOrderNum FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId 
+		 WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;  DATE(o.createTime)  and u.`villageId` = c.`id` ) as  lastSevenDaysOrderNum,
+		 
+		(SELECT TRUNCATE(IFNULL(SUM(actualPayment+dispensingTip+postFee)/7,0),2) FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId 
+		 WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;  DATE(o.createTime)  and u.`villageId` = c.`id` ) as  lastSevenDaysAvg,
+		
+		(SELECT TRUNCATE(IFNULL(SUM(profitloss)/7,0),2) AS lastSevenDaysOrderNum FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId 
+		 WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;  DATE(o.createTime)  and u.`villageId` = c.`id` ) as  profitlossSevenDaysMoney,
+		
+		(SELECT COUNT(1) AS todayOrderNum  FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND STATUS=2 AND delflag=0 and  u.`villageId` = c.`id` ) as todayOrderNum,
+		
+		(SELECT SUM(IFNULL(actualPayment+dispensingTip+postFee,0))   FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND STATUS=2 AND delflag=0 and  u.`villageId` = c.`id` ) as todayMoney,
+		
+		(SELECT SUM(IFNULL(profitloss,0))  AS todayOrderNum  FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND STATUS=2 AND delflag=0 and  u.`villageId` = c.`id` ) as todayprofitloss,
+		
+		IFNULL(TRUNCATE((SELECT COUNT(1) AS hisOrderNum FROM haj_order o 
+		LEFT JOIN haj_front_user u ON u.id=o.userId WHERE STATUS=4 AND delflag=0 and u.`villageId` = c.`id`)/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgNum, 
+		IFNULL(TRUNCATE((SELECT SUM(IFNULL(actualPayment+dispensingTip+postFee,0)) FROM haj_order o 
+		LEFT JOIN haj_front_user u ON u.id=o.userId WHERE STATUS=4 AND delflag=0 and u.`villageId` = c.`id`)/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgMoney,
+		IFNULL(TRUNCATE((SELECT TRUNCATE(IFNULL(SUM(profitloss)/7,0),2) AS lastSevenDaysOrderNum FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.userId 
+		WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;  DATE(o.createTime)  and u.`villageId` = c.`id` )/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgProfitlossMoney 
+
+		FROM haj_community_persion c
+
+		<if test="areaCode != null and areaCode != ''" >
+			LEFT JOIN haj_areas ar ON c.communityCode=ar.code
+		</if>
+		 WHERE c.status=1
+		<include refid="backstage_Where_Clause"></include>
+		
+		<if test="areaCode != null and areaCode != ''" >
+			and ar.p_code  =  #{areaCode}
+		</if>
+		
+		ORDER BY c.id DESC
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<select id="villageMapCount" resultType="java.util.HashMap" parameterType="Object">
+		SELECT IFNULL(SUM(ad.hisOrderNum),0) AS hisOrderNum ,
+			IFNULL(SUM(ad.orderTotalMoney),0) AS orderTotalMoney,
+			IFNULL(SUM(ad.profitlossTotalMoney),0) AS profitlossTotalMoney ,
+			IFNULL(SUM(ad.lastSevenDaysOrderNum),0) AS lastSevenDaysOrderNum ,
+			IFNULL(SUM(ad.lastSevenDaysAvg),0) AS lastSevenDaysAvg ,
+			IFNULL(SUM(ad.profitlossSevenDaysMoney),0) AS profitlossSevenDaysMoney ,
+			IFNULL(SUM(ad.todayOrderNum),0) AS todayOrderNum ,
+			IFNULL(SUM(ad.todayMoney),0) AS todayMoney,
+			IFNULL(SUM(ad.todayprofitloss),0) AS todayprofitloss ,
+			IFNULL(SUM(ad.dayAvgNum),0) AS dayAvgNum,
+			IFNULL(SUM(ad.dayAvgMoney),0) AS dayAvgMoney ,
+			IFNULL(SUM(ad.dayAvgProfitlossMoney),0) AS dayAvgProfitlossMoney
+		FROM (
+			SELECT c.communityName,
+				IFNULL(a.hisOrderNum,0) AS hisOrderNum,
+				IFNULL(a.orderTotalMoney,0) AS orderTotalMoney ,
+				IFNULL(a.profitlossTotalMoney,0) AS profitlossTotalMoney,
+				IFNULL(b.lastSevenDaysOrderNum,0) AS lastSevenDaysOrderNum,
+				IFNULL(b.lastSevenDaysAvg,0) AS lastSevenDaysAvg,
+				IFNULL(b.profitlossSevenDaysMoney,0) AS profitlossSevenDaysMoney,
+				IFNULL(d.todayOrderNum,0) AS todayOrderNum,
+				IFNULL(d.todayMoney,0) AS todayMoney,
+				IFNULL(d.todayprofitloss,0) AS todayprofitloss,
+				IFNULL(TRUNCATE(a.hisOrderNum/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgNum,
+				IFNULL(TRUNCATE(a.orderTotalMoney/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgMoney,
+				IFNULL(TRUNCATE(a.profitlossTotalMoney/DATEDIFF(NOW(),c.activationTime),2),0) AS dayAvgProfitlossMoney
+			FROM haj_community_persion c
+			LEFT JOIN (
+				SELECT COUNT(1) AS hisOrderNum,
+					SUM(IFNULL(actualPayment+dispensingTip+postFee,0)) AS orderTotalMoney,
+					SUM(IFNULL(profitloss,0)) AS profitlossTotalMoney,o.residential,u.villageId
+				FROM haj_order o
+				LEFT JOIN haj_front_user u ON u.id=o.userId
+				WHERE STATUS=4 AND delflag=0
+				GROUP BY u.villageId
+			) a ON c.id=a.villageId
+			LEFT JOIN (
+				SELECT COUNT(1) AS lastSevenDaysOrderNum,
+					TRUNCATE(IFNULL(SUM(actualPayment+dispensingTip+postFee)/7,0),2) AS lastSevenDaysAvg,
+					TRUNCATE(IFNULL(SUM(profitloss)/7,0),2) AS profitlossSevenDaysMoney,
+					o.residential,u.villageId
+				FROM haj_order o
+				LEFT JOIN haj_front_user u ON u.id=o.`userId`
+				WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; DATE(o.createTime)
+				GROUP BY u.villageId
+			) b ON  c.id=b.villageId
+			LEFT JOIN (
+				SELECT COUNT(1) AS todayOrderNum ,
+					SUM(IFNULL(actualPayment+dispensingTip+postFee,0)) AS todayMoney,
+					SUM(IFNULL(profitloss,0)) AS todayprofitloss ,o.residential,u.villageId AS villageId
+				FROM haj_order o
+				LEFT JOIN haj_front_user u ON u.id=o.`userId`
+				WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND STATUS=2 AND delflag=0
+				GROUP BY u.villageId
+			) d ON  c.id=d.villageId
+		<if test="areaCode != null and areaCode != ''" >
+			LEFT JOIN haj_areas ar ON c.communityCode=ar.code
+		</if>
+		WHERE 1=1
+		<include refid="backstage_Where_Clause"></include>
+		<if test="areaCode != null and areaCode != ''" >
+			and ar.p_code  =  #{areaCode}
+		</if>
+			ORDER BY c.id DESC
+		) ad
+	</select>
+
+	<select id="exactSearchVillage" resultType="java.util.HashMap">
+		SELECT (SELECT COUNT(*) FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id) AS hisOrderNum, 
+			(SELECT SUM(IFNULL(actualPayment,0)) FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id) AS orderTotalMoney,
+			(SELECT COUNT(*) FROM haj_order  o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= DATE(o.createTime)) AS lastSevenDaysOrderNum,
+			(SELECT TRUNCATE(AVG(IFNULL(actualPayment,0)),2) FROM haj_order  o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= DATE(o.createTime)) AS lastSevenDaysAvg,
+			(SELECT TRUNCATE(COUNT(*)/DATEDIFF(NOW(),c.activationTime),2) FROM haj_order o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id) AS dayAvgNum,
+			(SELECT TRUNCATE(SUM(IFNULL(actualPayment,0))/DATEDIFF(NOW(),c.activationTime),2) FROM haj_order  o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=4 AND u.`villageId`=c.id) AS dayAvgMoney,
+			(SELECT COUNT(*) FROM haj_order  o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=2 AND u.`villageId`=c.id AND DATE_SUB(CURDATE(), INTERVAL 1 DAY) &lt;= DATE(o.createTime)) AS todayOrderNum,
+			(SELECT SUM(IFNULL(actualPayment,0)) FROM haj_order  o LEFT JOIN haj_front_user u ON u.id=o.`userId` WHERE `status`=2 AND u.`villageId`=c.id AND DATE_SUB(CURDATE(), INTERVAL 1 DAY) &lt;= DATE(o.createTime)) AS todayMoney,
+			c.*, (SELECT wh.`whname` FROM haj_warehouse wh WHERE wh.`whcode` = c.whcode) whname
+		FROM haj_community_persion c
+		LEFT JOIN haj_areas a ON a.`code` = c.`communityCode`
+		
+		WHERE 1=1
+			AND (c.communityName = #{villageName} OR c.id =#{villageName} )
+		<if test="areaCode != null and areaCode != ''" >
+			AND a.`p_code` = #{areaCode}
+		</if>
+		limit 1
+		
+	</select>
+	
+		<select id="queryCommunityPersion" resultType="java.util.HashMap" parameterType="Object">
+			select * FROM haj_community_persion c left join  haj_areas a on c.communityCode = a.code where
+			( c.communityName = #{communityName} OR c.id =#{communityName} ) and a.p_code = #{areaCode} 
+		</select>
+
+	<select id="queryCommunityPersionMap" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT (SELECT COUNT(*) FROM haj_front_user WHERE residential = cp.`communityName` AND villageId = cp.id AND ismember='2') appointmentNum ,
+		(SELECT COUNT(*) FROM haj_front_user WHERE residential = cp.`communityName` AND villageId = cp.id AND ismember='2') appointmentNum,
+		(SELECT COUNT(*) FROM haj_front_user WHERE residential = cp.`communityName` AND villageId = cp.id AND ismember='3') membersNumber,
+		(SELECT COUNT(*) FROM haj_front_user WHERE residential = cp.`communityName` AND villageId = cp.id AND ismember='4') cancalNumber,
+		(SELECT COUNT(*) FROM haj_front_user WHERE residential = cp.`communityName` AND villageId = cp.id AND ismember='5') commonNumber,
+		cp.`id`, cp.`communityName`, cp.`planMemberNumber`, cp.`memberStatus`, cp.`needPostFee`,cp.`address` ,cp.`planMemberNumber` ,cp.`name` ,
+		cp.`serviceTime` ,cp.`telphone` ,cp.`communityName`,cp.`createTime` ,cp.`status` ,cp.`number` ,cp.`activationTime` ,cp.`level` ,cp.`cellAccess`,cp.`sorterId` 
+	  	FROM haj_community_persion cp LEFT JOIN haj_front_user fu ON cp.id=fu.villageId WHERE fu.id=#{userId}
+	</select>
+
+	<select id="queryAllList" resultType="java.util.HashMap">
+		SELECT c.id,c.NAME,communityName,registererNumber,membersNumber,memberStatus,STATUS,address,planMemberNumber,IFNULL(ar.p_code,'') AS areaCode FROM
+		haj_community_persion c LEFT JOIN haj_areas ar ON c.communityCode=ar.code
+	</select>
+
+	<select id="queryAllListById" resultType="java.util.HashMap" parameterType="int">
+		SELECT c.id,c.NAME,communityName,registererNumber,membersNumber,memberStatus,STATUS,address,planMemberNumber,IFNULL(ar.p_code,'') AS areaCode FROM
+		haj_community_persion c LEFT JOIN haj_areas ar ON c.communityCode=ar.code where c.id=#{id}
+	</select>
+
+	<select id="getAllList" resultType="HajCommunityPersion">
+		SELECT
+		id,NAME,communityName,registererNumber,membersNumber,memberStatus,STATUS,address,planMemberNumber FROM
+		haj_community_persion
+	</select>
+	<select id="getCommunityByName" resultMap="BaseResultMap" parameterType="Object">
+		SELECT c.* FROM haj_community_persion c  LEFT JOIN haj_areas ar ON c.communityCode=ar.code   
+		WHERE communityName = #{communityName} 	and ar.p_code  =  #{areaCode} 	
+	</select>
+	<update id="updateAppointmentNum"  parameterType="Integer">
+		update haj_community_persion set appointmentNum = appointmentNum
+		-1,version = version +1,memberStatus=0 where id =#{id} and version=#{version}
+	</update>
+	<update id="updateMembersNumberNum"  parameterType="Integer">
+		update haj_community_persion set membersNumber = membersNumber
+		-1,version = version +1 where id =#{id} and version=#{version}
+	</update>
+	<update id="updateByCommunityName" parameterType="Object">
+		update haj_community_persion set registererNumber =
+		registererNumber +1,version = version +1 where communityName =
+		#{communityName} 
+	</update>
+	<update id="updateMinByCommunityName" parameterType="Object">
+		update haj_community_persion set registererNumber =
+		registererNumber -1,version = version +1 where communityName =
+		#{communityName}
+	</update>
+	
+	<update id="updateByCommunityId" parameterType="Object">
+		update haj_community_persion set registererNumber =
+		registererNumber +1,version = version +1 where id = #{id} 
+	</update>
+	<update id="updateMinAppointmentNum" parameterType="Object">
+		update haj_community_persion set registererNumber =
+		registererNumber -1,appointmentNum = appointmentNum -1,
+		version = version +1 where id = #{id} 
+	</update>
+	<update id="updateMinMembersNumber" parameterType="Object">
+		update haj_community_persion set registererNumber =
+		registererNumber -1,membersNumber= membersNumber-1,
+		version = version +1 where id = #{id} 
+	</update>
+
+	<!--导出小区列表信息-->
+	<select id="getAllCommunity4Export" resultType="HajCommunityPersionVo" parameterType="Object">
+		SELECT c.id,a1.`name` community, a2.`name` city, a3.`name` province,
+		(SELECT COUNT(1) FROM haj_front_user WHERE villageId=c.id AND ismember=4) AS cancalNumber,
+		(SELECT COUNT(1) FROM haj_front_user WHERE villageId=c.id AND ismember=5) AS commonNumber,
+		c.`communityName`, c.`address`, c.`longitude`, c.`latitude`, c.`level`, c.`planMemberNumber`,
+		c.`status`, c.`activationTime`, c.`memberStatus`, c.`appointmentNum`, c.`membersNumber`,
+		c.`hajCellAccess`, c.`hajPickUpContact`, c.`cellAccess`, c.`pickUpContact`, c.`orderSales`,
+		c.`orderSalesPhone`, c.`wxcode`, c.`name`, c.`telphone`, c.`floor`, c.`id`, c.afterServiceWechatId
+		,c.distributionStatus,c.needPostFee
+		FROM haj_community_persion c
+		<if test="areaCode != null and areaCode != ''" >
+			LEFT JOIN haj_areas ar ON c.communityCode=ar.code
+		</if>
+		LEFT JOIN haj_areas a1 ON a1.`code`=c.`communityCode`
+		LEFT JOIN haj_areas a2 ON a2.`code`=a1.`p_code`
+		LEFT JOIN haj_areas a3 ON a3.`code`=a2.`p_code`
+		where 1=1
+
+		<include refid="backstage_Where_Clause"></include>
+		<if test="areaCode != null and areaCode != ''" >
+			and ar.p_code  =  #{areaCode}
+		</if>
+		<if test="createTimeMin != null and createTimeMin != ''">
+			and c.createTime  &gt;= #{createTimeMin}
+		</if>
+		<if test="createTimeMax != null and createTimeMax != ''">
+			and c.createTime  &lt; DATE_SUB(STR_TO_DATE(#{createTimeMax}, '%Y-%m-%d'),INTERVAL -1 DAY)
+		</if>
+		<if test="activationTimeMin != null and activationTimeMin != ''">
+			and c.activationTime &gt;=  #{activationTimeMin}
+		</if>
+		<if test="activationTimeMax != null and activationTimeMax != ''">
+			and c.activationTime &lt;  DATE_SUB(STR_TO_DATE(#{activationTimeMax} , '%Y-%m-%d'),INTERVAL -1 DAY)
+		</if>
+		<if test="distributionStatus != null ">
+			and c.distributionStatus = #{distributionStatus}
+		</if>
+
+		ORDER BY id DESC
+	</select>
+
+	<!--导出小区列表信息_优化版-->
+	<select id="getAllCommunity4Export_new" resultType="HajCommunityPersionVo" parameterType="Object">
+		<!--#小区列表+省,市,区-->
+		SELECT c.id,b1.name community,b2.name city,b3.name province,
+		c.`communityName`, c.`address`, c.`longitude`, c.`latitude`, c.`level`, c.`planMemberNumber`,
+		c.`status`, c.`activationTime`, c.`memberStatus`, c.`appointmentNum`, c.`membersNumber`,
+		c.`hajCellAccess`, c.`hajPickUpContact`, c.`cellAccess`, c.`pickUpContact`, c.`orderSales`,
+		c.`orderSalesPhone`, c.`wxcode`, c.`name`, c.`telphone`, c.`floor`, c.afterServiceWechatId
+		,c.distributionStatus,
+		if(c1.cnt2>0 ,c1.cnt2,0) cnt2,if(c1.cnt3>0 ,c1.cnt3 ,0) cnt3,if(c1.cnt4>0 ,c1.cnt4 ,0) cnt4,if(c1.cnt5>0 ,c1.cnt5 ,0) cnt5
+		from haj_community_persion c
+		LEFT JOIN haj_areas b1 on c.communityCode = b1.`code`
+		LEFT JOIN haj_areas b2 on b1.p_code = b2.`code`
+		LEFT JOIN haj_areas b3 on b2.p_code = b3.`code`
+		<!--#统计-->
+		LEFT JOIN (
+		select a1.villageId,a2.cnt cnt2,a3.cnt as cnt3,a4.cnt as cnt4,a5.cnt as cnt5 from (
+		select villageId,count(1) cnt from haj_front_user where villageId>-1
+		group by villageId) a1 left join
+		(select villageId,ismember,count(1) cnt from haj_front_user
+		where ismember=2
+		group by villageId,ismember) a2 on a1.villageId = a2.villageId
+		left join
+		(select villageId,ismember,count(1) cnt from haj_front_user
+		where ismember=3
+		group by villageId,ismember) a3 on a1.villageId = a3.villageId
+		left join
+		(select villageId,ismember,count(1) cnt from haj_front_user
+		where ismember=4
+		group by villageId,ismember) a4 on a1.villageId = a4.villageId
+		left join
+		(select villageId,ismember,count(1) cnt from haj_front_user
+		where ismember=5
+		group by villageId,ismember) a5 on a1.villageId = a5.villageId
+		) c1 on c.id = c1.villageId
+		<where>
+			<include refid="backstage_Where_Clause"></include>
+			<if test="areaCode != null and areaCode != ''" >
+				and ar.p_code  =  #{areaCode}
+			</if>
+			<if test="createTimeMin != null and createTimeMin != ''">
+				and c.createTime  &gt;= #{createTimeMin}
+			</if>
+			<if test="createTimeMax != null and createTimeMax != ''">
+				and c.createTime  &lt; DATE_SUB(STR_TO_DATE(#{createTimeMax}, '%Y-%m-%d'),INTERVAL -1 DAY)
+			</if>
+			<if test="activationTimeMin != null and activationTimeMin != ''">
+				and c.activationTime &gt;=  #{activationTimeMin}
+			</if>
+			<if test="activationTimeMax != null and activationTimeMax != ''">
+				and c.activationTime &lt;  DATE_SUB(STR_TO_DATE(#{activationTimeMax} , '%Y-%m-%d'),INTERVAL -1 DAY)
+			</if>
+			<if test="distributionStatus != null ">
+				and c.distributionStatus = #{distributionStatus}
+			</if>
+		</where>
+	</select>
+
+<select id="checkCommunityUniqueness" resultType="Integer" parameterType="HajCommunityPersionVo">
+SELECT COUNT(*) FROM haj_community_persion c
+LEFT JOIN haj_areas a1 ON a1.`code`=c.`communityCode`
+LEFT JOIN haj_areas a2 ON a2.`code`=a1.`p_code`
+LEFT JOIN haj_areas a3 ON a3.`code`=a2.`p_code`
+WHERE a1.`level`=2 AND a3.`name`=#{province} AND a2.`name`=#{city}
+AND a1.`name`=#{community} AND c.`communityName`=#{communityName}
+</select>
+
+<select id="queryCommunityListById" resultMap="BaseResultMap">
+SELECT * FROM haj_community_persion where id in
+<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+#{item}
+</foreach>
+</select>
+
+<update id="updateMemberCount" parameterType="String">
+UPDATE haj_community_persion cp
+SET cp.`registererNumber`=(SELECT COUNT(*) FROM haj_front_user WHERE villageId = #{villageId}),
+cp.`membersNumber`=(SELECT COUNT(*) FROM haj_front_user WHERE villageId = #{villageId} AND ismember='3'),
+cp.`appointmentNum`=(SELECT COUNT(*) FROM haj_front_user WHERE villageId = #{villageId} AND ismember='2')
+WHERE cp.`id` = #{villageId} LIMIT 1
+</update>
+
+<update id="updateSorterByIds">
+<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+#{item}
+</foreach>
+</update>
+
+<select id="listPageSorter" parameterType="HajCommunitySorterVo" resultType="Map">
+SELECT cp_tmp.id, cp_tmp.`communityName`, cp_tmp.`address`, cp_tmp.`communityCode`,
+(SELECT COUNT(*) FROM haj_front_user WHERE villageId = cp_tmp.`id` AND ismember='3') vipNum,
+(SELECT COUNT(*) FROM haj_front_user WHERE villageId = cp_tmp.`id` AND ismember='5') commonVipNum,
+(SELECT sorterName FROM haj_community_sorter WHERE id=cp_tmp.`sorterId`) sorterName,
+(SELECT wh.`whname` FROM haj_warehouse wh WHERE wh.`whcode` = cp_tmp.`whcode`) whname,
+a1.`name` AS district, a2.`name` city, a3.`name` province
+FROM (
+SELECT cp.id, cp.`communityName`, cp.`address`, cp.`communityCode`, cp.`sorterId`, cp.`whcode`
+FROM haj_community_persion cp WHERE cp.`status`=1
+) cp_tmp
+LEFT JOIN haj_areas a1 ON a1.`code`=cp_tmp.communityCode
+LEFT JOIN haj_areas a2 ON a2.`code`=a1.`p_code`
+LEFT JOIN haj_areas a3 ON a3.`code`=a2.`p_code`
+WHERE 1=1
+<if test="areaCode != null and areaCode != ''" >
+and a1.p_code  =  #{areaCode}
+</if>
+<if test="provinceCode != null and provinceCode != 0">
+AND a3.`code`=#{provinceCode}
+<if test="cityCode != null and cityCode != 0">
+    AND a2.`code`=#{cityCode}
+    <if test="communityCode != null and communityCode != 0">
+        AND a1.`code`=#{communityCode}
+    </if>
+</if>
+</if>
+<if test="sorterId != null">
+AND cp_tmp.sorterId=#{sorterId}
+</if>
+<if test="communityName != null and communityName != ''">
+AND (cp_tmp.communityName LIKE CONCAT('%', #{communityName}, '%') OR cp_tmp.id=#{communityName})
+</if>
+ORDER BY
+<if test="orderByClause != null and orderByClause != ''">
+${orderByClause} DESC,
+</if>
+cp_tmp.id ASC
+</select>
+
+<select id="getCommunitiesBySorterId" resultType="String" parameterType="Integer">
+SELECT cp.`communityName` FROM haj_community_persion cp WHERE cp.`sorterId`=#{sorterId}
+</select>
+
+<select id="getCityCodeByVillageId" resultType="String" parameterType="Integer">
+SELECT ar.p_code as cityCode FROM  haj_community_persion  cp LEFT JOIN haj_areas ar
+ON cp.communityCode = ar.code WHERE cp.id=#{id}
+</select>
+
+<select id="getActiveCommunityByArea" parameterType="String" resultType="HajCommunityPersion">
+SELECT cp.`id`, cp.`communityCode`, cp.`communityName`, cp.`activationTime` FROM haj_community_persion cp
+WHERE cp.`status` = 1 AND cp.`communityCode` = #{areaCode}
+ORDER BY cp.`activationTime`
+</select>
+
+
+<select id="villageMapCount1" resultType="java.util.HashMap" parameterType="Object">
+select COUNT(1) AS hisOrderNum, SUM(IFNULL(actualPayment+dispensingTip+postFee,0)) AS orderTotalMoney,
+SUM(IFNULL(profitloss,0)) AS profitlossTotalMoney,DATEDIFF(NOW(),MIN(o.createTime)) as dayNumber from `haj_order` o
+<if test="areaCode != null and areaCode != ''" >
+ left join  `haj_front_user` u on o.`userId` =u.`id`
+</if>
+where  o.`status` =4 and o.`delflag` =0
+<if test="areaCode != null and areaCode != ''" >
+ and  u.`areaCode`  =  #{areaCode}
+</if>
+
+</select>
+
+<select id="villageMapCount2" resultType="java.util.HashMap" parameterType="Object">
+SELECT COUNT(1) AS lastSevenDaysOrderNum, TRUNCATE(IFNULL(SUM(actualPayment+dispensingTip+postFee)/7,0),2) AS lastSevenDaysAvg,
+TRUNCATE(IFNULL(SUM(profitloss)/7,0),2) AS profitlossSevenDaysMoney FROM haj_order o
+<if test="areaCode != null and areaCode != ''" >
+left join haj_front_user u on u.id= o.`userId`
+</if>
+
+WHERE STATUS=4 AND delflag=0 AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt; DATE(o.createTime)
+
+<if test="areaCode != null and areaCode != ''" >
+ and  u.`areaCode`  =  #{areaCode}
+</if>
+</select>
+
+<select id="villageMapCount3" resultType="java.util.HashMap" parameterType="Object">
+SELECT COUNT(1) AS todayOrderNum,
+   SUM(IFNULL(actualPayment+ dispensingTip+ postFee, 0)) AS todayMoney,
+   SUM(IFNULL(profitloss, 0)) AS todayprofitloss
+FROM haj_order o
+  <if test="areaCode != null and areaCode != ''" >
+left join haj_front_user u on u.id= o.`userId`
+</if>
+WHERE TO_DAYS(o.createTime)= TO_DAYS(NOW())
+AND STATUS= 2
+AND delflag= 0
+<if test="areaCode != null and areaCode != ''" >
+ and  u.`areaCode`  =  #{areaCode}
+</if>
+</select>
+
+<select id="operationsDataCenter" parameterType="String" resultType="HashMap">
+SELECT (
+SELECT COUNT(*) FROM haj_community_persion cp
+WHERE cp.`status` = 1
+<if test="areaCode != null and areaCode != ''">
+    AND cp.`communityCode` IN (SELECT _ar.`code` FROM haj_areas _ar WHERE _ar.`p_code` = #{areaCode})
+</if>
+) openedCommunities, (
+SELECT COUNT(*) FROM (
+    SELECT o.`id` FROM haj_order o
+    WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`)
+    <if test="areaCode != null and areaCode != ''">
+        AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+    </if>
+    GROUP BY o.`residential`
+) tmp_order
+) orderCommunities, (
+SELECT COUNT(*) FROM haj_community_persion cp
+WHERE TO_DAYS(NOW()) = TO_DAYS(cp.`activationTime`)
+<if test="areaCode != null and areaCode != ''">
+    AND cp.`communityCode` IN (SELECT _ar.`code` FROM haj_areas _ar WHERE _ar.`p_code` = #{areaCode})
+</if>
+) todayOpenedCommunities, (
+SELECT COUNT(*) FROM haj_community_persion cp
+WHERE cp.`memberStatus` = 1 AND cp.`status` = 0
+<if test="areaCode != null and areaCode != ''">
+    AND cp.`communityCode` IN (SELECT _ar.`code` FROM haj_areas _ar WHERE _ar.`p_code` = #{areaCode})
+</if>
+) waitOpenCommunities, (
+SELECT COUNT(*) orderCount
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 0
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) normalOrderCount, (
+SELECT SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) actualPayment
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 0
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) normalOrderAmount, (
+SELECT SUM(o.`profitloss` + o.`dispensingTip` + o.`postFee`) profitloss
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 0
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) normalOrderProfitAndLoss, (
+SELECT (FORMAT(SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) / COUNT(*), 2)) PCT
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 0
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) normalOrderPCT, (
+SELECT COUNT(*) orderCount
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 1
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) teamOrderCount, (
+SELECT SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) actualPayment
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 1
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) teamOrderAmount, (
+SELECT SUM(o.`profitloss` + o.`dispensingTip` + o.`postFee`) profitloss
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 1
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) teamOrderProfitAndLoss, (
+SELECT (FORMAT(SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) / COUNT(*), 2)) PCT
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 1
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) teamOrderPCT, (
+SELECT COUNT(*) orderCount FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`) AND o.`isGrouponOrder` = 2
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) reorders, (
+SELECT COUNT(*) userCount FROM (
+    SELECT o.`userId`
+    FROM haj_order o WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`)
+        AND o.`isGrouponOrder` IN (0,2)
+<if test="areaCode != null and areaCode != ''">
+        AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+    GROUP BY o.`userId`
+) tmp_order_users
+) deliveryTimes, (
+SELECT SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) total
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`)
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) todayAmount, (
+SELECT FORMAT((SUM(o.`actualPayment` + o.`dispensingTip` + o.`postFee`) - SUM(o.`commodityCost`)), 2) AS profitAndLoss
+FROM haj_order o
+WHERE o.`status` = 2 AND TO_DAYS(NOW()) = TO_DAYS(o.`createTime`)
+<if test="areaCode != null and areaCode != ''">
+    AND o.`userId` IN (SELECT _u.`id` FROM haj_front_user _u WHERE _u.`areaCode` = #{areaCode})
+</if>
+) todayProfitAndLoss
+</select>
+
+<select id="getByUserIds" resultType="HajCommunityPersion">
+SELECT u.`mobilePhone` AS telphone, cp.`communityName`, cp.`status`
+FROM haj_front_user u
+LEFT JOIN haj_community_persion cp ON cp.`id` = u.`villageId`
+WHERE u.id IN
+<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+#{item}
+</foreach>
+</select>
+
+
+<select id="getCommunityList" resultType="HajCommunityPersion">
+SELECT id, `communityName` FROM haj_community_persion
+</select>
+
+<!--根据小区名称获取该小区信息-->
+	<select id="getCommunityListByCommunityName" resultType="HajCommunityPersion" parameterType="String">
+		SELECT * FROM haj_community_persion WHERE communityName = #{communityName}
+	</select>
+
+</mapper>

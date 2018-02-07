@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajIntegralMallMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajIntegralMall">
+		<result column="id" property="id" />
+		<result column="commodityId" property="commodityId" />
+		<result column="commodityName" property="commodityName" />
+		<result column="commodityType" property="commodityType" />
+		<result column="description" property="description" />
+		<result column="remark" property="remark" />
+		<result column="total" property="total" />
+		<result column="integral" property="integral" />
+		<result column="exchangeLimit" property="exchangeLimit" />
+		<result column="limitCount" property="limitCount" />
+		<result column="areaCode" property="areaCode" />
+		<result column="hide" property="hide" />
+		<result column="sort" property="sort" />
+		<result column="image" property="image" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<!-- haj_integral_mall table all fields -->
+	<sql id="Base_Column_List">
+		id, commodityId, commodityName, commodityType, description, remark, total, integral, exchangeLimit,
+		limitCount, areaCode, hide, sort, image, createTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				AND id = #{condition.id}
+			</if>
+			<if test="condition.commodityId != null and condition.commodityId != ''">
+				AND commodityId = #{condition.commodityId}
+			</if>
+			<if test="condition.commodityName != null and condition.commodityName != ''">
+				AND commodityName = #{condition.commodityName}
+			</if>
+			<if test="condition.commodityType != null and condition.commodityType != ''">
+				AND commodityType = #{condition.commodityType}
+			</if>
+			<if test="condition.description != null and condition.description != ''">
+				AND description = #{condition.description}
+			</if>
+			<if test="condition.remark != null and condition.remark != ''">
+				AND remark = #{condition.remark}
+			</if>
+			<if test="condition.total != null and condition.total != ''">
+				AND total = #{condition.total}
+			</if>
+			<if test="condition.integral != null and condition.integral != ''">
+				AND integral = #{condition.integral}
+			</if>
+			<if test="condition.exchangeLimit != null and condition.exchangeLimit != ''">
+				AND exchangeLimit = #{condition.exchangeLimit}
+			</if>
+			<if test="condition.limitCount != null and condition.limitCount != ''">
+				AND limitCount = #{condition.limitCount}
+			</if>
+			<if test="condition.areaCode != null and condition.areaCode != ''">
+				AND areaCode = #{condition.areaCode}
+			</if>
+			<if test="condition.hide != null and condition.hide != ''">
+				AND hide = #{condition.hide}
+			</if>
+			<if test="condition.sort != null and condition.sort != ''">
+				AND sort = #{condition.sort}
+			</if>
+			<if test="condition.image != null and condition.image != ''">
+				AND image = #{condition.image}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				AND createTime = #{condition.createTime}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+			<if test="commodityId != null and commodityId != ''">
+				AND commodityId = #{commodityId}
+			</if>
+			<if test="commodityName != null and commodityName != ''">
+				AND commodityName = #{commodityName}
+			</if>
+			<if test="commodityType != null and commodityType != ''">
+				AND commodityType = #{commodityType}
+			</if>
+			<if test="description != null and description != ''">
+				AND description = #{description}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND remark = #{remark}
+			</if>
+			<if test="total != null and total != ''">
+				AND total = #{total}
+			</if>
+			<if test="integral != null and integral != ''">
+				AND integral = #{integral}
+			</if>
+			<if test="exchangeLimit != null and exchangeLimit != ''">
+				AND exchangeLimit = #{exchangeLimit}
+			</if>
+			<if test="limitCount != null and limitCount != ''">
+				AND limitCount = #{limitCount}
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				AND areaCode = #{areaCode}
+			</if>
+			<if test="hide != null and hide != ''">
+				AND hide = #{hide}
+			</if>
+			<if test="sort != null and sort != ''">
+				AND sort = #{sort}
+			</if>
+			<if test="image != null and image != ''">
+				AND image = #{image}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_integral_mall(id, commodityId, commodityName, commodityType, description, remark, total,
+			integral, exchangeLimit, limitCount, areaCode, hide, sort, image, createTime)
+		VALUES(#{id}, #{commodityId}, #{commodityName}, #{commodityType}, #{description}, #{remark}, #{total},
+			#{integral}, #{exchangeLimit}, #{limitCount}, #{areaCode}, #{hide}, #{sort}, #{image}, now())
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_integral_mall
+		SET commodityId = #{commodityId}, commodityName = #{commodityName}, commodityType = #{commodityType},
+			description = #{description}, remark = #{remark}, total = #{total}, integral = #{integral},
+			exchangeLimit = #{exchangeLimit}, limitCount = #{limitCount}, areaCode = #{areaCode},
+			hide = #{hide}, sort = #{sort}, image = #{image},  WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_integral_mall SET
+		<trim suffixOverrides=",">
+			<if test="commodityId != null">
+				commodityId = #{commodityId},
+			</if>
+			<if test="commodityName != null">
+				commodityName = #{commodityName},
+			</if>
+			<if test="commodityType != null">
+				commodityType = #{commodityType},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="total != null">
+				total = #{total},
+			</if>
+			<if test="integral != null">
+				integral = #{integral},
+			</if>
+			<if test="exchangeLimit != null">
+				exchangeLimit = #{exchangeLimit},
+			</if>
+			<if test="limitCount != null">
+				limitCount = #{limitCount},
+			</if>
+			<if test="areaCode != null">
+				areaCode = #{areaCode},
+			</if>
+			<if test="hide != null">
+				hide = #{hide},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+			<if test="image != null">
+				image = #{image},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_integral_mall WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_integral_mall WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_integral_mall
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_integral_mall
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajIntegralMallVo" parameterType="HajIntegralMall">
+		<if test="sort != null and sort == 2 or sort != null and sort == 3" >
+			SELECT * FROM (
+		</if>
+			SELECT itm.*, (SELECT COUNT(*) FROM haj_coupon_user cu WHERE cu.`couponId` = itm.commodityId) totalOfExchanged
+			FROM haj_integral_mall itm
+			WHERE 1=1
+			<if test="areaCode != null and areaCode != ''">
+				AND areaCode = #{areaCode}
+			</if>
+			<if test="commodityName != null and commodityName != ''">
+				AND commodityName LIKE CONCAT('%', #{commodityName}, '%')
+			</if>
+			<if test="sort != null and sort == 0">
+				ORDER BY itm.createTime asc
+			</if>
+			<if test="sort != null and sort == 1">
+				ORDER BY itm.createTime desc
+			</if>
+		<if test="sort != null and sort == 2 or sort != null and sort == 3" >
+ 			) a
+		</if>
+		<if test="sort != null and sort == 2">
+			ORDER BY a.totalOfExchanged DESC
+		</if>
+		<if test="sort != null and sort == 3">
+			ORDER BY a.totalOfExchanged
+		</if>
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajFrontUser">
+		SELECT itm.`id`, itm.`commodityName`, itm.`description`, itm.`remark`, itm.`image`, itm.`integral`, itm.`total`,
+			itm.`exchangeLimit`, itm.`limitCount`, itm.`commodityId`, itm.`commodityType`,
+			(SELECT COUNT(*) FROM `haj_coupon_user` cu WHERE cu.`userId` = #{id} AND cu.`couponId` = itm.`commodityId`) yourExchanged,
+			(SELECT COUNT(*) FROM `haj_coupon_user` cu WHERE cu.`couponId` = itm.`commodityId`) totalOfExchanged
+		FROM haj_integral_mall itm
+		WHERE itm.`hide` = 0
+			AND (itm.`areaCode` = '' OR itm.`areaCode` IS NULL OR itm.`areaCode` = #{areaCode})
+		ORDER BY itm.`sort`
+	</select>
+
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajRechargePackageRecordMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajRechargePackageRecord">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="purchaseAmount" property="purchaseAmount"/>
+		<result column="donationAmount" property="donationAmount"/>
+		<result column="accountAmount" property="accountAmount"/>
+		<result column="phone" property="phone"/>
+		<result column="userId" property="userId"/>
+		<result column="payTime" property="payTime"/>
+		<result column="payStatus" property="payStatus"/>
+		<result column="payWay" property="payWay"/>
+		<result column="payNumber" property="payNumber"/>
+		<result column="refundAmount" property="refundAmount"/>
+		<result column="remark" property="remark"/>
+		<result column="packageId" property="packageId"/>
+
+
+	</resultMap>
+	<select id="listPageRechargePackageRecord" parameterType="HajRechargePackageRecord"
+			resultType="HajRechargePackageRecord">
+		SELECT
+		A.id  id,
+		A.userId userId ,
+		U.mobilePhone phone,
+		B.name  name,
+		B.`purchaseAmount` purchaseAmount,
+		B.`accountAmount` accountAmount,
+		B.`donationAmount` donationAmount,
+		A.createTime  payTime,
+		A.rechargeStatus payStatus,
+		A.rechargeType payWay,
+		A.prepay_id payNumber,
+		A.refundNum refundAmount
+		FROM haj_recharge  A LEFT JOIN haj_recharge_package B  ON A.rechargePackageId=B.id
+		LEFT JOIN haj_front_user U ON U.id=A.userId
+ 		WHERE 1=1
+		<if test="rechargePackageType != null">
+		 and A.rechargePackageType=#{rechargePackageType}
+		</if>
+
+		<if test="name != null and name != ''">
+			and (A.userId LIKE CONCAT('%', #{name}, '%') or U.mobilePhone LIKE CONCAT('%', #{name}, '%'))
+		</if>
+		<if test="beginTime!=null and  beginTime!='' ">
+			and A.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null and  endTime!=''">
+			and A.createTime&lt;=#{endTime}
+		</if>
+		<if test="payStatus!=null">
+			and A.rechargeStatus=#{payStatus}
+		</if>
+		<if test="payWay!=null">
+			and A.rechargeType=#{payWay}
+		</if>
+		ORDER BY A.createTime  DESC
+	</select>
+
+	<select id="queryTotalChargePackageRecord" resultType="java.util.HashMap" parameterType="HajRechargePackageRecord">
+
+		SELECT SUM(B.purchaseAmount) AS TotalPrchaseAmount,
+		SUM(B.donationAmount) AS TotalDonationAmount,
+		SUM(B.accountAmount) AS TotalAccountAmount,
+		SUM(A.refundNum)  AS TotalRefundAmount
+		FROM haj_recharge A LEFT JOIN haj_recharge_package B  ON A.rechargePackageId=B.id
+		LEFT JOIN haj_front_user U ON U.id=A.userId
+		where 1=1
+		<if test="rechargePackageType != null">
+			and A.rechargePackageType=#{rechargePackageType}
+		</if>
+		<if test="name != null and name != ''">
+			and (A.userId LIKE CONCAT('%', #{name}, '%') or U.mobilePhone LIKE CONCAT('%', #{name}, '%'))
+		</if>
+		<if test="beginTime!=null and  beginTime!='' ">
+			and A.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null and  endTime!=''">
+			and A.createTime&lt;=#{endTime}
+		</if>
+		<if test="payStatus!=null">
+			and A.rechargeStatus=#{payStatus}
+		</if>
+		<if test="payWay!=null">
+			and A.rechargeType=#{payWay}
+		</if>
+	</select>
+	<select id="getHajRechargePackageRecordById" parameterType="java.lang.Integer"
+			resultType="HajRechargePackageRecord">
+		SELECT
+		A.id  id,
+		A.userId userId ,
+		U.mobilePhone phone,
+		B.name  name,
+		B.`purchaseAmount` purchaseAmount,
+		B.`accountAmount` accountAmount,
+		B.`donationAmount` donationAmount,
+		A.createTime  payTime,
+		A.rechargeStatus payStatus,
+		A.rechargeType payWay,
+		A.prepay_id payNumber,
+		A.refundNum refundAmount
+		FROM haj_recharge  A LEFT JOIN haj_recharge_package B  ON A.rechargePackageId=B.id
+		LEFT JOIN haj_front_user U ON U.id=A.userId
+		WHERE  A.id=#{id}
+	</select>
+
+	<!-- 根据id，修改记录-->
+	<update id="updateRechargePackageRecord" parameterType="HajRechargePackageRecord">
+		UPDATE haj_recharge
+		SET refundNum=refundNum+#{refundAmount}
+		WHERE id=#{id}
+	</update>
+
+
+
+	<select id="listAllRechargePackageRecord" parameterType="HajRechargePackageRecord"
+			resultType="java.util.HashMap">
+		SELECT
+		A.id  id,
+		A.userId userId ,
+		U.mobilePhone phone,
+		B.name  name,
+		B.`purchaseAmount` purchaseAmount,
+		B.`accountAmount` accountAmount,
+		B.`donationAmount` donationAmount,
+		A.createTime  payTime,
+		A.rechargeStatus payStatus,
+		A.rechargeType payWay,
+		A.prepay_id payNumber,
+		A.refundNum refundAmount
+		FROM haj_recharge  A LEFT JOIN haj_recharge_package B  ON A.rechargePackageId=B.id
+		LEFT JOIN haj_front_user U ON U.id=A.userId
+		WHERE 1=1
+		<if test="rechargePackageType != null">
+			and A.rechargePackageType=#{rechargePackageType}
+		</if>
+
+		<if test="name != null and name != ''">
+			and (A.userId LIKE CONCAT('%', #{name}, '%') or U.mobilePhone LIKE CONCAT('%', #{name}, '%'))
+		</if>
+		<if test="beginTime!=null and  beginTime!='' ">
+			and A.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null and  endTime!=''">
+			and A.createTime&lt;=#{endTime}
+		</if>
+		<if test="payStatus!=null">
+			and A.rechargeStatus=#{payStatus}
+		</if>
+		<if test="payWay!=null">
+			and A.rechargeType=#{payWay}
+		</if>
+		ORDER BY A.createTime  DESC
+	</select>
+
+
+</mapper>
+

@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajFrontUserMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajFrontUser">
+		<result column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="mobilePhone" property="mobilePhone"/>
+		<result column="userHead" property="userHead"/>
+		<result column="sex" property="sex"/>
+		<result column="birthday" property="birthday"/>
+		<result column="occupation" property="occupation"/>
+		<result column="familymembers" property="familymembers"/>
+		<result column="shippingAddress" property="shippingAddress"/>
+		<result column="residential" property="residential"/>
+		<result column="rating" property="rating"/>
+		<result column="balance" property="balance"/>
+		<result column="createTime" property="createTime"/>
+		<result column="enable" property="enable"/>
+		<result column="distributionBoxMoney" property="distributionBoxMoney"/>
+		<result column="ismember" property="ismember"/>
+		<result column="villageId" property="villageId"/>
+		<result column="address" property="address"/>
+		<result column="memberTerm" property="memberTerm"/>
+		<result column="signNum" property="signNum"/>
+		<result column="signStatus" property="signStatus"/>
+		<result column="memberBeginTime" property="memberBeginTime"/>
+		<result column="receiver" property="receiver"/>
+		<result column="cancelFeedBack" property="cancelFeedBack"/>
+		<result column="version" property="version"/>
+		<result column="communityUnitId" property="communityUnitId"/>
+		<result column="houseNumber" property="houseNumber"/>
+		<result column="machineNumber" property="machineNumber"/>
+		<result column="phoneModel" property="phoneModel"/>
+		<result column="lastLoginTime" property="lastLoginTime"/>
+		<result column="appVersion" property="appVersion"/>
+		<result column="isAppointment" property="isAppointment"/>
+		<result column="appointmentTime" property="appointmentTime"/>
+		<result column="floor" property="floor"/>
+		<result column="buildingId" property="buildingId"/>
+		<result column="payPassword" property="payPassword"/>
+		<result column="payPasswordStatus" property="payPasswordStatus"/>
+		<result column="isNewMember" property="isNewMember"/>
+	</resultMap>
+
+
+	<!-- haj_front_user table all fields -->
+	<sql id="Base_Column_List">
+		id,username,password,mobilePhone,userHead,sex,birthday,occupation,familymembers,
+		shippingAddress,residential,rating,balance,createTime,enable,distributionBoxMoney,
+		ismember,villageId,address,memberTerm,signNum,signStatus,memberBeginTime,receiver,
+		cancelFeedBack,version,communityUnitId,houseNumber,machineNumber,phoneModel,lastLoginTime,
+		appVersion,isAppointment,appointmentTime,areaCode,floor,buildingId
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.username != null and condition.username != ''">
+				and username = #{condition.username}
+			</if>
+			<if test="condition.password != null and condition.password != ''">
+				and password = #{condition.password}
+			</if>
+			<if test="condition.mobilePhone != null and condition.mobilePhone != ''">
+				and mobilePhone = #{condition.mobilePhone}
+			</if>
+			<if test="condition.userHead != null and condition.userHead != ''">
+				and userHead = #{condition.userHead}
+			</if>
+			<if test="condition.sex != null and condition.sex != ''">
+				and sex = #{condition.sex}
+			</if>
+			<if test="condition.birthday != null and condition.birthday != ''">
+				and birthday = #{condition.birthday}
+			</if>
+			<if test="condition.occupation != null and condition.occupation != ''">
+				and occupation = #{condition.occupation}
+			</if>
+			<if
+					test="condition.familymembers != null and condition.familymembers != ''">
+				and familymembers = #{condition.familymembers}
+			</if>
+			<if
+					test="condition.shippingAddress != null and condition.shippingAddress != ''">
+				and shippingAddress = #{condition.shippingAddress}
+			</if>
+			<if test="condition.residential != null and condition.residential != ''">
+				and residential = #{condition.residential}
+			</if>
+			<if test="condition.rating != null and condition.rating != ''">
+				and rating = #{condition.rating}
+			</if>
+			<if test="condition.balance != null and condition.balance != ''">
+				and balance = #{condition.balance}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.enable != null and condition.enable != ''">
+				and enable = #{condition.enable}
+			</if>
+			<if
+					test="condition.distributionBoxMoney != null and condition.distributionBoxMoney != ''">
+				and distributionBoxMoney = #{condition.distributionBoxMoney}
+			</if>
+			<if test="condition.ismember != null and condition.ismember != ''">
+				and ismember = #{condition.ismember}
+			</if>
+			<if test="condition.villageId != null and condition.villageId != ''">
+				and villageId = #{condition.villageId}
+			</if>
+			<if test="condition.address != null and condition.address != ''">
+				and address = #{condition.address}
+			</if>
+			<if test="condition.memberTerm != null and condition.memberTerm != ''">
+				and memberTerm = #{condition.memberTerm}
+			</if>
+			<if test="condition.signNum != null and condition.signNum != ''">
+				and signNum = #{condition.signNum}
+			</if>
+			<if test="condition.signStatus != null and condition.signStatus != ''">
+				and signStatus = #{condition.signStatus}
+			</if>
+			<if
+					test="condition.memberBeginTime != null and condition.memberBeginTime != ''">
+				and memberBeginTime = #{condition.memberBeginTime}
+			</if>
+			<if test="condition.receiver != null and condition.receiver != ''">
+				and receiver = #{condition.receiver}
+			</if>
+			<if
+					test="condition.cancelFeedBack != null and condition.cancelFeedBack != ''">
+				and cancelFeedBack = #{condition.cancelFeedBack}
+			</if>
+			<if test="condition.version != null and condition.version != ''">
+				and version = #{condition.version}
+			</if>
+			<if test="condition.communityUnitId != null and condition.communityUnitId != ''">
+				and communityUnitId = #{condition.communityUnitId}
+			</if>
+			<if test="condition.houseNumber != null and condition.houseNumber != ''">
+				and houseNumber = #{condition.houseNumber}
+			</if>
+			<if test="condition.machineNumber != null and condition.machineNumber != ''">
+				and machineNumber = #{condition.machineNumber}
+			</if>
+			<if test="condition.phoneModel != null and condition.phoneModel != ''">
+				and phoneModel = #{condition.phoneModel}
+			</if>
+			<if test="condition.lastLoginTime != null and condition.lastLoginTime != ''">
+				and lastLoginTime = #{condition.lastLoginTime}
+			</if>
+			<if test="condition.floor != null and condition.floor != ''">
+				and floor = #{condition.floor}
+			</if>
+			<if test="condition.buildingId != null and condition.buildingId != ''">
+				and buildingId = #{condition.buildingId}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+				   keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_front_user(id,username,password,mobilePhone,userHead,sex,birthday,occupation,familymembers,
+		shippingAddress,residential,rating,balance,createTime,enable,distributionBoxMoney,ismember,villageId,
+		address,memberTerm,signNum,signStatus,memberBeginTime,receiver,cancelFeedBack,version,
+		communityUnitId,houseNumber,machineNumber,phoneModel,lastLoginTime,appVersion,areaCode,floor,
+		buildingId,payPassword,payPasswordStatus,isNewMember)
+		values (#{id},#{username},#{password},#{mobilePhone},#{userHead},#{sex},#{birthday},#{occupation},
+		#{familymembers},#{shippingAddress},#{residential},#{rating},#{balance},now(),#{enable},
+		#{distributionBoxMoney}, #{ismember},#{villageId},#{address},#{memberTerm},#{signNum},#{signStatus},
+		#{memberBeginTime},#{receiver},#{cancelFeedBack},#{version}, #{communityUnitId},#{houseNumber},
+		#{machineNumber},#{phoneModel},#{lastLoginTime},#{appVersion},#{areaCode},#{floor},#{buildingId},#{payPassword},#{payPasswordStatus},#{isNewMember})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_front_user set
+		username=#{username},password=#{password},mobilePhone=#{mobilePhone},userHead=#{userHead},sex=#{sex},birthday=#{birthday},occupation=#{occupation},familymembers=#{familymembers},shippingAddress=#{shippingAddress},
+		residential=#{residential},rating=#{rating},balance=#{balance},enable=#{enable},
+		distributionBoxMoney=#{distributionBoxMoney},ismember=#{ismember},villageId=#{villageId},
+		address=#{address},memberTerm=#{memberTerm},signNum=#{signNum},signStatus=#{signStatus},
+		memberBeginTime=#{memberBeginTime},receiver=#{receiver},cancelFeedBack=#{cancelFeedBack},version=#{version},
+		communityUnitId=#{communityUnitId},houseNumber=#{houseNumber},machineNumber=#{machineNumber},phoneModel=#{phoneModel},
+		lastLoginTime=#{lastLoginTime},appVersion=#{appVersion},areaCode=#{areaCode},floor=#{floor},buildingId=#{buildingId}
+		where id=#{id}
+	</update>
+	<!-- 根据id，修改手机号码 -->
+	<update id="updateFrontUser" parameterType="Object">
+		update haj_front_user set
+		<trim suffixOverrides=",">
+			<if test="password != null">
+				password=#{password},
+			</if>
+			<if test="mobilePhone != null">
+				mobilePhone=#{mobilePhone},
+			</if>
+			<if test="payPassword != null">
+				payPassword=#{payPassword},
+			</if>
+			<if test="payPasswordStatus != null">
+				payPasswordStatus=#{payPasswordStatus}
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_front_user set
+		<trim suffixOverrides=",">
+			<if test="username != null">
+				username=#{username},
+			</if>
+			<if test="password != null">
+				password=#{password},
+			</if>
+			<if test="mobilePhone != null">
+				mobilePhone=#{mobilePhone},
+			</if>
+			<if test="userHead != null">
+				userHead=#{userHead},
+			</if>
+			<if test="sex != null">
+				sex=#{sex},
+			</if>
+			<if test="birthday != null">
+				birthday=#{birthday},
+			</if>
+			<if test="occupation != null">
+				occupation=#{occupation},
+			</if>
+			<if test="familymembers != null">
+				familymembers=#{familymembers},
+			</if>
+			<if test="shippingAddress != null">
+				shippingAddress=#{shippingAddress},
+			</if>
+			<if test="residential != null">
+				residential=#{residential},
+			</if>
+			<if test="rating != null">
+				rating=#{rating},
+			</if>
+			<if test="createTime != null">
+				createTime=#{createTime},
+			</if>
+			<if test="enable != null">
+				enable=#{enable},
+			</if>
+			<if test="distributionBoxMoney != null">
+				distributionBoxMoney=#{distributionBoxMoney},
+			</if>
+			<if test="ismember != null">
+				ismember=#{ismember},
+			</if>
+			<if test="villageId != null">
+				villageId=#{villageId},
+			</if>
+			<if test="address != null">
+				address=#{address},
+			</if>
+			<if test="memberTerm != null">
+				memberTerm=#{memberTerm},
+			</if>
+			<if test="signNum != null">
+				signNum=#{signNum},
+			</if>
+			<if test="signStatus != null">
+				signStatus=#{signStatus},
+			</if>
+			<if test="memberBeginTime != null">
+				memberBeginTime=#{memberBeginTime},
+			</if>
+			<if test="receiver != null">
+				receiver=#{receiver},
+			</if>
+			<if test="cancelFeedBack != null">
+				cancelFeedBack=#{cancelFeedBack},
+			</if>
+			<if test="version != null">
+				version=#{version},
+			</if>
+			<if test="communityUnitId != null">
+				communityUnitId = #{communityUnitId},
+			</if>
+			<if test="houseNumber != null">
+				houseNumber = #{houseNumber},
+			</if>
+			<if test="machineNumber != null">
+				machineNumber = #{machineNumber},
+			</if>
+			<if test="phoneModel != null">
+				phoneModel = #{phoneModel},
+			</if>
+			<if test="lastLoginTime != null">
+				lastLoginTime = #{lastLoginTime},
+			</if>
+			<if test="appVersion != null">
+				appVersion = #{appVersion},
+			</if>
+			<if test="isAppointment != null">
+				isAppointment = #{isAppointment},
+			</if>
+			<if test="appointmentTime != null">
+				appointmentTime = #{appointmentTime},
+			</if>
+			<if test="areaCode != null">
+				areaCode = #{areaCode},
+			</if>
+			<if test="floor != null">
+				floor = #{floor},
+			</if>
+			<if test="buildingId != null">
+				buildingId = #{buildingId},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_front_user where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT u.*
+		FROM haj_front_user u
+		LEFT JOIN haj_community_persion cp ON cp.`id`=u.`villageId`
+		WHERE u.id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer"
+			parameterType="Object">
+		select count(1) from haj_front_user
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"
+			parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_front_user
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="isUserByPhone" resultType="java.lang.Integer"
+			parameterType="String">
+		select count(1) from haj_front_user where mobilePhone=#{mobilePhone}
+	</select>
+
+
+	<!-- 查询条件 -->
+	<sql id="Manager_Where_Clause">
+		<trim suffixOverrides=",">
+			<if test="ismember != null and ismember != ''">
+				and u.ismember = #{ismember}
+			</if>
+			<if test="familymembers != null and familymembers != ''">
+				and u.familymembers = #{familymembers}
+			</if>
+			<if test="residential != null and residential != ''">
+				and (u.residential = #{residential}
+				<if test="villageId != null and villageId != 0">
+					OR u.villageId = #{villageId}
+				</if>
+				)
+			</if>
+			<if test="address != null and address != ''">
+				and u.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+		</trim>
+	</sql>
+
+	<!--客户列表查询-->
+	<select id="userManagerList" resultType="java.util.HashMap" parameterType="Object">
+		SELECT u.sex,u.occupation,u.`id`, u.`username`, u.`mobilePhone`, u.`createTime`, u.`address`,
+		u.`receiver`, u.`ismember`, u.`familymembers`, u.`birthday`, cp.`communityName` residential,
+		cp.`address` shippingAddress, cp.`status`,
+		(SELECT COUNT(*) FROM haj_order WHERE userId=u.id AND STATUS=4) AS orderNum,
+		(SELECT SUM(IFNULL(actualPayment,0)) FROM haj_order WHERE userId=u.id AND STATUS=4) AS sumMoney,
+		(SELECT TRUNCATE(AVG(IFNULL(actualPayment,0)),2) FROM haj_order WHERE userId=u.id AND STATUS=4) AS avgMoney,
+		(SELECT NAME FROM `haj_areas` WHERE CODE=u.areaCode) AS cityName
+		FROM haj_front_user u
+		LEFT JOIN haj_community_persion cp ON cp.`id`=u.`villageId`
+		WHERE 1=1
+		<include refid="Manager_Where_Clause"/>
+		<if test="registerBeginTime != null and registerBeginTime != ''">
+			and u.createTime &gt;= #{registerBeginTime}
+		</if>
+		<if test="registerEndTime != null and registerEndTime != ''">
+			and u.createTime &lt;= #{registerEndTime}
+		</if>
+		<if test="phoneList != null and phoneList != '[]'">
+			AND u.mobilePhone IN
+			<foreach item="phoneList" index="index" collection="phoneList" open="(" separator="," close=")">
+				#{phoneList}
+			</foreach>
+		</if>
+		<if test="exactSearch != null and exactSearch != ''">
+			AND (u.id =#{exactSearch} or u.mobilePhone = #{exactSearch} or u.username = #{exactSearch})
+		</if>
+		<if test="isAppointment != null and isAppointment != ''">
+			and isAppointment = #{isAppointment}
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			and (areaCode = #{areaCode} OR areaCode IS NULL OR areaCode = '')
+		</if>
+		ORDER BY
+		<if test="sortType != null and sortType != '' ">
+			#{sortType} ASC,
+		</if>
+		u.id DESC
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getUserManagerById" resultType="java.util.HashMap"
+			parameterType="java.lang.String">
+		SELECT (SELECT COUNT(*) FROM haj_order WHERE userId=u.id AND STATUS=4) AS orderNum,
+		(SELECT SUM(IFNULL(actualPayment,0)) FROM haj_order WHERE userId=u.id AND STATUS=4) AS sumMoney,
+		(SELECT TRUNCATE(AVG(IFNULL(actualPayment,0)),2) FROM haj_order WHERE userId=u.id AND STATUS=4) AS avgMoney,
+		u.*, cu.`unit`,
+		(SELECT COUNT(*) FROM haj_order_postFee pstf WHERE pstf.`userId` = u.id AND pstf.`isPay` = 0) AS isPay
+		FROM haj_front_user u
+		LEFT JOIN haj_community_unit cu ON cu.id=u.communityUnitId
+		WHERE u.id = #{parameter}
+	</select>
+
+	<select id="getOrderCountByTime" resultType="java.util.HashMap"
+			parameterType="java.util.Map">
+		SELECT COUNT(*) AS orderNum,SUM(IFNULL(actualPayment,0)) AS
+		sumMoney,TRUNCATE(AVG(IFNULL(actualPayment,0)),2) AS avgMoney
+		FROM haj_order WHERE 1=1
+		<if test="overTime != null and overTime != '' ">
+			and DATE_FORMAT(createTime,'%Y-%m-%d') &lt;= #{overTime}
+		</if>
+		<if test="beginTime != null  and beginTime != '' ">
+			and DATE_FORMAT(createTime,'%Y-%m-%d') &gt;= #{beginTime}
+		</if>
+		AND STATUS=4 AND userId=#{id}
+
+	</select>
+
+
+	<update id="updateUserBalancePoints" parameterType="Object">
+		UPDATE haj_front_user SET balance = balance - #{balance},rating=
+		rating + #{rating},version=version+1 WHERE id=#{id} and
+		version=#{version} and balance >= #{balance}
+	</update>
+
+	<update id="updateUserCancelOrder" parameterType="Object">
+		UPDATE haj_front_user SET balance = balance + #{balance},rating=
+		rating - #{rating},version=version+1 WHERE id=#{id} and
+		version=#{version}
+	</update>
+
+	<!-- <update id="updateUserMoneyByRecharge" parameterType="Object" > UPDATE 
+		haj_front_user SET balance = balance + #{balance} WHERE id=#{id} </update> -->
+
+	<update id="updateUserMoneyByRecharge" parameterType="Object">
+		UPDATE haj_front_user SET memberTerm=365
+		<if test="balance != null">
+			,balance = balance + #{balance}
+		</if>
+		<if test="ismember != null">
+			,ismember=#{ismember}
+		</if>
+		<if test="memberBeginTime != null">
+			,memberBeginTime=#{memberBeginTime}
+		</if>
+		WHERE id=#{id}
+	</update>
+
+
+	<update id="updateUserDistributionBoxMoney" parameterType="Object">
+		UPDATE haj_front_user SET distributionBoxMoney = distributionBoxMoney
+		+ #{distributionBoxMoney} WHERE id=#{id}
+	</update>
+	<update id="updateAllMemberStatus" parameterType="Integer">
+		UPDATE haj_front_user SET ismember =3,memberTerm=365,
+		memberBeginTime=date_format(now(),'%Y-%c-%d %h:%i:%s')
+		WHERE villageId=#{villageId} and ismember=2
+	</update>
+	<update id="updateSaleUserBalancePoints" parameterType="Object">
+		UPDATE haj_front_user
+		SET balance = balance + #{balance}
+		WHERE id=#{id}
+	</update>
+
+
+	<select id="listPageCustomerDeal" resultType="java.util.HashMap"
+			parameterType="Object">
+		SELECT u.id,u.username,u.mobilePhone,u.receiver,u.residential,u.address,u.shippingAddress,
+		IFNULL(r.money,0) AS rechargeMoney,u.ismember,IFNULL(SUM(rf.money),0) AS refundMoney,
+		IFNULL(actualPayment,0) AS orderMoney,u.balance, IFNULL(ref.refundNum,0) AS refundNum
+		FROM haj_front_user u
+		LEFT JOIN (SELECT userId,sum(money) as money FROM haj_recharge WHERE rechargeStatus =1
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		GROUP BY userId) AS r ON r.userId=u.id
+		LEFT JOIN (SELECT os.money,o.`userId`,os.quersion FROM haj_order_sale os
+		LEFT JOIN haj_order o ON o.id=os.orderId WHERE os.isdeal = 1
+		<if test="beginTime != null and beginTime != ''">
+			and os.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and os.createTime &lt;= #{endTime}
+		</if>
+		) AS rf ON rf.userId = u.id
+		LEFT JOIN (SELECT SUM(actualPayment) AS actualPayment ,userId FROM haj_order WHERE STATUS IN (2,4)
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		GROUP BY userId) AS o ON o.`userId` = u.id
+		LEFT JOIN (SELECT userId,SUM(refundNum) AS refundNum FROM haj_recharge WHERE isRefund=1
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		GROUP BY userId) AS ref ON ref.userId=u.id
+		WHERE 1=1
+		<if test="ismember != null and ismember != ''">
+			and u.ismember=#{ismember}
+		</if>
+		<if test="residential != null and residential != ''">
+			and u.residential=#{residential}
+		</if>
+		<if test="username != null and username != ''">
+			and (u.username=#{username} or u.mobilePhone = #{username} or u.receiver = #{username} )
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			and (areaCode = #{areaCode} OR areaCode IS NULL OR areaCode = '')
+		</if>
+		GROUP BY u.id ORDER BY u.id DESC
+	</select>
+
+	<select id="exportCustomerDeal" resultType="java.util.HashMap"
+			parameterType="Object">
+		SELECT u.id,u.username,u.mobilePhone,u.receiver,u.residential,u.address,u.shippingAddress,
+		IFNULL(r.money,0) AS rechargeMoney,u.ismember,IFNULL(SUM(rf.money),0) AS refundMoney,
+		IFNULL(actualPayment,0) AS orderMoney,u.balance, IFNULL(ref.refundNum,0) AS refundNum
+		FROM haj_front_user u
+		LEFT JOIN (SELECT userId,sum(money) as money FROM haj_recharge WHERE rechargeStatus =1
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		group by userId) AS r ON r.userId=u.id
+		LEFT JOIN (SELECT os.money,o.`userId`,os.quersion FROM haj_order_sale os
+		LEFT JOIN haj_order o ON o.id=os.orderId WHERE os.isdeal = 1
+		<if test="beginTime != null and beginTime != ''">
+			and os.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and os.createTime &lt;= #{endTime}
+		</if>
+		) AS rf ON rf.userId = u.id
+		LEFT JOIN (SELECT SUM(actualPayment) AS actualPayment ,userId FROM haj_order WHERE STATUS IN (2,4)
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		GROUP BY userId) AS o ON o.`userId` = u.id
+		LEFT JOIN (SELECT userId,SUM(refundNum) AS refundNum FROM haj_recharge WHERE isRefund=1
+		<if test="beginTime != null and beginTime != ''">
+			and createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and createTime &lt;= #{endTime}
+		</if>
+		GROUP BY userId) AS ref ON ref.userId=u.id
+		WHERE 1=1
+		<if test="ismember != null and ismember != ''">
+			and u.ismember=#{ismember}
+		</if>
+		<if test="residential != null and residential != ''">
+			and u.residential=#{residential}
+		</if>
+		<if test="username != null and username != ''">
+			and (u.username=#{username} or u.mobilePhone = #{username} or u.receiver
+			= #{username} )
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			and (areaCode = #{areaCode} OR areaCode IS NULL OR areaCode = '')
+		</if>
+		GROUP BY u.id ORDER BY u.id DESC
+	</select>
+
+
+	<select id="getUserCommodityType" resultType="java.util.HashMap"
+			parameterType="Object">
+		SELECT ct1.typeName, SUM(IFNULL(d.actualPayment,0)) AS sumMoney
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_order_details d ON d.`commodityNo`=c.`commodityNo`
+		LEFT JOIN haj_order o ON o.id=d.`orderId`
+		WHERE ct1.parentId=0 AND ct1.display=1 AND o.`status` = 4
+		AND o.`userId` = #{userId}
+		GROUP BY ct1.`typeName`
+	</select>
+
+	<!-- 根据小区名及小区地址检查用户地址唯一性 -->
+	<select id="checkAddressUniqueness" parameterType="HajFrontUser" resultType="Integer">
+		SELECT COUNT(*) FROM haj_front_user
+		WHERE residential=#{residential} AND address=#{address} AND areaCode = #{areaCode}
+		AND id != #{id}
+	</select>
+
+	<update id="updateUserShippingAddress" parameterType="Object">
+		UPDATE haj_front_user SET shippingAddress = #{shippingAddress} WHERE villageId = #{villageId}
+	</update>
+	<!-- 提现，清除用户余额为0 -->
+	<update id="updateUserMoney" parameterType="Object">
+		UPDATE haj_front_user SET balance =0 where id=#{userId}
+	</update>
+
+	<update id="updateUserwithdrawBalance" parameterType="Object">
+		UPDATE haj_front_user SET balance = balance - #{balance} WHERE id=#{id} and balance >= #{balance}
+	</update>
+
+	<select id="getCommunitiesByUserIds" resultType="String">
+		SELECT u.`villageId` FROM haj_front_user u
+		WHERE u.`id` IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		GROUP BY u.`villageId`
+	</select>
+
+	<select id="getUserByCondition" resultType="java.util.HashMap" parameterType="String">
+		SELECT id,username,mobilePhone,residential,address,receiver,ismember,areaCode
+		FROM haj_front_user WHERE mobilePhone=#{userCondition} limit 1
+	</select>
+
+	<update id="updateOrderPostFee" parameterType="Object">
+		UPDATE haj_front_user
+		SET balance = balance - #{balance},rating=rating + #{rating}
+		WHERE id=#{id} and balance >= #{balance}
+	</update>
+	<update id="updateRechargeOrderPostFee" parameterType="Object">
+		UPDATE haj_front_user SET rating=rating + #{rating} WHERE id=#{id}
+	</update>
+
+	<select id="getUserByMobile" parameterType="String" resultType="HajFrontUser">
+		SELECT * FROM haj_front_user WHERE mobilePhone=#{mobile} LIMIT 1
+	</select>
+
+	<select id="getUserInMobiles" parameterType="list" resultType="HajFrontUser">
+		SELECT * FROM haj_front_user WHERE mobilePhone in
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+
+	<select id="getById4API" resultType="HajFrontUserDTO">
+		<!--加密手机号中间四位数，暂时不需要，因为旧的接口需要传了手机号，如果使用加密后的手机号会找不到用户-->
+		<!--REPLACE(u.`mobilePhone`, SUBSTR(u.`mobilePhone`, 4, 4), '****') mobilePhone-->
+		SELECT u.`id`, u.`mobilePhone`, u.`ismember`,
+		u.`username`, u.`userHead`, u.`sex`, u.`birthday`, u.`occupation`, u.`familymembers`,
+		u.`villageId`, cp.`communityName` AS residential, u.`shippingAddress`, u.`address`,
+		u.`receiver`, u.`balance`, u.`rating`, u.`createTime`, u.`distributionBoxMoney`,
+		u.`memberTerm`, u.`signNum`, u.`signStatus`, u.`memberBeginTime`, u.`isAppointment`,
+		u.`areaCode`, (SELECT `name` FROM haj_areas WHERE `code` = u.`areaCode`) AS city,
+		u.`receiver`, u.`buildingId`, u.`houseNumber`, u.`floor`,
+		u.payPasswordStatus,
+		(SELECT cu.`unit` FROM `haj_community_unit` cu WHERE id = u.`communityUnitId` ) unit
+		FROM haj_front_user u
+		LEFT JOIN haj_community_persion cp ON cp.`id` = u.`villageId`
+		WHERE u.`id` = #{id}
+	</select>
+
+	<select id="getUsersByCouponLimit" resultType="Integer" parameterType="Map">
+		SELECT u.`id` FROM haj_front_user u
+		WHERE 1=1
+		<if test="residentialList != null and residentialList.size > 0">
+			AND u.`villageId` IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+		<if test="userList != null and userList.size > 0">
+			AND u.`id` IN
+			<foreach item="userList" index="index" collection="userList" open="(" separator="," close=")">
+				#{userList}
+			</foreach>
+		</if>
+		<if test="member != '' and member != 0">
+			AND u.`ismember` = #{member}
+		</if>
+	</select>
+
+	<select id="getWithdrawalIngMoney" parameterType="Integer" resultType="Double">
+		SELECT ifnull(SUM(money),0) as money FROM haj_withdrawals WHERE userId=#{userId} AND STATUS=0 AND isConfirm=0
+	</select>
+
+	<select id="getWithdrawalMoney" parameterType="Integer" resultType="Double">
+		SELECT ifnull(SUM(money),0) as money FROM haj_withdrawals WHERE userId=#{userId} AND STATUS=1 AND isConfirm=1
+	</select>
+
+	<select id="getPostFeeUserId" parameterType="Integer" resultType="Double">
+		SELECT ifnull(SUM(money),0) as money FROM haj_trading_history WHERE tradingStatus = 1 AND tradingContent LIKE
+		'扣减配送费：%' AND userId=#{userId}
+	</select>
+
+	<select id="getActualPaymentUserId" parameterType="Integer" resultType="Double">
+		SELECT ifnull(SUM(actualPayment),0) as actualPayment FROM haj_order WHERE paymentWay = 0 AND STATUS IN
+		('2','4','7') AND userId=#{userId}
+	</select>
+
+	<select id="getRefundMoneyUserId" parameterType="Integer" resultType="Double">
+		SELECT ifnull(SUM(money),0) as money FROM haj_trading_history WHERE tradingStatus = 1 AND tradingContent LIKE
+		'订单退款至帐户余额增加：%' AND userId=#{userId}
+	</select>
+
+	<select id="excelbatchCustomer" resultType="java.util.HashMap" parameterType="Object">
+		SELECT u.`mobilePhone`,u.`areaCode`,u.`residential`,u.`address`,
+		SUM(r.money) AS rechargeMoney,u.`balance`,u.id AS userId,
+		IFNULL((SELECT SUM(money) FROM haj_withdrawals WHERE userId=u.`id` AND STATUS=0 AND isConfirm=0 ),0) AS
+		withdrawalIngMoney,
+		IFNULL((SELECT SUM(money) FROM haj_withdrawals WHERE userId=u.`id` AND STATUS=1 AND isConfirm=1 ),0) AS
+		withdrawalMoney
+		FROM haj_front_user u INNER JOIN haj_recharge r ON r.userId=u.`id`
+		WHERE r.`rechargeStatus`=1 AND r.rechargeFor=0
+		<if test="residential != null and residential != ''">
+			and u.residential = #{residential}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and u.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and u.createTime &lt;= #{endTime}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			and (u.username = #{mobilePhone} or u.id= #{mobilePhone} or u.mobilePhone=#{mobilePhone})
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			and u.areaCode = #{areaCode}
+		</if>
+		GROUP BY u.id
+	</select>
+
+	<select id="statisticsOrderByUserId" parameterType="Map" resultType="HashMap">
+		SELECT orderCount, actualPayment, FORMAT((actualPayment / orderCount), 2) actualPaymentAvg FROM (
+		SELECT COUNT(*) orderCount, (SUM(o.`actualPayment` + o.`dispensingTip`) - SUM(IFNULL(os.money, 0)))
+		actualPayment
+		FROM haj_order o
+		LEFT JOIN haj_order_sale os ON os.`orderId` = o.`id`
+		WHERE o.`userId` = #{id}
+		AND o.`status` IN (4,7)
+		AND o.`isGrouponOrder` IN (0,1)
+		<if test="beginTime != null and beginTime != '' and overTime != null and overTime != ''">
+			AND o.`createTime` BETWEEN #{beginTime} AND #{overTime}
+		</if>
+		) a
+	</select>
+
+	<select id="statisticsOrderCommodityTypeByUserId" parameterType="Map" resultType="HashMap">
+		SELECT ctp.commodityAttr, ctp.typeName, SUM(od.actualPayment) actualPayment
+		FROM haj_order_details od
+		LEFT JOIN haj_order o ON o.`id` = od.`orderId`
+		LEFT JOIN haj_commodity c ON c.`commodityNo` = od.`commodityNo`
+		LEFT JOIN haj_commodity_type ct ON ct.id = c.`typeId`
+		LEFT JOIN haj_commodity_type ctp ON ctp.`id` = ct.`parentId`
+		WHERE o.`userId` = #{id}
+		AND o.`status` IN (4,7)
+		AND o.`isGrouponOrder` IN (0,1)
+		<if test="beginTime != null and beginTime != '' and overTime != null and overTime != ''">
+			AND o.`createTime` BETWEEN #{beginTime} AND #{overTime}
+		</if>
+		GROUP BY ctp.id
+	</select>
+
+
+	<select id="getFrontUserById" parameterType="Integer" resultType="HajFrontUser">
+		SELECT * FROM haj_front_user WHERE id=#{id}
+	</select>
+
+</mapper>   

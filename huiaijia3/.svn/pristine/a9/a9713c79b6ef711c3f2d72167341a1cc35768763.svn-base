@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderMapper" >
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrder" >
+		<result column="id" property="id"/>
+		<result column="orderNo" property="orderNo"/>
+		<result column="totalMoney" property="totalMoney"/>
+		<result column="number" property="number"/>
+		<result column="createTime" property="createTime" />
+		<result column="userId" property="userId"/>
+		<result column="status" property="status"/>
+		<result column="payStatus" property="payStatus"/>
+		<result column="handleStatus" property="handleStatus"/>
+		<result column="lockStatus" property="lockStatus"/>
+		<result column="deliveryTime" property="deliveryTime"/>
+		<result column="receiver" property="receiver"/>
+		<result column="address" property="address"/>
+		<result column="contactPhone" property="contactPhone"/>
+		<result column="actualPayment" property="actualPayment"/>
+		<result column="feeWaiver" property="feeWaiver"/>
+		<result column="postFee" property="postFee"/>
+		<result column="commodityCost" property="commodityCost"/>
+		<result column="points" property="points"/>
+		<result column="dispensingTip" property="dispensingTip"/>
+		<result column="source" property="source"/>
+		<result column="profitloss" property="profitloss"/>
+		<result column="delflag" property="delflag"/>
+		<result column="residential" property="residential"/>
+		<result column="toDayOrderNumber" property="toDayOrderNumber"/>
+		<result column="sortingOrderStatus" property="sortingOrderStatus"/>
+		<result column="isGrouponOrder" property="isGrouponOrder"/>
+		<result column="remark" property="remark"/>
+		<result column="orderPostFeeStatus" property="orderPostFeeStatus"/>
+		<result column="wmshandleStatus" property="wmshandleStatus"/>
+		<result column="paymentWay" property="paymentWay"/>
+		<result column="paymentTime" property="paymentTime"/>
+		<result column="cancelTime" property="cancelTime"/>
+		<result column="refundTime" property="refundTime"/>
+		<result column="counponMoney" property="counponMoney"/>
+		<result column="counponId" property="counponId"/>
+		<result column="application" property="application"/>
+		<collection property="orderDetailList" ofType="java.util.List"
+					select="com.flf.mapper.HajOrderDetailsMapper.getChainDetailByOrderId" column="id"/>
+	</resultMap>
+
+	<resultMap id="WmsResultMap" type="HajOrder" >
+		<result column="id" property="id"/>
+		<result column="orderNo" property="orderNo"/>
+		<result column="receiver" property="receiver"/>
+		<result column="contactPhone" property="contactPhone"/>
+		<result column="address" property="address"/>
+		<result column="userId" property="userId"/>
+
+		<!-- 以下3个字段借用 -->
+		<result column="villageId" property="residential"/>
+		<result column="floor" property="remark"/>
+		<result column="buildingSort" property="application"/>
+		<collection property="orderDetailList" ofType="java.util.List"
+					select="com.flf.mapper.HajOrderDetailsMapper.wmsSaleOrderDetail" column="userId"/>
+	</resultMap>
+
+	<!-- haj_order table all fields -->
+	<sql id="Base_Column_List" >
+		id,orderNo,totalMoney,number,createTime,userId,status,payStatus,handleStatus,lockStatus,deliveryTime,receiver,
+		address,contactPhone,actualPayment,feeWaiver,postFee,commodityCost,points,dispensingTip,source,profitloss,
+		delflag,residential,toDayOrderNumber,sortingOrderStatus,isGrouponOrder,remark,orderPostFeeStatus,
+		wmshandleStatus,paymentWay,paymentTime,cancelTime,refundTime,counponMoney,counponId,application
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where delflag=0
+		<trim  suffixOverrides="," >
+			<if test="condition.id != null and condition.id != ''" >
+				and id =  #{condition.id}
+			</if>
+			<if test="condition.orderNo != null and condition.orderNo != ''" >
+				and orderNo =  #{condition.orderNo}
+			</if>
+			<if test="condition.totalMoney != null and condition.totalMoney != ''" >
+				and totalMoney =  #{condition.totalMoney}
+			</if>
+			<if test="condition.number != null and condition.number != ''" >
+				and number =  #{condition.number}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''" >
+				and DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') =  #{condition.createTime}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''" >
+				and userId =  #{condition.userId}
+			</if>
+			<if test="condition.status != null and condition.status != ''" >
+				and status =  #{condition.status}
+			</if>
+			<if test="condition.payStatus != null and condition.payStatus != ''" >
+				and payStatus =  #{condition.payStatus}
+			</if>
+			<if test="condition.handleStatus != null and condition.handleStatus != ''" >
+				and handleStatus =  #{condition.handleStatus}
+			</if>
+			<if test="condition.lockStatus != null and condition.lockStatus != ''" >
+				and lockStatus =  #{condition.lockStatus}
+			</if>
+			<if test="condition.deliveryTime != null and condition.deliveryTime != ''" >
+				and deliveryTime =  #{condition.deliveryTime}
+			</if>
+			<if test="condition.receiver != null and condition.receiver != ''" >
+				and receiver =  #{condition.receiver}
+			</if>
+			<if test="condition.address != null and condition.address != ''" >
+				and address =  #{condition.address}
+			</if>
+			<if test="condition.contactPhone != null and condition.contactPhone != ''" >
+				and contactPhone =  #{condition.contactPhone}
+			</if>
+			<if test="condition.actualPayment != null and condition.actualPayment != ''" >
+				and actualPayment =  #{condition.actualPayment}
+			</if>
+			<if test="condition.feeWaiver != null and condition.feeWaiver != ''" >
+				and feeWaiver =  #{condition.feeWaiver}
+			</if>
+			<if test="condition.postFee != null and condition.postFee != ''" >
+				and postFee =  #{condition.postFee}
+			</if>
+			<if test="condition.commodityCost != null and condition.commodityCost != ''" >
+				and commodityCost =  #{condition.commodityCost}
+			</if>
+			<if test="condition.points != null and condition.points != ''" >
+				and points =  #{condition.points}
+			</if>
+			<if test="condition.dispensingTip != null and condition.dispensingTip != ''" >
+				and dispensingTip =  #{condition.dispensingTip}
+			</if>
+			<if test="condition.source != null and condition.source != ''" >
+				and source =  #{condition.source}
+			</if>
+			<if test="condition.profitloss != null and condition.profitloss != ''" >
+				and profitloss =  #{condition.profitloss}
+			</if>
+			<if test="condition.delflag != null and condition.delflag != ''" >
+				and delflag =  #{condition.delflag}
+			</if>
+			<if test="condition.residential != null and condition.residential != ''" >
+				and residential =  #{condition.residential}
+			</if>
+			<if test="condition.isGrouponOrder != null">
+				and isGrouponOrder =  #{condition.isGrouponOrder}
+			</if>
+			<if test="condition.paymentWay != null and condition.paymentWay != ''" >
+				and paymentWay = #{condition.paymentWay}
+			</if>
+			<if test="condition.application != null" >
+				and application = #{condition.application}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_order (
+			id,orderNo,totalMoney,number,createTime,userId,status,payStatus,handleStatus,lockStatus,deliveryTime,
+			receiver,address,contactPhone,actualPayment,feeWaiver,postFee,commodityCost,points,dispensingTip,source,
+			profitloss,delflag,residential,toDayOrderNumber,sortingOrderStatus,isGrouponOrder,remark,
+			orderPostFeeStatus,wmshandleStatus,paymentWay,paymentTime,cancelTime,refundTime,counponId,counponMoney,
+			application
+		)
+		values( #{id},#{orderNo},#{totalMoney},#{number},now(),#{userId},#{status},#{payStatus},#{handleStatus},
+			#{lockStatus},#{deliveryTime},#{receiver},#{address},#{contactPhone},#{actualPayment},#{feeWaiver},
+			#{postFee},#{commodityCost},#{points},#{dispensingTip},#{source},#{profitloss},#{delflag},#{residential},
+			#{toDayOrderNumber},#{sortingOrderStatus},#{isGrouponOrder},#{remark},#{orderPostFeeStatus},
+			#{wmshandleStatus},#{paymentWay},#{paymentTime},#{cancelTime},#{refundTime},#{counponId},#{counponMoney},
+			#{application}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object" >
+		update haj_order
+		set orderNo=#{orderNo},totalMoney=#{totalMoney},number=#{number},userId=#{userId},
+			status=#{status},payStatus=#{payStatus},handleStatus=#{handleStatus},lockStatus=#{lockStatus},
+			deliveryTime=#{deliveryTime},receiver=#{receiver},address=#{address},contactPhone=#{contactPhone},
+			actualPayment=#{actualPayment},feeWaiver=#{feeWaiver},postFee=#{postFee},commodityCost=#{commodityCost},
+			points=#{points},dispensingTip=#{dispensingTip},source=#{source},profitloss=#{profitloss},
+			delflag=#{delflag},residential=#{residential},isGrouponOrder=#{isGrouponOrder},paymentWay=#{paymentWay},
+			application=#{application}
+		where id=#{id}
+	</update>
+
+	 <!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_order set
+		<trim  suffixOverrides="," >
+		<if test="orderNo != null  ">
+			orderNo=#{orderNo},
+		</if>
+		<if test="totalMoney != null  ">
+			totalMoney=#{totalMoney},
+		</if>
+		<if test="number != null  ">
+			number=#{number},
+		</if>
+		<if test="createTime != null  ">
+			createTime=#{createTime},
+		</if>
+		<if test="userId != null  ">
+			userId=#{userId},
+		</if>
+		<if test="status != null  ">
+			status=#{status},
+		</if>
+		<if test="payStatus != null  ">
+			payStatus=#{payStatus},
+		</if>
+		<if test="handleStatus != null  ">
+			handleStatus=#{handleStatus},
+		</if>
+		<if test="lockStatus != null  ">
+			lockStatus=#{lockStatus},
+		</if>
+		<if test="deliveryTime != null  ">
+			deliveryTime=#{deliveryTime},
+		</if>
+		<if test="receiver != null  ">
+			receiver=#{receiver},
+		</if>
+		<if test="address != null  ">
+			address=#{address},
+		</if>
+		<if test="contactPhone != null  ">
+			contactPhone=#{contactPhone},
+		</if>
+		<if test="actualPayment != null  ">
+			actualPayment=#{actualPayment},
+		</if>
+		<if test="feeWaiver != null  ">
+			feeWaiver=#{feeWaiver},
+		</if>
+		<if test="postFee != null  ">
+			postFee=#{postFee},
+		</if>
+		<if test="commodityCost != null  ">
+			commodityCost=#{commodityCost},
+		</if>
+		<if test="points != null  ">
+			points=#{points},
+		</if>
+		<if test="dispensingTip != null  ">
+			dispensingTip=#{dispensingTip},
+		</if>
+		<if test="source != null  ">
+			source=#{source},
+		</if>
+		<if test="profitloss != null  ">
+			profitloss=#{profitloss},
+		</if>
+		<if test="delflag != null  ">
+			delflag=#{delflag},
+		</if>
+		<if test="residential != null  ">
+			residential=#{residential},
+		</if>
+		<if test="isGrouponOrder != null">
+			isGrouponOrder=#{isGrouponOrder},
+		</if>
+		<if test="paymentWay != null">
+			paymentWay=#{paymentWay},
+		</if>
+		<if test="paymentTime != null">
+			paymentTime=#{paymentTime},
+		</if>
+		<if test="cancelTime != null">
+			cancelTime=#{cancelTime},
+		</if>
+		<if test="refundTime != null">
+			refundTime=#{refundTime},
+		</if>
+		<if test="application != null">
+			application=#{application},
+		</if>
+		</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete 	 from haj_order where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" />
+		 from haj_order where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+		select count(1) from haj_order
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_order
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+		   order by  ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+		   ${limitClause}
+		</if>
+	</select>
+
+	<select id="getOrderTimeByUserId" parameterType="Object" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') AS orderDate,
+			(actualPayment+dispensingTip+postFee) AS actualPayment,
+			(SELECT IFNULL(SUM(money),0) FROM `haj_order_sale` WHERE orderId = o.id AND isdeal = 1) refund,
+			o.`orderNo`, o.`status`, o.`number`
+		FROM haj_order o WHERE 1=1 AND o.`status` > 1 AND delflag=0
+		<if test="condition.userId != null and condition.userId != ''" >
+			AND userId=#{condition.userId}
+		</if>
+		<if test="condition.status != null and condition.status != ''" >
+			<choose>
+                <when test="condition.status==7">
+                   	AND o.`status` in (5,6,7)
+                </when>
+                <otherwise>
+					AND o.`status`=#{condition.status}
+				</otherwise>
+         	</choose>
+		</if>
+		<choose>
+			<when test="condition.orderType != null">
+				AND isGrouponOrder = #{condition.orderType}
+			</when>
+			<otherwise>
+				AND isGrouponOrder IN (0,1)
+			</otherwise>
+		</choose>
+		ORDER BY createTime DESC
+		<if test="limitClause != null and limitClause != ''" >
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getOrderBySource"  parameterType="int" resultType="int">
+		select count(1) from haj_order where source=1 and userId=#{userId}  and delflag=0
+	</select>
+
+	<select id="getOrderByOrderNo"  resultMap="BaseResultMap" resultType="String">
+		select * from haj_order where orderNo=#{orderNo} and delflag=0
+	</select>
+
+	<select id="listSynchronizeOrder" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.postFee,u.receiver, GROUP_CONCAT(o.id) as orderId,o.`orderNo`,o.`createTime`,u.`residential`,
+			u.`address`, u.`shippingAddress`,u.`username`,u.`id`,u.`mobilePhone`,u.receiver,o.`actualPayment`,
+			o.`commodityCost`, o.dispensingTip,o.totalMoney ,ar.wms_code,ar.name,ar1.wms_code as cityCode ,
+			ar1.name as cityName,p.whcode,p.id as communityId,p.communityName ,u.houseNumber,u.floor,
+			cu.`sort` ,cu.`unit`
+		FROM haj_order o
+			LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+			LEFT JOIN haj_community_persion p ON p.id=u.`villageId`
+			left join haj_areas ar on ar.code = p.communityCode
+			left join haj_areas ar1 on ar1.code = ar.p_code
+			left join `haj_community_unit` cu on cu.id=u.`communityUnitId`
+			where o.status = 2 and o.delflag=0 and o.wmshandleStatus=1 AND u.`areaCode`= '100002'
+				AND LEFT(deliveryTime,11) = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY),'%Y年%m月%d日')
+			GROUP BY u.id order by o.id
+	</select>
+
+	<select id="listPageOrder" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.postFee,o.receiver, o.id as orderId,o.`orderNo`,o.`createTime`,u.`residential`,u.`address`,
+			u.`shippingAddress`,u.`username`,u.`id`,u.`mobilePhone`,o.`number`,o.`actualPayment`,o.`commodityCost`,
+			FORMAT((o.actualPayment-o.commodityCost),2) AS orderRealPay,o.dispensingTip,o.totalMoney ,o.`points`,
+			o.counponMoney,o.counponId, o.`status`,o.feeWaiver,o.isGrouponOrder,
+			(select IFNULL(SUM(money),0) from `haj_order_sale` where orderId=o.id and isdeal = 1) AS refundMoney
+		FROM haj_order o
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		<if test="commodityName != null and commodityName != ''" >
+			LEFT JOIN haj_order_details od ON od.orderId= o.id
+		</if>
+		WHERE o.`delflag` = 0
+			<!-- 暂时加上下面这个status条件，因为之前表设计原因，sql查询太慢 -->
+			AND o.`status` IN (1,2,3,4,5,6,7,8,9)
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		<if test="residential != null and residential != ''" >
+			and u.residential  =  #{residential}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND u.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+		<if test="status != null and status != ''" >
+			and o.status  =  #{status}
+		</if>
+		<if test="sprice != null and sprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &gt;=  #{sprice}
+		</if>
+		<if test="eprice != null and eprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &lt;=  #{eprice}
+		</if>
+		<if test="source != null and source != ''" >
+			and o.source  =  #{source}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and o.createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and o.createTime  &lt;=  #{endTime}
+		</if>
+		<if test="beginHour != null and beginHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &gt;=  #{beginHour}
+		</if>
+		<if test="endHour != null and endHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &lt;=  #{endHour}
+		</if>
+		<if test="orderNo != null and orderNo != ''" >
+			and o.orderNo  =  #{orderNo}
+		</if>
+		<if test="userInfo != null and userInfo != ''" >
+			and (u.username  =  #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="isGrouponOrder != null and isGrouponOrder != ''" >
+			and o.isGrouponOrder  =  #{isGrouponOrder}
+		</if>
+		<if test="commodityName != null and commodityName != ''" >
+		   AND od.commodityName =  #{commodityName}
+		</if>
+		GROUP BY o.id order by o.id
+		<if test="orderByClause != null and orderByClause != ''" >
+			,${orderByClause}
+		</if>
+		desc
+	</select>
+
+	<select id="listAllOrder" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.`orderNo`,o.`createTime`,u.`residential`,p.`address`,u.`shippingAddress`,u.`username`,u.`id`,
+			o.`contactPhone`,o.`number`,o.`actualPayment`,o.`commodityCost`,o.actualPayment-o.commodityCost,
+			o.dispensingTip,o.totalMoney ,o.`points`,o.`status`
+		FROM haj_order o LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.`villageId` WHERE delflag=0
+		<if test="condition.residential != null and condition.residential != ''" >
+			and u.residential  =  #{condition.residential}
+		</if>
+		<if test="condition.status != null and condition.status != ''" >
+			and o.status  =  #{condition.status}
+		</if>
+		<if test="condition.sprice != null and condition.sprice != ''" >
+			and o.totalMoney  &gt;=  #{condition.sprice}
+		</if>
+		<if test="condition.eprice != null and condition.eprice != ''" >
+			and o.totalMoney  &lt;=  #{condition.eprice}
+		</if>
+		<if test="condition.source != null and condition.source != ''" >
+			and o.source  =  #{condition.source}
+		</if>
+		<if test="condition.beginTime != null and condition.beginTime != ''" >
+			and o.createTime  &gt;=  #{condition.beginTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''" >
+			and o.createTime  &lt;=  #{condition.endTime}
+		</if>
+		<if test="condition.beginHour != null and condition.beginHour != ''" >
+			and o.createTime  &gt;=  #{condition.beginHour}
+		</if>
+		<if test="condition.endHour != null and condition.endHour != ''" >
+			and o.createTime  =  #{condition.endHour}
+		</if>
+		<if test="condition.orderNo != null and condition.orderNo != ''" >
+			and o.orderNo  =  #{condition.orderNo}
+		</if>
+		<if test="condition.userInfo != null and condition.userInfo != ''" >
+			and (u.username=#{condition.userInfo}
+			or u.id= #{condition.userInfo}
+			or u.mobilePhone=#{condition.userInfo})
+		</if>
+		<if test="orderByClause != null and orderByClause != ''" >
+		   order by  ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+		   ${limitClause}
+		</if>
+	</select>
+
+	<update id="deleteOrderById" parameterType="Object">
+		update haj_order set delflag = 1 where id=#{orderId} and delflag=0
+	</update>
+
+	<update id="updateOrderStatus" parameterType="Object">
+		UPDATE haj_order
+		SET `status` = 2, payStatus = 2, paymentWay = #{paymentWay}, paymentTime = NOW()
+		WHERE orderNo = #{orderNo} and delflag=0 and status = 1
+	</update>
+
+	<select id="getOrderInfoById" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.id AS orderId,o.orderNo,o.createTime,o.status,o.receiver,o.contactPhone,
+			u.`residential`,o.`address`,p.name,p.telphone,p.orderSales,p.orderSalesPhone,
+			o.actualPayment,o.dispensingTip,o.totalMoney,o.`points`,p.`address`,u.`shippingAddress`,
+			o.remark,o.postFee,o.counponMoney,o.counponId,o.feeWaiver
+		FROM haj_order o
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.villageId
+		WHERE o.`id`= #{orderId} AND delflag=0
+	</select>
+
+	<select id="getOrderByDate" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.delflag,c.name,c.commodityNo,c.costPrice ,SUM(d.number) AS number,
+			SUM(d.totalMoney*d.number) AS totalMoney,SUM(d.actualPayment) AS totalSaleMoney
+		FROM haj_order o
+		LEFT JOIN haj_order_details d ON o.id=d.orderId
+		LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.handleStatus=1 and o.status=2
+			and paymentTime &lt;= #{nowDate} AND o.delflag=0
+		GROUP BY c.commodityNo
+	</select>
+
+	<select id="getSortingOrderByDate" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.residential,o.delflag,c.name,c.commodityNo,c.costPrice ,SUM(d.number) AS number,SUM(d.totalMoney*d.number) AS totalMoney,SUM(d.actualPayment) AS totalSaleMoney
+		FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND (o.sortingOrderStatus=1 or o.sortingOrderStatus is null) AND o.status=2 AND o.delflag=0  GROUP BY c.commodityNo,o.residential
+	</select>
+
+	<update id="updateHandleStatus" parameterType="String">
+		UPDATE haj_order SET handleStatus=3 WHERE TO_DAYS(createTime) = TO_DAYS(NOW()) and paymentTime  &lt;= #{nowDate} and delflag=0 and status=2 and handleStatus=4
+	</update>
+
+	<update id="updateOrderHandleStatus" parameterType="String">
+		UPDATE haj_order SET handleStatus=4 WHERE TO_DAYS(createTime) = TO_DAYS(NOW()) and paymentTime  &lt;= #{nowDate} and delflag=0 and status=2 and handleStatus=1
+	</update>
+
+	 <update id="updateAllWmshandleStatus" parameterType="String">
+		UPDATE haj_order SET wmshandleStatus=3 WHERE TO_DAYS(createTime) = TO_DAYS(NOW()) and createTime  &lt;= #{nowDate} and delflag=0 and status=2 and wmshandleStatus=2
+	</update>
+
+	<update id="updateOrderSorting">
+		UPDATE haj_order SET sortingOrderStatus=3
+		WHERE delflag=0 and status=2 and sortingOrderStatus=1
+		LIMIT 20000
+	</update>
+
+	<update id="cancleOrderStatus" parameterType="Object">
+		UPDATE haj_order SET `status` = 6, payStatus = 3, cancelTime = NOW()
+		WHERE orderNo = #{orderNo} AND delflag = 0 AND status = 2
+	</update>
+
+	<update id="updateOrderSaleStatus" parameterType="Object">
+		update haj_order set status = 5,payStatus=4 where id=#{id} and delflag=0
+	</update>
+
+	<update id="updateOrderFailByOrderNo" parameterType="Object">
+		update haj_order set status = 6,payStatus=3 where orderNo=#{orderNo} and delflag=0
+	</update>
+
+	<update id="updateSaleStatus" parameterType="Object">
+		UPDATE haj_order o SET o.status = 7, o.payStatus=5
+		WHERE o.orderNo=#{orderNo} AND o.delflag=0 AND o.`status` = 5 AND o.`payStatus` = 4
+		<!-- 仅当该笔订单剩下最后一笔退款金额时才将该订单改为已退款 -->
+			AND (SELECT COUNT(*) FROM haj_order_sale os WHERE os.`orderId`=o.`id` AND os.`isdeal` = 0) = 0
+	</update>
+
+	<select id="getOrderByNowDate" resultType="java.util.HashMap">
+		SELECT * FROM haj_order WHERE delflag=0 AND STATUS IN (2,3) AND LEFT(deliveryTime,11) = DATE_FORMAT(NOW(),'%Y年%m月%d日')  ORDER BY createTime DESC
+	</select>
+
+	<update id="updateHajOrderStatus" parameterType="Object">
+		UPDATE haj_order SET STATUS=4 WHERE delflag=0 AND STATUS IN (2,3) AND LEFT(deliveryTime,11) = DATE_FORMAT(NOW(),'%Y年%m月%d日')
+	</update>
+
+	<update id="updateOrderCompleteStatus" parameterType="Object">
+		UPDATE haj_order SET STATUS=4 WHERE id=#{id}
+	</update>
+
+	<update id="updateWMShandleStatusByOrderNO" parameterType="Object">
+		UPDATE haj_order SET wmshandleStatus=1 WHERE orderNo= #{orderNo}
+	</update>
+
+	<select id="orderCountByTimeForResidential" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT COUNT(*) AS orderNum,
+			SUM(IFNULL(o.totalMoney,0)) AS sumMoney,
+			TRUNCATE(AVG(IFNULL(o.totalMoney,0)),2) AS avgMoney
+		FROM haj_order o
+		WHERE DATE_FORMAT(o.createTime,'%Y-%m-%d') &lt;= #{overTime}
+			AND DATE_FORMAT(o.createTime,'%Y-%m-%d') &gt;= #{beginTime}
+			AND o.`status` = 4
+			AND o.`residential` = (
+				SELECT cp.`communityName` FROM haj_community_persion cp WHERE cp.`id` = #{villageId}
+			)
+	</select>
+
+	<select id="getOrderByCreateTime" resultMap="BaseResultMap"  parameterType="Object">
+		SELECT id,orderNo,totalMoney,number,createTime,userId,`status`,payStatus,handleStatus,lockStatus,
+			deliveryTime,receiver,address,contactPhone,actualPayment,feeWaiver,postFee,commodityCost,
+			(points+dispensingTip) AS points,dispensingTip,source,profitloss,delflag,residential,toDayOrderNumber,
+			postFee,paymentWay,IFNULL(counponMoney,0) AS counponMoney, isGrouponOrder,
+			(SELECT IFNULL(SUM(money),0) FROM `haj_order_sale` WHERE orderId = o.id AND isdeal = 1) refund
+		FROM haj_order o
+		WHERE userId = #{userId} AND createTime = #{createTime}
+		<if test="orderNo != null and orderNo != ''" >
+			AND orderNo = #{orderNo}
+		</if>
+	</select>
+
+	<select id="getTodayOrderCountByUserId" resultType="Integer" parameterType="Integer">
+		SELECT COUNT(*)
+		FROM haj_order o
+			LEFT JOIN haj_front_user u ON u.id=o.userId
+			LEFT JOIN haj_order_details od ON od.orderId= o.id
+			LEFT JOIN haj_commodity c ON c.`commodityNo` = od.commodityNo
+		WHERE DATE(o.createTime)=DATE(NOW())
+			  AND o.`status`=2 AND o.userId=#{userId} AND u.ismember=3
+			  AND c.promotionPrice=1 and isGrouponOrder = 0
+	</select>
+
+	<select id="listAllordreList"  resultType="java.util.HashMap" parameterType="Object">
+		SELECT u.mobilePhone,u.receiver,o.residential,u.address,o.isGrouponOrder,o.remark,
+		GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='A' AND c.`commodityNo` = od.commodityNo
+		<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number )) AS orderdetails,
+		GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='B' AND c.`commodityNo` = od.commodityNo
+		<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails1,
+		GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='C' AND c.`commodityNo` = od.commodityNo
+		<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails2,
+		GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='D' AND c.`commodityNo` = od.commodityNo
+		<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails3,
+		GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='E' AND c.`commodityNo` = od.commodityNo
+		<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails4,
+		(o.actualPayment+dispensingTip ) AS actualPayment,o.feeWaiver,(o.actualPayment+dispensingTip+o.feeWaiver) as totalMoney
+		FROM haj_order o LEFT JOIN  haj_order_details od ON o.id=od.orderId LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.`villageId` WHERE delflag=0
+		<if test="residential != null and residential != ''" >
+			and u.residential  =  #{residential}
+		</if>
+
+		<if test="residentialList != null and residentialList != '[]'">
+			AND u.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+
+		<if test="status != null and status != ''" >
+			and o.status  =  #{status}
+		</if>
+		<if test="sprice != null and sprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &gt;=  #{sprice}
+		</if>
+		<if test="eprice != null and eprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &lt;=  #{eprice}
+		</if>
+		<if test="source != null and source != ''" >
+			and o.source  =  #{source}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and o.createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and o.createTime  &lt;=  #{endTime}
+		</if>
+		<if test="beginHour != null and beginHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &gt;=  #{beginHour}
+		</if>
+		<if test="endHour != null and endHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &lt;=  #{endHour}
+		</if>
+		<if test="orderNo != null and orderNo != ''" >
+			and o.orderNo  =  #{orderNo}
+		</if>
+		<if test="isGrouponOrder != null and isGrouponOrder != ''" >
+			and o.isGrouponOrder  =  #{isGrouponOrder}
+		</if>
+		<if test="userInfo != null and userInfo != ''" >
+			and (u.username  =  #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		<if test="commodityName != null and commodityName != ''" >
+		   AND od.commodityName = #{commodityName}
+		</if>
+		GROUP BY o.id ORDER BY o.residential,o.address DESC
+	</select>
+
+	<select id="excelHebingOrderReportDetail"  resultType="java.util.HashMap" parameterType="Object">
+		SELECT DATE_FORMAT(o.`createTime`,'%Y-%m-%d') AS createTime,u.mobilePhone,u.receiver,u.residential,u.address,cu.`unit`,
+			GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='A' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails,
+			GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='B' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails1,
+			GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='C' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails2,
+			GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='D' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails3,
+			GROUP_CONCAT(CONCAT((SELECT c.name AS commodityName FROM haj_commodity c  WHERE c.orderClassification='E' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+			and c.areaCode  =  #{areaCode}
+		</if>),'*',od.number)) AS orderdetails4,
+			orderTmp.actualPayment,orderTmp.feeWaiver,orderTmp.totalMone as totalMoney
+		FROM haj_order o
+		LEFT JOIN haj_order_details od ON o.id=od.orderId
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.villageId
+		LEFT JOIN haj_community_unit cu ON cu.`id` = u.`communityUnitId`
+		LEFT JOIN (SELECT userId,SUM(actualPayment+dispensingTip) AS actualPayment,SUM(feeWaiver) AS feeWaiver,SUM(actualPayment+dispensingTip+feeWaiver) AS totalMone
+		FROM `haj_order` WHERE   delflag=0
+		<if test="status != null and status != ''" >
+			and status  =  #{status}
+		</if>
+
+		<if test="beginTime != null and beginTime != ''" >
+			and createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and createTime  &lt;=  #{endTime}
+		</if>
+		 GROUP BY userId )
+		 AS orderTmp ON o.`userId` = orderTmp.userId
+		WHERE delflag=0 AND p.`status` =1
+		<if test="residential != null and residential != ''" >
+			and u.residential  =  #{residential}
+		</if>
+
+		<if test="residentialList != null and residentialList != '[]'">
+			AND u.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+
+		<if test="status != null and status != ''" >
+			and o.status  =  #{status}
+		</if>
+		<if test="sprice != null and sprice != ''" >
+			and (o.actualPayment+o.dispensingTip)  &gt;=  #{sprice}
+		</if>
+		<if test="eprice != null and eprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &lt;=  #{eprice}
+		</if>
+		<if test="source != null and source != ''" >
+			and o.source  =  #{source}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and o.createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and o.createTime  &lt;=  #{endTime}
+		</if>
+		<if test="beginHour != null and beginHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &gt;=  #{beginHour}
+		</if>
+		<if test="endHour != null and endHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &lt;=  #{endHour}
+		</if>
+		<if test="orderNo != null and orderNo != ''" >
+			and o.orderNo  =  #{orderNo}
+		</if>
+		<if test="isGrouponOrder != null and isGrouponOrder != ''" >
+			and o.isGrouponOrder  =  #{isGrouponOrder}
+		</if>
+		<if test="userInfo != null and userInfo != ''" >
+			and (u.username  =  #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		<if test="commodityName != null and commodityName != ''" >
+		   AND od.commodityName = #{commodityName}
+		</if>
+		GROUP BY o.`userId` ORDER BY p.sorterId,p.id, cu.`sort` ASC, u.`floor` ASC, cu.`unit` ASC
+	</select>
+
+	<select id="excelHebingOrderReportDetail1"  resultType="java.util.HashMap" parameterType="Object">
+		SELECT DATE_FORMAT(o.`createTime`,'%Y-%m-%d') AS createTime,u.mobilePhone,u.receiver,u.residential,u.address,cu.`unit`,
+			GROUP_CONCAT(CONCAT((SELECT c.storageNo AS commodityName FROM haj_commodity c  WHERE c.orderClassification='A' AND c.`commodityNo` = od.commodityNo
+			<if test="areaCode != null and areaCode != ''" >
+				and c.areaCode  =  #{areaCode}
+			</if>),'*',od.number) ORDER BY c.`storageNo`  SEPARATOR ',' ) AS orderdetails,
+				GROUP_CONCAT(CONCAT((SELECT c.storageNo AS commodityName FROM haj_commodity c  WHERE c.orderClassification='B' AND c.`commodityNo` = od.commodityNo
+				<if test="areaCode != null and areaCode != ''" >
+				and c.areaCode  =  #{areaCode}
+			</if>),'*',od.number) ORDER BY c.`storageNo`  SEPARATOR ',' ) AS orderdetails1,
+				GROUP_CONCAT(CONCAT((SELECT c.storageNo AS commodityName FROM haj_commodity c  WHERE c.orderClassification='C' AND c.`commodityNo` = od.commodityNo
+				<if test="areaCode != null and areaCode != ''" >
+				and c.areaCode  =  #{areaCode}
+			</if>),'*',od.number) ORDER BY c.`storageNo`  SEPARATOR ',' ) AS orderdetails2,
+				GROUP_CONCAT(CONCAT((SELECT c.storageNo AS commodityName FROM haj_commodity c  WHERE c.orderClassification='D' AND c.`commodityNo` = od.commodityNo
+				<if test="areaCode != null and areaCode != ''" >
+				and c.areaCode  =  #{areaCode}
+			</if>),'*',od.number) ORDER BY c.`storageNo`  SEPARATOR ',' ) AS orderdetails3,
+				GROUP_CONCAT(CONCAT((SELECT c.storageNo AS commodityName FROM haj_commodity c  WHERE c.orderClassification='E' AND c.`commodityNo` = od.commodityNo
+				<if test="areaCode != null and areaCode != ''" >
+				and c.areaCode  =  #{areaCode}
+			</if>),'*',od.number) ORDER BY c.`storageNo` SEPARATOR ',' ) AS orderdetails4,
+			orderTmp.actualPayment,orderTmp.feeWaiver,orderTmp.totalMone as totalMoney
+		FROM haj_order o
+		LEFT JOIN haj_order_details od ON o.id=od.orderId
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.villageId
+		LEFT JOIN haj_community_unit cu ON cu.`id` = u.`communityUnitId`
+		LEFT JOIN (SELECT userId,SUM(actualPayment+dispensingTip) AS actualPayment,SUM(feeWaiver) AS feeWaiver,SUM(actualPayment+dispensingTip+feeWaiver) AS totalMone
+		FROM `haj_order` WHERE   delflag=0
+		<if test="status != null and status != ''" >
+			and status  =  #{status}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and createTime  &lt;=  #{endTime}
+		</if>
+		 GROUP BY userId )
+		 AS orderTmp ON o.`userId` = orderTmp.userId
+		 left join `haj_commodity` c  on c.`commodityNo` =od.`commodityNo`
+		WHERE delflag=0 AND p.`status` =1
+		<if test="residential != null and residential != ''" >
+			and u.residential  =  #{residential}
+		</if>
+
+		<if test="residentialList != null and residentialList != '[]'">
+			AND u.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+
+		<if test="status != null and status != ''" >
+			and o.status  =  #{status}
+		</if>
+		<if test="sprice != null and sprice != ''" >
+			and (o.actualPayment+o.dispensingTip)  &gt;=  #{sprice}
+		</if>
+		<if test="eprice != null and eprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &lt;=  #{eprice}
+		</if>
+		<if test="source != null and source != ''" >
+			and o.source  =  #{source}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and o.createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and o.createTime  &lt;=  #{endTime}
+		</if>
+		<if test="beginHour != null and beginHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &gt;=  #{beginHour}
+		</if>
+		<if test="endHour != null and endHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &lt;=  #{endHour}
+		</if>
+		<if test="orderNo != null and orderNo != ''" >
+			and o.orderNo  =  #{orderNo}
+		</if>
+		<if test="isGrouponOrder != null and isGrouponOrder != ''" >
+			and o.isGrouponOrder  =  #{isGrouponOrder}
+		</if>
+		<if test="userInfo != null and userInfo != ''" >
+			and (u.username  =  #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		<if test="commodityName != null and commodityName != ''" >
+		   AND od.commodityName = #{commodityName}
+		</if>
+		GROUP BY o.`userId` ORDER BY p.sorterId,p.id, cu.`sort` ASC, u.`floor` ASC, cu.`unit` ASC
+	</select>
+
+	<select id="excelOrderReportDetail" parameterType="Object" resultType="java.util.HashMap">
+		SELECT SUM(o.dispensingTip) AS dispensingTip,u.receiver, MAX(o.id) AS orderId,o.`orderNo`,o.`createTime`,
+			u.`residential`,u.`address`,u.`shippingAddress`,u.`username`,u.`id`,u.`mobilePhone`,
+			SUM(o.`number`) AS number,SUM(o.`actualPayment`) AS actualPayment,SUM(o.`commodityCost`) AS commodityCost,
+			FORMAT((SUM(o.actualPayment-o.commodityCost)),2) AS orderRealPay, SUM(o.postFee) AS postFee,
+			SUM(o.totalMoney) AS totalMoney,SUM(o.`points`) AS points,o.`status`,SUM(o.feeWaiver) AS feeWaiver,
+			IFNULL(SUM(os.money),0) AS refundMoney, IFNULL(historyOrder.historyOrderNum,0) AS historyOrderNum,
+			sum(o.counponMoney) as counponMoney
+		FROM haj_order o
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN (SELECT orderId,money FROM haj_order_sale WHERE isdeal = 1)  os ON os.orderId=o.id
+		LEFT JOIN(
+			SELECT COUNT(1) as historyOrderNum ,userId
+			FROM haj_order WHERE  STATUS=4 AND delflag=0 GROUP BY `userId`
+		) AS historyOrder on historyOrder.userId = o.`userId`
+		WHERE delflag=0
+		<if test="residential != null and residential != ''" >
+			and u.residential  =  #{residential}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND u.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+				#{residentialList}
+			</foreach>
+		</if>
+		<if test="status != null and status != ''" >
+			and o.status  =  #{status}
+		</if>
+		<if test="sprice != null and sprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &gt;=  #{sprice}
+		</if>
+		<if test="eprice != null and eprice != ''" >
+			and (o.actualPayment+o.dispensingTip)   &lt;=  #{eprice}
+		</if>
+		<if test="source != null and source != ''" >
+			and o.source  =  #{source}
+		</if>
+		<if test="beginTime != null and beginTime != ''" >
+			and o.createTime  &gt;=  #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''" >
+			and o.createTime  &lt;=  #{endTime}
+		</if>
+		<if test="beginHour != null and beginHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &gt;=  #{beginHour}
+		</if>
+		<if test="endHour != null and endHour != ''" >
+			and DATE_FORMAT(o.createTime ,'%H')  &lt;=  #{endHour}
+		</if>
+		<if test="orderNo != null and orderNo != ''" >
+			and o.orderNo  =  #{orderNo}
+		</if>
+		<if test="isGrouponOrder != null and isGrouponOrder != ''" >
+			and o.isGrouponOrder = #{isGrouponOrder}
+		</if>
+		<if test="userInfo != null and userInfo != ''" >
+			and (u.username = #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		GROUP BY o.userId order by o.createTime
+		<if test="orderByClause != null and orderByClause != ''" >
+			,${orderByClause}
+		</if>
+		desc
+	</select>
+
+	<select id="getHajPayOrderByUserId" parameterType="Object" resultType="java.util.HashMap">
+		SELECT DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') AS orderDate,
+			(actualPayment+dispensingTip+postFee) AS actualPayment,orderNo
+		FROM haj_order WHERE 1=1 AND STATUS =2
+		<if test="condition.userId != null and condition.userId != ''" >
+		AND userId=#{condition.userId}
+		</if>
+		AND delflag=0 and isGrouponOrder in (0,1) ORDER BY createTime DESC
+		<if test="limitClause != null and limitClause != ''" >
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getTodayPayOrder" resultMap="BaseResultMap">
+			select * from `haj_order`  where STATUS = 2
+	</select>
+
+
+	<select id="getOrderByDateTime" parameterType="String" resultType="java.util.HashMap">
+		SELECT o.delflag,c.name,c.commodityNo,c.costPrice ,SUM(d.number) AS number,SUM(d.totalMoney*d.number) AS totalMoney,SUM(d.actualPayment) AS totalSaleMoney
+		FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		WHERE DATE_FORMAT(o.createTime,'%Y-%m-%d') =  #{dateTime} and o.status=4 AND o.delflag=0 GROUP BY c.commodityNo
+	</select>
+
+	<select id="getBuDanByMobile" parameterType="String" resultType="HajOrder">
+		SELECT o.id, o.orderNo FROM haj_order o
+		WHERE o.status=2 AND o.delflag=0 AND o.isGrouponOrder=2
+			AND o.userId=(SELECT id FROM haj_front_user WHERE mobilePhone=#{mobile} LIMIT 1)
+		ORDER BY o.id DESC LIMIT 1
+	</select>
+
+	<select id="getOrderPostFeeByDate" parameterType="Object" resultType="java.util.HashMap">
+		SELECT SUM(o.actualPayment+o.dispensingTip) AS actualPayment,COUNT(id) AS orderNum,userId,residential
+		FROM haj_order o
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.orderPostFeeStatus=1
+		AND o.status=2 AND o.delflag=0 AND o.postFee = 0 and o.`isGrouponOrder` !=2 GROUP BY o.userId
+	</select>
+
+	<update id="updateOrderPostFee">
+		UPDATE haj_order SET orderPostFeeStatus=3
+		WHERE TO_DAYS(createTime) = TO_DAYS(NOW()) and delflag=0 and status=2 and orderPostFeeStatus=1
+	</update>
+
+	<select id="getOrderIdByUserId" parameterType="int" resultType="java.util.HashMap">
+		select o.id as orderId,o.actualPayment from haj_order o
+		where o.userId=#{userId} and TO_DAYS(o.createTime) = TO_DAYS(NOW())
+			AND o.orderPostFeeStatus=1 and o.status=2 AND o.delflag=0 AND o.postFee = 0
+			and o.`isGrouponOrder` !=2
+	</select>
+
+	<update id="updateUserResidential"	parameterType="Object">
+		UPDATE haj_order SET residential =#{residential} WHERE userId=#{userId}
+	</update>
+
+	<update id="deleteOrder" parameterType="Object">
+		update haj_order set delflag = 1 where orderNo=#{orderNo}
+	</update>
+
+	<select id="queryTodayCount" parameterType="String" resultType="Integer">
+		select count(1) from haj_order WHERE TO_DAYS(createTime) = TO_DAYS(NOW()) and createTime  &lt;= #{nowDate} and delflag=0 and status=2 and wmshandleStatus=1
+	</select>
+
+	<select id="getTodayOrderNumber" resultType="Integer" parameterType="Integer">
+		SELECT COUNT(*)
+		FROM haj_order o
+		LEFT JOIN haj_front_user u ON u.id=o.userId
+		LEFT JOIN haj_order_details od ON od.orderId= o.id
+		WHERE DATE(o.createTime)=DATE(NOW()) AND o.`status`=2 AND o.userId=#{userId}
+		AND u.ismember=3 AND  isGrouponOrder = 0
+	</select>
+
+	<select id="getClearOrderByDate" parameterType="String" resultType="java.util.HashMap">
+		SELECT * FROM haj_order
+		WHERE (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(createTime)) / 60 >= #{orderClearTime}
+			AND TO_DAYS(createTime) = TO_DAYS(NOW())
+			AND STATUS = 1
+			AND delflag = 0
+		ORDER BY `id` DESC
+	</select>
+
+	<update id="updateClearOrderNo" parameterType="Object">
+		update haj_order set status = 9 where orderNo=#{orderNo} AND STATUS = 1
+	</update>
+
+	<update id="updateOrderRefundTime">
+		UPDATE haj_order o SET o.`refundTime` = NOW() WHERE o.`id` = #{orderId}
+	</update>
+
+	<update id="updateWmshandleStatusByOrderIds" parameterType="Object">
+		UPDATE haj_order SET wmshandleStatus=3 WHERE wmshandleStatus=1 and id in
+		<foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+
+	<select id="listOrder" resultType="HajOrder" parameterType="Object">
+		SELECT * FROM haj_order
+		<include refid="Example_Where_Clause"/>
+			AND DATE_FORMAT(createTime,'%Y-%m-%d') = #{condition.orderDate}
+		<if test="orderByClause != null and orderByClause != ''" >
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="wmsExportShipOrder" resultType="HashMap">
+		SELECT u.id AS userId, u.`receiver`, u.`mobilePhone`, o.`postFee`,  c.`commodityNo`,
+			c.`sku`, od.`number`, p.`id` communityId, p.`communityName`,ar.`name` country,
+			c.`orderClassification`, LPAD(u.`floor`, 2, 0) AS floor, u.`houseNumber`,
+			(SELECT cu.`unit` FROM haj_community_unit cu WHERE cu.`id` = u.`communityUnitId`) unit,
+			LPAD((SELECT cu.sort FROM haj_community_unit cu WHERE cu.id = u.`communityUnitId`), 4, 0) AS unitSort,
+			(SELECT cs.`sorterName` FROM `haj_community_sorter` cs WHERE cs.`id` = p.`sorterId` ) sorterName
+		FROM haj_order_details od
+		LEFT JOIN haj_order o ON o.`id` = od.`orderId`
+		LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+		LEFT JOIN haj_commodity c ON c.`commodityNo` = od.`commodityNo`
+		LEFT JOIN haj_community_persion p ON p.id = u.`villageId`
+		LEFT JOIN haj_areas ar ON ar.code = p.communityCode
+		WHERE o.status = 2 AND o.delflag=0 AND u.`areaCode`= '100002'
+		GROUP BY o.`userId`, c.`commodityNo`
+		ORDER BY p.`id`, u.`id`
+	</select>
+
+	<select id="wmsSaleOrderList" resultMap="WmsResultMap">
+		SELECT u.`receiver`, o.`contactPhone`, u.`address`, u.`villageId`, LPAD(u.`floor`, 2, 0) floor,
+			cu.`sort` buildingSort, o.`userId`
+		FROM haj_order o
+			LEFT JOIN haj_front_user u ON u.`id` = o.`userId`
+			LEFT JOIN haj_community_unit cu ON cu.`id` = u.`communityUnitId`
+		WHERE o.`status` = 2 AND o.`delflag` = 0 AND u.`areaCode`= '100002'
+			AND LEFT(deliveryTime,11) = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 DAY),'%Y年%m月%d日')
+		GROUP BY u.`id`
+		ORDER BY o.`id`
+	</select>
+
+	<select id="generatePurchaseOrder"  resultType="HashMap">
+		SELECT c.areaCode FOrgCode, sc.supplyNo FSupplierCode, DATE_FORMAT(NOW(), '%Y-%m-%d') FDate, c.sku FItemCode
+			 , ROUND(SUM(d.number)*(1+IFNULL(c.percentLoss,0)*0.01)) FQty ,
+			(ROUND(SUM(d.number)*(1+IFNULL(c.percentLoss,0)*0.01)) * d.totalMoney) FAmount
+		FROM haj_order o
+		LEFT JOIN haj_order_details d ON o.id=d.orderId
+		LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		LEFT JOIN haj_supply_chain sc ON c.supplyChain =  sc.cloudsSupplierId
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW())
+ 		AND o.status=2
+		AND o.delflag=0
+		AND c.attribute = 1
+		GROUP BY c.commodityNo
+		ORDER BY c.areaCode desc
+	</select>
+
+	<select id="generateSalesOrderOrder" resultType="HashMap">
+	  SELECT c.areaCode FOrgCode,DATE_FORMAT(NOW(), '%Y-%m-%d') FDate
+			,c.`sku` FItemCode,SUM(d.number) FQty ,SUM(d.actualPayment)FAmount
+	  FROM haj_order o
+	  LEFT JOIN haj_order_details d ON o.id=d.orderId
+	  LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+	  LEFT JOIN haj_supply_chain sc ON c.supplyChain =  sc.cloudsSupplierId
+	  WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW())
+	  AND o.handleStatus=3
+	  AND o.status=2
+	  AND o.delflag=0
+	  GROUP BY c.commodityNo
+	  ORDER BY c.areaCode desc
+	</select>
+
+	<select id="generateProductionOrder" resultType="HashMap">
+		SELECT c.areaCode FOrgCode, c.sku FItemCode, SUM(d.number)  FQty
+		FROM haj_order o
+		LEFT JOIN haj_order_details d ON o.id=d.orderId
+		LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+		LEFT JOIN haj_supply_chain sc ON c.supplyChain =  sc.cloudsSupplierId
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW())
+		AND o.status=2
+		AND o.delflag=0
+		AND c.attribute = 0
+		GROUP BY c.commodityNo
+	   ORDER BY c.areaCode desc
+	</select>
+
+	<select id="getOrderByInviteList" resultMap="BaseResultMap" parameterType="String">
+	   SELECT  * FROM haj_order  WHERE userId=#{invitee}  AND  (paystatus=2 OR paystatus=5)
+	</select>
+
+</mapper>

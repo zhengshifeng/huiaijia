@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajActivityCommodityMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajActivityCommodity">
+		<result column="id" property="id" />
+		<result column="activityId2" property="activityId2" />
+		<result column="commodityId" property="commodityId" />
+		<result column="promotionPrice" property="promotionPrice" />
+		<result column="createTime" property="createTime" />
+		<result column="endTime" property="endTime" />
+	</resultMap>
+
+	<!-- haj_activity_commodity table all fields -->
+	<sql id="Base_Column_List">
+		id, activityId2, commodityId, promotionPrice, createTime, endTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.activityId2 != null and condition.activityId2 != ''">
+			AND activityId2 = #{condition.activityId2}
+		</if>
+		<if test="condition.commodityId != null and condition.commodityId != ''">
+			AND commodityId = #{condition.commodityId}
+		</if>
+		<if test="condition.promotionPrice != null and condition.promotionPrice != ''">
+			AND promotionPrice = #{condition.promotionPrice}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			AND endTime = #{condition.endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="activityId2 != null and activityId2 != ''">
+			AND activityId2 = #{activityId2}
+		</if>
+		<if test="commodityId != null and commodityId != ''">
+			AND commodityId = #{commodityId}
+		</if>
+		<if test="promotionPrice != null and promotionPrice != ''">
+			AND promotionPrice = #{promotionPrice}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND endTime = #{endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_activity_commodity(id, activityId2, commodityId, promotionPrice, createTime, endTime)
+		VALUES(#{id}, #{activityId2}, #{commodityId}, #{promotionPrice}, now(), #{endTime})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_activity_commodity SET activityId2 = #{activityId2}, commodityId = #{commodityId}, promotionPrice = #{promotionPrice}, endTime = #{endTime} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_activity_commodity SET 
+		<trim suffixOverrides=",">
+			<if test="activityId2 != null">
+				activityId2 = #{activityId2},
+			</if>
+			<if test="commodityId != null">
+				commodityId = #{commodityId},
+			</if>
+			<if test="promotionPrice != null">
+				promotionPrice = #{promotionPrice},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_activity_commodity WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_activity_commodity WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_activity_commodity
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_activity_commodity
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajActivityCommodity" parameterType="HajActivityCommodity">
+		SELECT * FROM haj_activity_commodity
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajActivityCommodity">
+		SELECT *
+		FROM haj_activity_commodity
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+
+
+	<!--插入数据时，判断数据是否存在，如果不存在就插入否则不做处理-->
+	<insert id="saveToCommodityActivity" parameterType="HajActivityCommodity">
+		INSERT INTO haj_activity_commodity(commodityId,activityId2)
+		SELECT
+		#{commodityId},#{activityId2}
+		FROM DUAL
+		WHERE NOT EXISTS(SELECT 1 FROM haj_activity_commodity hac
+		WHERE hac.commodityId = #{commodityId} AND hac.activityId2 = #{activityId2})
+	</insert>
+
+
+	<!--从指定活动中删除指定商品-->
+	<delete id="deleteCommodityFromTheActivity" parameterType="HajActivityCommodity">
+		DELETE FROM haj_activity_commodity WHERE commodityId = #{commodityId}   AND  activityId2 = #{activityId2}
+	</delete>
+
+	<!--删除指定活动的商品-->
+	<delete id="deleteCommodityToActivity" parameterType="Integer">
+		DELETE FROM haj_activity_commodity WHERE activityId2 = #{activityId2}
+	</delete>
+
+
+</mapper>

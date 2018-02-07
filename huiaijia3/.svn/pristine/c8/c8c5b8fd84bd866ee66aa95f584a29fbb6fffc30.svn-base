@@ -1,0 +1,1026 @@
+package com.flf.service.impl;
+
+import com.base.criteria.Criteria;
+import com.base.criteria.VillageManagerCriteria;
+import com.base.service.BaseServiceImpl;
+import com.flf.entity.*;
+import com.flf.mapper.HajCommunityPersionMapper;
+import com.flf.mapper.HajFrontUserMapper;
+import com.flf.mapper.HajOrderMapper;
+import com.flf.service.HajAreasService;
+import com.flf.service.HajCommunityPersionService;
+import com.flf.service.RedisSpringProxy;
+import com.flf.util.DateUtil;
+import com.flf.util.ElasticsearchUtil;
+import com.flf.util.Tools;
+import com.flf.util.wms.WmsSender;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.util.*;
+
+import static com.flf.util.ExcelUtil.getCellValue;
+
+/**
+ *
+ * <br>
+ * <b>功能：</b>HajCommunityPersionService<br>
+ */
+@Service("hajCommunityPersionService")
+public class HajCommunityPersionServiceImpl extends BaseServiceImpl implements HajCommunityPersionService {
+	private final static Logger log = Logger.getLogger(HajCommunityPersionServiceImpl.class);
+
+	@Autowired
+	private HajOrderMapper orderDao;
+	@Autowired
+	private HajCommunityPersionMapper dao;
+
+	@Autowired
+	private HajFrontUserMapper userDao;
+
+	@Autowired
+	private RedisSpringProxy redisSpringProxy;
+
+	@Autowired
+	private HajAreasService areasService;
+
+	@Override
+	public HajCommunityPersionMapper getDao() {
+		return dao;
+	}
+
+	@Override
+	public List<Map<String, Object>> queryVillageManagerList(VillageManagerCriteria criteria) {
+		return dao.listPageVillage(criteria);
+	}
+
+	@Override
+	public Map<String, Object> exactSearchVillage(String villageName, String areaCode) {
+		return dao.exactSearchVillage(villageName, areaCode);
+	}
+
+	/**
+	 * 根据小区名称查找配送人员信息
+	 */
+	@Override
+	public Map<String, Object> queryCommunityPersionMap(String userId) {
+		return dao.queryCommunityPersionMap(userId);
+	}
+
+	/**
+	 * 小区搜索
+	 *
+	 */
+	@Override
+	public List<HajCommunityPersion> getCommunitySeach(String keyword, Criteria criteria, String areaCode)
+			throws Exception {
+
+		List<HajCommunityPersion> list = new ArrayList<HajCommunityPersion>();
+		/** 检索开始时间 **/
+		long startTime = System.currentTimeMillis();
+
+		log.info("小区搜索关键字：" + keyword);
+
+		/** 高亮字段 **/
+		String[] highFields = new String[] { "communityName" };
+
+		// String indexName =
+		// configurationService.getValueByName("residentialIndex");//
+		// configurationService.getValueByName("residentialIndex");
+		// String typeName = (String)
+		// redisSpringProxy.read("SystemConfiguration_residentialType");//
+		// (String)
+		// redisSpringProxy.read("SystemConfiguration_residentialType");
+		String indexName = (String) redisSpringProxy.read("SystemConfiguration_residentialIndex");
+		String typeName = (String) redisSpringProxy.read("SystemConfiguration_residentialType");
+		SearchResponse sresponse = ElasticsearchUtil.searcher(indexName, typeName, criteria.getCurrentPage(),
+				criteria.getPageSize(), keyword, highFields, "communityName");
+
+		/** 总记录数 **/
+		Long total = sresponse.getHits().totalHits();
+
+		log.info("【小区搜索】命中总数：" + total);
+		SearchHits searchHits = sresponse.getHits();
+		SearchHit[] hits = searchHits.getHits();
+		HajCommunityPersion communityPersion = null;
+		SearchHit hit = null;
+		for (int i = 0, len = hits.length; i < len; i++) {
+			communityPersion = new HajCommunityPersion();
+			hit = hits[i];
+
+			// String name = ElasticsearchUtil.getHighlightFields(hit,"name");
+			// String description =
+			// ElasticsearchUtil.getHighlightFields(hit,"description");
+			if (areaCode != null && null != hit.getSource().get("areaCode")
+					&& hit.getSource().get("areaCode").equals(areaCode)) {
+				communityPersion.setId(Integer.parseInt(hit.getSource().get("id").toString()));
+				if (null != hit.getSource().get("NAME")) {
+					communityPersion.setName(hit.getSource().get("NAME").toString());
+				} else {
+					communityPersion.setName("");
+				}
+				communityPersion.setCommunityName(hit.getSource().get("communityName").toString());
+				communityPersion.setStatus(Integer.parseInt(hit.getSource().get("STATUS").toString()));
+				if (null != hit.getSource().get("registererNumber")) {
+					communityPersion.setRegistererNumber(Integer.parseInt(hit.getSource().get("registererNumber")
+							.toString()));
+				} else {
+					communityPersion.setRegistererNumber(0);
+				}
+				if (null != hit.getSource().get("membersNumber")) {
+					communityPersion
+							.setMembersNumber(Integer.parseInt(hit.getSource().get("membersNumber").toString()));
+				} else {
+					communityPersion.setMembersNumber(0);
+				}
+				if (null != hit.getSource().get("memberStatus")) {
+					communityPersion.setMemberStatus(Integer.parseInt(hit.getSource().get("memberStatus").toString()));
+				} else {
+					communityPersion.setMemberStatus(0);
+				}
+				if (null != hit.getSource().get("address")) {
+					communityPersion.setAddress(hit.getSource().get("address").toString());
+				} else {
+					communityPersion.setAddress("");
+				}
+				if (null != hit.getSource().get("planMemberNumber")) {
+					communityPersion.setPlanMemberNumber(Integer.parseInt(hit.getSource().get("planMemberNumber")
+							.toString()));
+				} else {
+					communityPersion.setPlanMemberNumber(0);
+				}
+
+				list.add(communityPersion);
+			}
+
+		}
+
+		/** 检索完成时间 **/
+		long endTime = System.currentTimeMillis();
+		/** 检索花费时间 **/
+
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(endTime - startTime);
+		double spendTime = c.get(Calendar.MILLISECOND);
+		log.info("【小区检索】完成，花费时间：" + spendTime);
+		return list;
+
+	}
+
+	/**
+	 * 创建小区索引（所有）
+	 *
+	 * @throws Exception
+	 */
+	@Override
+	public void createHajCommunityPersionIndex() throws Exception {
+		List<Map<String, Object>> communityPersionList = dao.queryAllList();
+		Map<String, Object> objMap = null;
+		String indexId = null;
+		if (communityPersionList != null && communityPersionList.size() > 0) {
+			/** 集合对象用于批量加入文件数据生成索引文件 **/
+			String indexName = (String) redisSpringProxy.read("SystemConfiguration_residentialIndex");
+			String typeName = (String) redisSpringProxy.read("SystemConfiguration_residentialType");
+			objMap = communityPersionList.get(0);
+			if (null != objMap && null != objMap.get("id") && objMap.size() > 0) {
+				indexId = objMap.get("id").toString();
+			}
+			if (ElasticsearchUtil.get(indexName, typeName, indexId)) {
+				// 先删除索引，再添加
+				ElasticsearchUtil.deleteIndexByQuery(indexName, typeName);
+			}
+			ElasticsearchUtil.createIndex(communityPersionList, indexName, typeName, "communityName");
+			log.info("小区索引创建成功！");
+		}
+	}
+
+	/**
+	 * 创建商品索引(单个)
+	 *
+	 * @throws Exception
+	 */
+	@Override
+	public void createCommodityIndex(int id) throws Exception {
+		List<Map<String, Object>> communityPersionList = dao.queryAllListById(id);
+		if (communityPersionList != null && communityPersionList.size() > 0) {
+			/** 集合对象用于批量加入文件数据生成索引文件 **/
+			String indexName = (String) redisSpringProxy.read("SystemConfiguration_residentialIndex");
+			String typeName = (String) redisSpringProxy.read("SystemConfiguration_residentialType");
+			if (ElasticsearchUtil.get(indexName, typeName, String.valueOf(id))) {
+				// 先删除索引，再添加
+				ElasticsearchUtil.delete(indexName, typeName, String.valueOf(id));
+			}
+			ElasticsearchUtil.createIndex(communityPersionList, indexName, typeName, "communityName");
+		}
+		log.info("索引id:" + id + "创建成功！");
+
+	}
+
+	/**
+	 * 删除商品索引(单个)
+	 *
+	 * @throws Exception
+	 */
+	@Override
+	public void deleteCommunityPersionIndex(int id) throws Exception {
+		/** 集合对象用于批量加入文件数据生成索引文件 **/
+		String indexName = (String) redisSpringProxy.read("SystemConfiguration_residentialIndex");
+		String typeName = (String) redisSpringProxy.read("SystemConfiguration_residentialType");
+		if (ElasticsearchUtil.get(indexName, typeName, String.valueOf(id))) {
+			// 先删除索引，再添加
+			ElasticsearchUtil.delete(indexName, typeName, String.valueOf(id));
+		}
+		log.info("索引id:" + id + "删除成功！");
+	}
+
+	/**
+	 * 批量导入小区
+	 */
+	@Override
+	public String batchImport(String filePath) throws Exception {
+		// 正常情况下返回success，异常时返回异常行的序列及提示信息
+		String result = "";
+
+		StringBuilder villageIsExist = new StringBuilder("");
+		StringBuilder exceptionRows = new StringBuilder("");
+		String separator = ",";
+
+		// 构造 XSSFWorkbook 对象，filePath 传入文件路径
+		log.info("导入小区的文件路径：" + filePath);
+		XSSFWorkbook xwb = new XSSFWorkbook(filePath);
+
+		// 读取第一张sheet表格内容
+		XSSFSheet sheet = xwb.getSheetAt(0);
+		xwb.close();// 记得关闭流
+
+		XSSFRow row;
+		String content;
+		String sequence = "";
+		HajCommunityPersionVo vo;
+		HashMap<String, String> areaMap;
+		HajAreas hajAreas;
+		int cellIndex = 0;
+
+		// 循环输出表格中的内容
+		// i从真实数据行开始读取
+		for (int i = (sheet.getFirstRowNum() + 1), rows = sheet.getPhysicalNumberOfRows(); i < rows; i++, cellIndex = 0) {
+			try {
+				row = sheet.getRow(i);
+				if (row == null)
+					continue;
+
+				// 第一列序号无需写入数据库
+				sequence = getCellValue(row.getCell(cellIndex++));
+				if (sequence.indexOf(".") > 0) {
+					sequence = sequence.substring(0, sequence.indexOf("."));
+				}
+
+				// 序号为空视为无效行
+				if (Tools.isEmpty(sequence)) {
+					continue;
+				}
+
+				// -------------------------------------------------
+				// 开始封装数据，特殊字段添加校验
+				// -------------------------------------------------
+				vo = new HajCommunityPersionVo();
+				vo.setProvince(getCellValue(row.getCell(cellIndex++)));
+				vo.setCity(getCellValue(row.getCell(cellIndex++)));
+				vo.setCommunity(getCellValue(row.getCell(cellIndex++)));
+				vo.setCommunityName(getCellValue(row.getCell(cellIndex++)));
+
+				// 根据省、市、区以及小区名判断该小区是否已存在
+				// 存在则跳出当前循环，追加到提示语中
+				if (dao.checkCommunityUniqueness(vo) > 0) {
+					villageIsExist.append(sequence).append(separator);
+					continue;
+				}
+
+				// 根据省市区获取区code
+				areaMap = new HashMap<>();
+				areaMap.put("province", vo.getProvince());
+				areaMap.put("city", vo.getCity());
+				areaMap.put("community", vo.getCommunity());
+				hajAreas = areasService.getCodeByAreas(areaMap);
+				vo.setCommunityCode(hajAreas.getCode());
+				vo.setAddress(getCellValue(row.getCell(cellIndex++)));
+				vo.setLongitude(getCellValue(row.getCell(cellIndex++)));
+				vo.setLatitude(getCellValue(row.getCell(cellIndex++)));
+				content = getCellValue(row.getCell(cellIndex++));
+				setLevel(content, vo);
+				vo.setPlanMemberNumber(Integer.valueOf(getCellValue(row.getCell(cellIndex++))));
+
+				// 默认值
+				vo.setCreateTime(DateUtil.datetime2Str(new Date()));
+				vo.setRegistererNumber(0);
+				vo.setMembersNumber(0);
+				vo.setMemberStatus(0);
+				vo.setAppointmentNum(0);
+				vo.setVersion(0);
+				vo.setNeedPostFee(0);
+				dao.add(vo);
+
+				// 同步新增小区至WMS
+				WmsSender.receiveCommunity(vo);
+			} catch (Exception e) {
+				log.info("批量导入小区出错", e);
+				exceptionRows.append(sequence).append(separator);
+				deleteImportFile(filePath);
+			}
+		}
+
+		if (Tools.isEmpty(villageIsExist.toString()) && Tools.isEmpty(exceptionRows.toString())) {
+			result = "success";
+		} else {
+			if (Tools.notEmpty(villageIsExist.toString())) {
+				result += "序号[" + villageIsExist.substring(0, villageIsExist.length() - 1) + "]小区已存在";
+			}
+			if (Tools.notEmpty(exceptionRows.toString())) {
+				result += "\r\n序号[" + exceptionRows.substring(0, exceptionRows.length() - 1) + "]数据异常";
+			}
+		}
+
+		createHajCommunityPersionIndex();
+		return result;
+	}
+
+	@Override
+	public String batchUpdate(String filePath) throws Exception {
+		// 正常情况下返回success，异常时返回异常行的序列及提示信息
+		String result = "";
+
+		StringBuilder exceptionRows = new StringBuilder("");
+		String separator = ",";
+
+		// 构造 XSSFWorkbook 对象，filePath 传入文件路径
+		log.info("导入小区的文件路径：" + filePath);
+		XSSFWorkbook xwb = new XSSFWorkbook(filePath);
+
+		// 读取第一张sheet表格内容
+		XSSFSheet sheet = xwb.getSheetAt(0);
+		xwb.close();// 记得关闭流
+
+		XSSFRow row;
+		String content;
+		String sequence = "";
+		HajCommunityPersionVo vo;
+		HajCommunityPersion communityByName;
+		HashMap<String, String> areaMap;
+		HajAreas hajAreas;
+		int cellIndex = 0;
+
+		// 循环输出表格中的内容
+		// i从真实数据行开始读取
+		for (int i = (sheet.getFirstRowNum() + 1), rows = sheet.getPhysicalNumberOfRows(); i < rows; i++, cellIndex = 0) {
+			try {
+				row = sheet.getRow(i);
+				if (row == null)
+					continue;
+
+				sequence = getCellValue(row.getCell(cellIndex++));
+				if (sequence.indexOf(".") > 0) {
+					sequence = sequence.substring(0, sequence.indexOf("."));
+				}
+
+				// 序号为空视为无效行
+				if (Tools.isEmpty(sequence)) {
+					continue;
+				}
+
+				// -------------------------------------------------
+				// 开始封装数据，特殊字段添加校验
+				// -------------------------------------------------
+				vo = new HajCommunityPersionVo();
+				row.getCell(cellIndex++);    //id不用保存
+				vo.setProvince(getCellValue(row.getCell(cellIndex++)));
+				vo.setCity(getCellValue(row.getCell(cellIndex++)));
+				vo.setCommunity(getCellValue(row.getCell(cellIndex++)));
+				vo.setCommunityName(getCellValue(row.getCell(cellIndex++)));
+
+				// 根据省市区获取区code
+				areaMap = new HashMap<>();
+				areaMap.put("province", vo.getProvince());
+				areaMap.put("city", vo.getCity());
+				areaMap.put("community", vo.getCommunity());
+				hajAreas = areasService.getCodeByAreas(areaMap);
+				communityByName = dao.getCommunityByName(vo.getCommunityName(), hajAreas.getPCode());
+				vo.setId(communityByName.getId());
+				vo.setAddress(getCellValue(row.getCell(cellIndex++)));
+				vo.setLongitude(getCellValue(row.getCell(cellIndex++)));
+				vo.setLatitude(getCellValue(row.getCell(cellIndex++)));
+				content = getCellValue(row.getCell(cellIndex++));
+				setLevel(content, vo);
+				vo.setPlanMemberNumber(Integer.valueOf(getCellValue(row.getCell(cellIndex++))));
+				content = getCellValue(row.getCell(cellIndex++));
+				setStatus(content, vo);
+				vo.setActivationTime(getCellValue(row.getCell(cellIndex++)));
+				cellIndex = cellIndex + 5; // 跳过中间5个无需更新的字段
+				vo.setHajCellAccess(getCellValue(row.getCell(cellIndex++)));
+				vo.setHajPickUpContact(getCellValue(row.getCell(cellIndex++)));
+				vo.setCellAccess(getCellValue(row.getCell(cellIndex++)));
+				vo.setPickUpContact(getCellValue(row.getCell(cellIndex++)));
+				vo.setOrderSales(getCellValue(row.getCell(cellIndex++)));
+				vo.setOrderSalesPhone(getCellValue(row.getCell(cellIndex++)));
+				vo.setWxcode(getCellValue(row.getCell(cellIndex++)));
+				vo.setAfterServiceWechatId(getCellValue(row.getCell(cellIndex++)));
+				vo.setName(getCellValue(row.getCell(cellIndex++)));
+				vo.setTelphone(getCellValue(row.getCell(cellIndex++)));
+				vo.setFloor(Integer.valueOf(getCellValue(row.getCell(cellIndex++))));
+				vo.setDistributionStatus("配送中".equals(getCellValue(row.getCell(cellIndex++))) ? 1 : 0);
+				vo.setNeedPostFee("是".equals(getCellValue(row.getCell(cellIndex++)))?1:0);
+
+				vo.setVersion(communityByName.getVersion());
+				// 清空无需更改的字段
+				vo.setProvince(null);           //省
+				vo.setCity(null);               //市
+				vo.setCommunity(null);          //区
+				vo.setCommunityName(null);      //小区名称
+				vo.setStatus(null);             //是否激活
+				vo.setActivationTime(null);     //激活时间
+				vo.setMemberStatus(null);       //会员是否已满
+				vo.setAppointmentNum(null);     //预约人数
+				vo.setMembersNumber(null);      //会员人数
+				vo.setCommonNumber(null);       //普通会员人数
+				vo.setCancalNumber(null);       //取消会员数量
+
+				dao.updateBySelective(vo);
+
+				// 同步修改小区至WMS
+				WmsSender.receiveCommunity(vo);
+			} catch (Exception e) {
+				log.info("批量修改小区出错", e);
+				exceptionRows.append(sequence).append(separator);
+				deleteImportFile(filePath);
+			}
+		}
+
+		if (Tools.isEmpty(exceptionRows.toString())) {
+			result = "success";
+		} else {
+			if (Tools.notEmpty(exceptionRows.toString())) {
+				result += "序号[" + exceptionRows.substring(0, exceptionRows.length() - 1) + "]数据异常";
+			}
+		}
+
+		createHajCommunityPersionIndex();
+		return result;
+	}
+
+	private void setLevel(String content, HajCommunityPersionVo vo) {
+		if ("高档".equals(content)) {
+			vo.setLevel("3");
+		} else if ("中档".equals(content)) {
+			vo.setLevel("2");
+		} else {
+			vo.setLevel("1");
+		}
+	}
+
+	private void setStatus(String content, HajCommunityPersionVo vo) {
+		if ("激活".equals(content)) {
+			vo.setStatus(1);
+		} else {
+			vo.setStatus(0);
+		}
+	}
+
+	/**
+	 * 删除上传的文件，防垃圾
+	 *
+	 * @author SevenWong<br>
+	 * @date 2016年7月26日下午6:52:53
+	 * @param filePath
+	 */
+	private void deleteImportFile(String filePath) {
+		File file = new File(filePath);
+		file.delete();
+	}
+
+	@Override
+	public List<HajCommunityPersion> getAllList() {
+		return dao.getAllList();
+	}
+
+	@Override
+	public HajCommunityPersion getHajCommunityByName(String communityName, String areaCode) {
+		return dao.getCommunityByName(communityName, areaCode);
+	}
+
+	/**
+	 * 小区减少预备会员数量
+	 */
+	@Override
+	public void updateAppointmentNum(Integer id) {
+		dao.updateAppointmentNum(id);
+	}
+
+	@Override
+	public void updateByCommunityName(String communityName) {
+		HajCommunityPersion communityPersion = dao.getCommunityByName(communityName, "");
+		dao.updateByCommunityName(communityPersion);
+	}
+
+	@Override
+	public void updateMembersNumberNum(Integer id) {
+		dao.updateMembersNumberNum(id);
+	}
+
+	@Override
+	public List<Map<String, Object>> villageCount(VillageManagerCriteria criteria) {
+		return dao.villageCount(criteria);
+	}
+
+	@Override
+	public void updateMinByCommunityName(String communityName) {
+		HajCommunityPersion communityPersion = dao.getCommunityByName(communityName, "");
+		dao.updateMinByCommunityName(communityPersion);
+	}
+
+	@Override
+	public int appointmentVillage1(Integer userId, Integer villageId) {
+		// 成功
+		int resultIds = 1;
+		HajCommunityPersion village = dao.queryById(villageId);
+		HajFrontUser hajFrontUser = userDao.queryById(userId);
+		if (village != null) {
+			// 激活状态
+			int status = village.getStatus();
+			// 小区名字
+			// String communityName = village.getCommunityName();
+			// 如果小区会员已满，计划会员数量==正式会员数量
+			if (village.getPlanMemberNumber() == village.getMembersNumber()) {
+				log.info("小区会员已满");
+				resultIds = 2;
+			} else {
+				// 已激活
+				if (status == 1) {
+					log.info("小区已激活");
+					int membersNumber = village.getMembersNumber();
+					// 会员人数加1
+					village.setMembersNumber(membersNumber + 1);
+					// 更新用户为会员状态
+					hajFrontUser.setIsmember("3");
+					// 设置用户会员期限(天)
+					hajFrontUser.setMemberTerm("365");
+					// 设置用户会员开始日期
+					hajFrontUser.setMemberBeginTime(DateUtil.datetime2Str(new Date()));
+
+					// 计划会员人数=会员人数+1
+					if ((membersNumber + 1) >= village.getPlanMemberNumber()) {
+						// 会员已满
+						village.setMemberStatus(1);
+					}
+					// 更新小区信息
+					int resultId = dao.updateBySelective(village);
+					if (resultId > 0) {
+						// 更新用户信息
+						userDao.updateBySelective(hajFrontUser);
+					} else {
+						log.info("【已激活】并发处理，小区预约失败！用户：" + hajFrontUser.getMobilePhone());
+						resultIds = 4;
+					}
+
+				} else {// 未激活
+					log.info("小区未激活");
+					// 预约人数
+					int appointmentNum = village.getAppointmentNum();
+					// 计划会员人数 == 预备会员人数+1 小区自动激活
+					if ((appointmentNum + 1) >= village.getPlanMemberNumber()) {
+						log.info("小区计划会员人数已满");
+						// 会员已满
+						village.setMemberStatus(1);
+					}
+					// 预约人数加1
+					village.setAppointmentNum(appointmentNum + 1);
+					// 用户更新为预备会员状态
+					hajFrontUser.setIsmember("2");
+					// 更新小区信息
+					int resultId = dao.updateBySelective(village);
+					if (resultId > 0) {
+						// 更新用户信息
+						userDao.updateBySelective(hajFrontUser);
+					} else {
+						log.info("【未激活】并发处理，小区预约失败！用户：" + hajFrontUser.getMobilePhone());
+						resultIds = 4;
+					}
+				}
+			}
+		} else {
+			resultIds = 3;
+			log.info("小区为空");
+		}
+		return resultIds;
+	}
+
+	@Override
+	public int appointmentVillage(Integer userId, Integer villageId, Integer oldCommunityId) {
+		String memberStatus;
+		int resultIds = 1;
+		HajCommunityPersion village = dao.queryById(villageId);
+		HajFrontUser hajFrontUser = userDao.queryById(userId);
+		if (village != null) {
+			String cityCode = dao.getCityCodeByVillageId(villageId);
+			if (null != cityCode) {
+				hajFrontUser.setAreaCode(cityCode);
+				hajFrontUser.setVillageId(villageId);
+				hajFrontUser.setResidential(village.getCommunityName());
+				hajFrontUser.setAddress("");
+				hajFrontUser.setCommunityUnitId(0);
+				hajFrontUser.setHouseNumber("");
+				hajFrontUser.setFloor(0);
+				hajFrontUser.setBuildingId(0);
+			}
+			// 小区激活状态
+			int status = village.getStatus();
+			memberStatus = hajFrontUser.getIsmember();
+
+			// 如果小区会员已满，计划会员数量==正式会员数量 village.getMemberStatus() == 1 ||
+			if (Objects.equals(village.getPlanMemberNumber(), village.getMembersNumber())) {
+				log.info("小区会员已满");
+				hajFrontUser.setIsmember("5");
+
+				// 更新用户信息
+				userDao.updateBySelective(hajFrontUser);
+				resultIds = 5;
+			} else {
+				if (status == 1) {
+					log.info("小区已激活");
+					if (village.getMemberStatus() == 1) {
+						// 更新为普通会员
+						hajFrontUser.setIsmember("5");
+						resultIds = 5;
+					} else {
+						// 更新用户为星级会员（前100名）
+						hajFrontUser.setIsmember("3");
+						// 会员人数加1
+						int membersNumber = village.getMembersNumber();
+						village.setMembersNumber(membersNumber + 1);
+						// 计划会员人数=会员人数+1
+						if ((membersNumber + 1) >= village.getPlanMemberNumber()) {
+							// 会员已满
+							village.setMemberStatus(1);
+						}
+
+						// 设置用户会员期限(天)
+						hajFrontUser.setMemberTerm("365");
+						// 设置用户会员开始日期
+						hajFrontUser.setMemberBeginTime(DateUtil.datetime2Str(new Date()));
+					}
+
+					// 更新小区信息
+					int resultId = dao.updateBySelective(village);
+					if (resultId > 0) {
+						// 更新用户信息
+						userDao.updateBySelective(hajFrontUser);
+					} else {
+						log.info("【已激活】并发处理，小区预约失败！用户：" + hajFrontUser.getMobilePhone());
+						resultIds = 4;
+					}
+				} else {
+					log.info("小区未激活");
+
+					// 用户状态调整为非会员时，清空会员有效期
+					hajFrontUser.setMemberBeginTime("");
+					hajFrontUser.setMemberTerm("");
+
+					// 预约人数
+					int appointmentNum = village.getAppointmentNum();
+					// 计划会员人数 == 预备会员人数+1 小区自动激活
+					if ((appointmentNum + 1) <= village.getPlanMemberNumber()) {
+						// 小区计划会员数==预备会员人数 小区状态改为已满
+						if ((appointmentNum + 1) == village.getPlanMemberNumber()) {
+							log.info("小区计划会员人数已满");
+							// 会员已满
+							village.setMemberStatus(1);
+						}
+						// 预约人数加1
+						village.setAppointmentNum(appointmentNum + 1);
+
+						// 用户更新为预备会员状态
+						hajFrontUser.setIsmember("2");
+
+						// 更新小区信息
+						int resultId = dao.updateBySelective(village);
+						if (resultId > 0) {
+							// 更新用户信息
+							userDao.updateBySelective(hajFrontUser);
+						} else {
+							log.info("【未激活】并发处理，小区预约失败！用户：" + hajFrontUser.getMobilePhone());
+							resultIds = 4;
+						}
+					} else {
+						log.info("小区预备会员数超过计划会员人数");
+						hajFrontUser.setIsmember("5");
+
+						// 更新用户信息
+						userDao.updateBySelective(hajFrontUser);
+						resultIds = 5;
+					}
+				}
+			}
+
+			// 切换小区
+			if (oldCommunityId != null && oldCommunityId > 0) {
+				updateByCommunityId(villageId);
+				updateMinByCommunityId(oldCommunityId, memberStatus);
+
+				// 更新用户订单表小区名称
+				orderDao.updateUserResidential(userId, village.getCommunityName());
+			}
+		} else {
+			resultIds = 3;
+			log.info("小区为空");
+		}
+		return resultIds;
+	}
+
+	/**
+	 * 导出全部小区_优化版
+	 */
+	@Override
+	public XSSFWorkbook exportCommunity_new(VillageManagerCriteria criteria) {
+		// 创建HSSFWorkbook对象(excel的文档对象)
+		XSSFWorkbook wkb = new XSSFWorkbook();
+
+		// 建立新的sheet对象（excel的表单）
+		XSSFSheet sheet = wkb.createSheet();
+		sheet.setDefaultColumnWidth(12);
+		sheet.setDefaultRowHeightInPoints(20);
+
+		// 在sheet里创建第1行
+		XSSFRow row = sheet.createRow(0);
+
+		// 创建单元格并设置单元格内容
+		this.setDefaultXSSFRow(row);
+
+		// ============================================================================
+		// 开始写入小区数据
+		// ============================================================================
+		List<HajCommunityPersionVo> communityPersions = dao.getAllCommunity4Export_new(criteria);
+		HajCommunityPersionVo vo;
+
+		int cellIndex = 0;
+		for (int i = 0, len = communityPersions.size(); i < len; i++, cellIndex = 0) {
+			vo = communityPersions.get(i);
+			row = sheet.createRow(i + 1);
+			row.createCell(cellIndex++).setCellValue(i + 1);
+			row.createCell(cellIndex++).setCellValue(vo.getId());
+			row.createCell(cellIndex++).setCellValue(vo.getProvince());
+			row.createCell(cellIndex++).setCellValue(vo.getCity());
+			row.createCell(cellIndex++).setCellValue(vo.getCommunity());
+			row.createCell(cellIndex++).setCellValue(vo.getCommunityName());
+			row.createCell(cellIndex++).setCellValue(vo.getAddress());
+			row.createCell(cellIndex++).setCellValue(vo.getLongitude());
+			row.createCell(cellIndex++).setCellValue(vo.getLatitude());
+			if ("3".equals(vo.getLevel())) {
+				row.createCell(cellIndex++).setCellValue("高档");
+			} else if ("2".equals(vo.getLevel())) {
+				row.createCell(cellIndex++).setCellValue("中档");
+			} else {
+				row.createCell(cellIndex++).setCellValue("低档");
+			}
+			row.createCell(cellIndex++).setCellValue(vo.getPlanMemberNumber());
+			row.createCell(cellIndex++).setCellValue((vo.getStatus() != null && vo.getStatus() == 1) ? "激活" : "未激活");
+			row.createCell(cellIndex++).setCellValue(vo.getActivationTime());
+			row.createCell(cellIndex++).setCellValue(
+					(vo.getMemberStatus() != null && vo.getMemberStatus() == 1) ? "已满" : "未满");
+			row.createCell(cellIndex++).setCellValue(vo.getCnt2());
+			row.createCell(cellIndex++).setCellValue(vo.getCnt3());
+			row.createCell(cellIndex++).setCellValue(vo.getCnt4());
+			row.createCell(cellIndex++).setCellValue(vo.getCnt5());
+			row.createCell(cellIndex++).setCellValue(vo.getHajCellAccess());
+			row.createCell(cellIndex++).setCellValue(vo.getHajPickUpContact());
+			row.createCell(cellIndex++).setCellValue(vo.getCellAccess());
+			row.createCell(cellIndex++).setCellValue(vo.getPickUpContact());
+			row.createCell(cellIndex++).setCellValue(vo.getOrderSales());
+			row.createCell(cellIndex++).setCellValue(vo.getOrderSalesPhone());
+			row.createCell(cellIndex++).setCellValue(vo.getWxcode());
+			row.createCell(cellIndex++).setCellValue(vo.getAfterServiceWechatId());
+			row.createCell(cellIndex++).setCellValue(vo.getName());
+			row.createCell(cellIndex++).setCellValue(vo.getTelphone());
+			row.createCell(cellIndex++).setCellValue(vo.getFloor() == null ? 0 : vo.getFloor());
+			row.createCell(cellIndex++).setCellValue(vo.getDistributionStatus() == 1 ? "配送中" : "停止配送");
+		}
+
+		return wkb;
+	}
+
+
+	/**
+	 * 导出全部小区
+	 */
+	@Override
+	public XSSFWorkbook exportCommunity(VillageManagerCriteria criteria) {
+		// 创建HSSFWorkbook对象(excel的文档对象)
+		XSSFWorkbook wkb = new XSSFWorkbook();
+
+		// 建立新的sheet对象（excel的表单）
+		XSSFSheet sheet = wkb.createSheet();
+		sheet.setDefaultColumnWidth(12);
+		sheet.setDefaultRowHeightInPoints(20);
+
+		// 在sheet里创建第1行
+		XSSFRow row = sheet.createRow(0);
+
+		// 创建单元格并设置单元格内容
+		this.setDefaultXSSFRow(row);
+
+		// ============================================================================
+		// 开始写入小区数据
+		// ============================================================================
+		List<HajCommunityPersionVo> communityPersions = dao.getAllCommunity4Export(criteria);
+		HajCommunityPersionVo vo;
+
+		int cellIndex = 0;
+		for (int i = 0, len = communityPersions.size(); i < len; i++, cellIndex = 0) {
+			vo = communityPersions.get(i);
+			row = sheet.createRow(i + 1);
+			row.createCell(cellIndex++).setCellValue(i + 1);
+			row.createCell(cellIndex++).setCellValue(vo.getId());
+			row.createCell(cellIndex++).setCellValue(vo.getProvince());
+			row.createCell(cellIndex++).setCellValue(vo.getCity());
+			row.createCell(cellIndex++).setCellValue(vo.getCommunity());
+			row.createCell(cellIndex++).setCellValue(vo.getCommunityName());
+			row.createCell(cellIndex++).setCellValue(vo.getAddress());
+			row.createCell(cellIndex++).setCellValue(vo.getLongitude());
+			row.createCell(cellIndex++).setCellValue(vo.getLatitude());
+			if ("3".equals(vo.getLevel())) {
+				row.createCell(cellIndex++).setCellValue("高档");
+			} else if ("2".equals(vo.getLevel())) {
+				row.createCell(cellIndex++).setCellValue("中档");
+			} else {
+				row.createCell(cellIndex++).setCellValue("低档");
+			}
+			row.createCell(cellIndex++).setCellValue(vo.getPlanMemberNumber());
+			row.createCell(cellIndex++).setCellValue((vo.getStatus() != null && vo.getStatus() == 1) ? "激活" : "未激活");
+			row.createCell(cellIndex++).setCellValue(vo.getActivationTime());
+			row.createCell(cellIndex++).setCellValue(
+					(vo.getMemberStatus() != null && vo.getMemberStatus() == 1) ? "已满" : "未满");
+			row.createCell(cellIndex++).setCellValue(vo.getAppointmentNum());
+			row.createCell(cellIndex++).setCellValue(vo.getMembersNumber());
+			row.createCell(cellIndex++).setCellValue(vo.getCommonNumber());
+			row.createCell(cellIndex++).setCellValue(vo.getCancalNumber());
+			row.createCell(cellIndex++).setCellValue(vo.getHajCellAccess());
+			row.createCell(cellIndex++).setCellValue(vo.getHajPickUpContact());
+			row.createCell(cellIndex++).setCellValue(vo.getCellAccess());
+			row.createCell(cellIndex++).setCellValue(vo.getPickUpContact());
+			row.createCell(cellIndex++).setCellValue(vo.getOrderSales());
+			row.createCell(cellIndex++).setCellValue(vo.getOrderSalesPhone());
+			row.createCell(cellIndex++).setCellValue(vo.getWxcode());
+			row.createCell(cellIndex++).setCellValue(vo.getAfterServiceWechatId());
+			row.createCell(cellIndex++).setCellValue(vo.getName());
+			row.createCell(cellIndex++).setCellValue(vo.getTelphone());
+			row.createCell(cellIndex++).setCellValue(vo.getFloor() == null ? 0 : vo.getFloor());
+			row.createCell(cellIndex++).setCellValue(vo.getDistributionStatus() == 1 ? "配送中" : "停止配送");
+			row.createCell(cellIndex++).setCellValue(vo.getNeedPostFee()==1?"是":"否");
+		}
+
+		return wkb;
+	}
+
+	/**
+	 * 导出小区列表时设置excel前两行数据
+	 *
+	 * @author SevenWong<br>
+	 * @date 2016年7月25日下午3:32:30
+	 * @param row
+	 */
+	private void setDefaultXSSFRow(XSSFRow row) {
+		int cellIndex = 0;
+		// 初始化第一行标题
+		row.createCell(cellIndex++).setCellValue("序号【带*不可以修改】");
+		row.createCell(cellIndex++).setCellValue("*小区id");
+		row.createCell(cellIndex++).setCellValue("*省份");
+		row.createCell(cellIndex++).setCellValue("*城市");
+		row.createCell(cellIndex++).setCellValue("*县区");
+		row.createCell(cellIndex++).setCellValue("*小区名称");
+		row.createCell(cellIndex++).setCellValue("小区地址");
+		row.createCell(cellIndex++).setCellValue("百度地图经度");
+		row.createCell(cellIndex++).setCellValue("百度地图纬度");
+		row.createCell(cellIndex++).setCellValue("小区等级");
+		row.createCell(cellIndex++).setCellValue("限制会员人数");
+		row.createCell(cellIndex++).setCellValue("*是否激活");
+		row.createCell(cellIndex++).setCellValue("*激活年月日");
+		row.createCell(cellIndex++).setCellValue("*会员是否已满");
+		row.createCell(cellIndex++).setCellValue("*预备会员人数");
+		row.createCell(cellIndex++).setCellValue("*正式会员人数");
+		row.createCell(cellIndex++).setCellValue("*普通会员人数");
+		row.createCell(cellIndex++).setCellValue("*取消会员人数");
+		row.createCell(cellIndex++).setCellValue("汇爱家负责人");
+		row.createCell(cellIndex++).setCellValue("汇爱家负责人联系方式");
+		row.createCell(cellIndex++).setCellValue("小区对接人");
+		row.createCell(cellIndex++).setCellValue("小区对接人联系方式");
+		row.createCell(cellIndex++).setCellValue("汇爱家售后");
+		row.createCell(cellIndex++).setCellValue("售后联系方式");
+		row.createCell(cellIndex++).setCellValue("售前微信号");
+		row.createCell(cellIndex++).setCellValue("售后微信号");
+		row.createCell(cellIndex++).setCellValue("配送员");
+		row.createCell(cellIndex++).setCellValue("配送员联系方式");
+		row.createCell(cellIndex++).setCellValue("小区楼层数");
+		row.createCell(cellIndex++).setCellValue("小区配送情况【配送中/停止配送】");
+		row.createCell(cellIndex++).setCellValue("是否免运费");
+
+		// 合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
+		// sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 12));
+	}
+
+	@Override
+	public List<HajCommunityPersion> queryCommunityListById(String[] ids) {
+		return dao.queryCommunityListById(ids);
+	}
+
+	@Override
+	public boolean updateMemberCount(Integer[] ids) {
+		return false;
+	}
+
+	@Override
+	public Map<String, Object> villageMapCount(VillageManagerCriteria criteria) {
+		return dao.villageMapCount(criteria);
+	}
+
+	@Override
+	public List<Map<String, Object>> listPageSorter(HajCommunitySorterVo vo) {
+		return dao.listPageSorter(vo);
+	}
+
+	@Override
+	public String getCommunitiesBySorterId(Integer sorterId) {
+		List<String> nameBySorterId = dao.getCommunitiesBySorterId(sorterId);
+		return StringUtils.join(nameBySorterId, ',');
+	}
+
+	@Override
+	public String getCityCodeByVillageId(Integer villageId) {
+		return dao.getCityCodeByVillageId(villageId);
+	}
+
+	@Override
+	public Map<String, Object> queryCommunityPersion(HajCommunityPersion persion) {
+		return dao.queryCommunityPersion(persion);
+	}
+
+	@Override
+	public void updateByCommunityId(int communityId) {
+		HajCommunityPersion communityPersion = dao.queryById(communityId);
+		dao.updateByCommunityId(communityPersion);
+	}
+
+	@Override
+	public void updateMinByCommunityId(int oldCommunityId, String memberStatus) {
+		HajCommunityPersion communityPersion = dao.queryById(oldCommunityId);
+		log.info("切换小区，会员状态：" + memberStatus);
+		// 正式会员
+		if (memberStatus.equals("3")) {
+			dao.updateMinMembersNumber(communityPersion);
+		} else if (memberStatus.equals("2")) // 预备会员
+		{
+			dao.updateMinAppointmentNum(communityPersion);
+		}
+
+	}
+
+	@Override
+	public List<HajCommunityPersion> getActiveCommunityByArea(String areaCode) {
+		return dao.getActiveCommunityByArea(areaCode);
+	}
+
+	@Override
+	public Map<String, Object> villageMapCount1(VillageManagerCriteria criteria) {
+		return dao.villageMapCount1(criteria);
+	}
+
+	@Override
+	public Map<String, Object> villageMapCount2(VillageManagerCriteria criteria) {
+		return dao.villageMapCount2(criteria);
+	}
+
+	@Override
+	public Map<String, Object> villageMapCount3(VillageManagerCriteria criteria) {
+		return dao.villageMapCount3(criteria);
+	}
+
+	@Override
+	public Map<String, Object> operationsDataCenter(String areaCode) {
+		return dao.operationsDataCenter(areaCode);
+	}
+
+	@Override
+	public List<HajCommunityPersion> getByUserIds(Integer[] userIds) {
+		return dao.getByUserIds(userIds);
+	}
+
+	@Override
+	public List<HajCommunityPersion> getCommunityList() {
+		return dao.getCommunityList();
+	}
+}

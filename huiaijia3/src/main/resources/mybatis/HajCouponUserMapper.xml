@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCouponUserMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCouponUser">
+		<result column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="createTime" property="createTime"/>
+		<result column="isUsed" property="isUsed"/>
+		<result column="isValidate" property="isValidate"/>
+		<result column="couponId" property="couponId"/>
+		<result column="beginTime" property="beginTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="isRead" property="isRead"/>
+	</resultMap>
+
+	<!-- haj_coupon_user table all fields -->
+	<sql id="Base_Column_List">
+		id, userId, createTime, isUsed, isValidate, couponId,beginTime,endTime,isRead
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				AND id = #{condition.id}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''">
+				AND userId = #{condition.userId}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				AND createTime = #{condition.createTime}
+			</if>
+			<if test="condition.isUsed != null and condition.isUsed != ''">
+				AND isUsed = #{condition.isUsed}
+			</if>
+			<if test="condition.isValidate != null and condition.isValidate != ''">
+				AND isValidate = #{condition.isValidate}
+			</if>
+			<if test="condition.couponId != null and condition.couponId != ''">
+				AND couponId = #{condition.couponId}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND userId = #{userId}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+			</if>
+			<if test="isUsed != null and isUsed != ''">
+				AND isUsed = #{isUsed}
+			</if>
+			<if test="isValidate != null and isValidate != ''">
+				AND isValidate = #{isValidate}
+			</if>
+			<if test="couponId != null and couponId != ''">
+				AND couponId = #{couponId}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_coupon_user(id, userId, createTime, isUsed, isValidate, couponId,beginTime,endTime,isRead)
+		VALUES(#{id}, #{userId}, now(), #{isUsed}, #{isValidate}, #{couponId},#{beginTime},#{endTime},#{isRead})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_coupon_user SET userId = #{userId}, isUsed = #{isUsed}, isValidate = #{isValidate}, couponId = #{couponId} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_coupon_user SET
+		<trim suffixOverrides=",">
+			<if test="userId != null">
+				userId = #{userId},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="isUsed != null">
+				isUsed = #{isUsed},
+			</if>
+			<if test="isValidate != null">
+				isValidate = #{isValidate},
+			</if>
+			<if test="couponId != null">
+				couponId = #{couponId},
+			</if>
+			<if test="beginTime != null">
+				beginTime = #{beginTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+			<if test="isRead != null">
+				isRead = #{isRead},
+			</if>
+
+		</trim>
+		WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_coupon_user WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM haj_coupon_user WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_coupon_user
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM haj_coupon_user
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCouponUser" parameterType="HajCouponUser">
+		SELECT * FROM haj_coupon_user
+		WHERE 1=1
+		ORDER BY id DESC
+	</select>
+
+	<select id="getCouponListByUserId" parameterType="Integer" resultType="java.util.HashMap">
+		SELECT ci.id AS couponId,ci.name,DATE_FORMAT(cu.beginTime,'%Y-%m-%d') AS beginTime,
+			DATE_FORMAT(cu.endTime,'%Y-%m-%d') AS endTime,
+			ci.couponMoney,ci.limitNumber,ci.rule,cu.`isUsed`,cu.`isValidate`,ci.`remark`,
+			cu.`id` AS userCouponId,ci.`type`,ci.sendType,cu.isRead
+		FROM haj_coupon_user cu
+		LEFT JOIN haj_coupon_info ci ON ci.`id`= cu.`couponId`
+		WHERE cu.userId=#{userId} order by cu.endTime
+	</select>
+
+	<select id="getCouponUser" resultType="Integer" parameterType="HajCouponUser">
+		SELECT count(1) FROM haj_coupon_user
+		WHERE   userId=#{userId}  and couponId = #{couponId}
+	</select>
+
+	<select id="getCouponCount" resultType="Integer" parameterType="Integer">
+		SELECT count(1) FROM haj_coupon_user
+		WHERE  couponId = #{couponId}
+	</select>
+
+	<select id="getCouponCommodityById" parameterType="Object" resultType="java.util.HashMap">
+		SELECT c.id, c.commodityNo, c.name, cc.couponId
+		FROM haj_coupon_commodity cc
+		INNER JOIN haj_commodity c
+		ON c.commodityNo = cc.commodityNo
+		AND cc.couponId = #{couponId}
+		AND c.id IN
+		<foreach collection="commodityNos" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<update id="updateClearUserCoupon" parameterType="Object">
+		UPDATE haj_coupon_user set isValidate=1,isRead = 1 where isValidate =0 AND TO_DAYS(endTime) = TO_DAYS(NOW())
+	</update>
+
+	<update id="updateUserUsed" parameterType="Object">
+		UPDATE haj_coupon_user set isUsed=1 ,isRead = 1 where  id = #{id}
+	</update>
+
+	<update id="updateUserCouponRead" parameterType="Object">
+		UPDATE haj_coupon_user set isRead=1 where  userId = #{userId}
+	</update>
+
+	<select id="getCouponListByCommodity" parameterType="Object" resultType="java.util.HashMap">
+		SELECT DISTINCT ci.id AS couponId,ci.name,DATE_FORMAT(cs.beginTime,'%Y-%m-%d') AS
+		beginTime,DATE_FORMAT(cs.endTime,'%Y-%m-%d') AS endTime,
+		ci.couponMoney,ci.limitNumber,ci.rule,cs.`isUsed`,cs.`isValidate`,ci.`remark`,cs.`id` AS
+		userCouponId,ci.`type`,ci.sendType
+		FROM haj_coupon_commodity cc LEFT JOIN haj_coupon_user cs ON cc.`couponId`=cs.`couponId`
+		LEFT JOIN haj_coupon_info ci ON ci.`id`= cs.`couponId`
+		LEFT JOIN haj_commodity c ON c.`commodityNo`= cc.`commodityNo`
+		WHERE cs.userId=#{userId} AND cs.isUsed=0 AND cs.isValidate=0
+		and DATE_FORMAT(NOW(),'%Y-%m-%d') >= DATE_FORMAT(cs.beginTime,'%Y-%m-%d') AND c.`id` in
+		<foreach collection="commodityNos" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		ORDER BY cs.endTime
+	</select>
+
+	<select id="getClearUserCouponByDate" resultType="java.util.HashMap">
+		SELECT id FROM haj_coupon_user WHERE isValidate =0 AND TO_DAYS(endTime) = TO_DAYS(NOW())
+	</select>
+
+	<select id="listByCouponId" parameterType="Integer" resultType="HajCouponUser">
+		SELECT * FROM `haj_coupon_user` cu WHERE cu.`couponId` = #{couponId}
+	</select>
+
+	<update id="updateInvalidateByCouponId" parameterType="Integer">
+		UPDATE haj_coupon_user cu SET cu.`isValidate` = 1
+		WHERE cu.`couponId` = #{couponId} AND cu.`isUsed` = 0
+	</update>
+
+	<insert id="addBatch" useGeneratedKeys="true" parameterType="java.util.List">
+		<selectKey resultType="long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_coupon_user(userId, createTime, isUsed, isValidate, couponId,beginTime,endTime,isRead)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.userId}, now(), #{item.isUsed}, #{item.isValidate}, #{item.couponId},
+			#{item.beginTime},#{item.endTime},#{item.isRead})
+		</foreach>
+	</insert>
+
+	<select id="getUserStatus" resultType="java.util.HashMap" parameterType="Integer">
+		SELECT u.`id`, u.`ismember`, u.areaCode,
+			(SELECT COUNT(*) FROM haj_order o WHERE o.`userId` = #{userId}) orderRecords,
+			(SELECT COUNT(*) FROM haj_community_persion cp WHERE cp.id = u.`villageId` AND cp.`status` = 1 AND cp.`distributionStatus` = 1 ) communityStatus
+		FROM haj_front_user u WHERE u.id = #{userId}
+	</select>
+
+	<select id="getReceivedCoupons" resultType="Integer" parameterType="HashMap">
+		SELECT cu.`couponId` FROM haj_coupon_user cu
+		WHERE cu.`userId` = #{userId}
+		AND cu.`couponId` IN
+		<foreach collection="couponIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="listCouponsByIds" parameterType="Map" resultType="Map">
+		SELECT ci.id AS couponId,ci.name,DATE_FORMAT(cu.beginTime,'%Y-%m-%d') AS beginTime,
+		DATE_FORMAT(cu.endTime,'%Y-%m-%d') AS endTime,
+		ci.couponMoney,ci.limitNumber,ci.rule,cu.`isUsed`,cu.`isValidate`,ci.`remark`,
+		cu.`id` AS userCouponId,ci.`type`,ci.sendType,cu.isRead
+		FROM haj_coupon_user cu
+		LEFT JOIN haj_coupon_info ci ON ci.`id`= cu.`couponId`
+		WHERE cu.userId=#{userId} AND ci.`id` IN
+		<foreach collection="couponIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		ORDER BY cu.endTime
+	</select>
+	<!-- 查询当天派发的优惠卷 -->
+	<select id="getDistributeCouponByDate" resultType="Map">
+	   SELECT A.userId FROM  haj_coupon_user  A LEFT JOIN haj_coupon_info B ON A.couponId=B.id
+       WHERE A.isRead=0
+       AND  A.isUsed=0
+       AND A.isValidate=0
+       AND B.sendType=1
+       AND DATE(A.createTime)=DATE(NOW());
+	</select>
+	<!-- 查询当天即将过期的优惠卷 -->
+	<select id="getOverdueCouponByDate" resultType="Map">
+		 SELECT A.userId ,COUNT(A.userId) number  FROM  haj_coupon_user A LEFT JOIN haj_coupon_info B
+         ON A.couponId=B.id
+        WHERE  isUsed=0
+          AND isValidate=0
+          AND DATE(A.endTime)=DATE(NOW())
+          GROUP BY A.userId
+	</select>
+</mapper>

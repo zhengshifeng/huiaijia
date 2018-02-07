@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	<!-- default-autowire="byName" default-lazy-init="false"此两个值可以不配置 -->
+	<description>Quartz Job Setting</description>
+
+	<!-- ************************************ -->	
+	<!-- 生成采购单 -->
+	<!-- ************************************ -->
+	<!-- A.配置调度的任务对应bean的id和自定义class -->
+	<bean id="makePurchaseListQuartz" class="com.flf.job.myQuarts" />
+	<!-- B.配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="makePurchaseListJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="makePurchaseListQuartz" />
+		<property name="targetMethod" value="tips" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="makePurchaseListTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="makePurchaseListJob" />
+		<property name="cronExpression">
+			<value>0 05 16 * * ?</value>
+		</property>
+	</bean>
+
+
+	<bean id="erpOrderQuartz" class="com.flf.controller.erp.job.ERPOrderQuarts" />
+	<!-- ************************************ -->
+	<!-- 生成erp采购订单-->
+	<!-- ************************************ -->
+	<bean id="PurchaseOrder" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erpOrderQuartz" />
+		<property name="targetMethod" value="generatePurchaseOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="erpPurchaseOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="PurchaseOrder" />
+		<property name="cronExpression">
+			<value>0 05 20 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 生成erp销售订单-->
+	<!-- ************************************ -->
+	<bean id="erpSalesOrderJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erpOrderQuartz" />
+		<property name="targetMethod" value="generateSalesOrderOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="erpSalesOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="erpSalesOrderJob" />
+		<property name="cronExpression">
+			<value>0 10 20 * * ?</value>
+		</property>
+	</bean>
+
+
+	<!-- 生成erp生产订单-->
+	<!-- ************************************ -->
+	<bean id="erpProductionOrderJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erpOrderQuartz" />
+		<property name="targetMethod" value="generateProductionOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="erpProductionOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="erpProductionOrderJob" />
+		<property name="cronExpression">
+			<value>0 00 20 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 更新邀请有礼状态-->
+	<bean id="updateInviteStatusQuart" class="com.flf.job.InviteQuarts" />
+	<bean id="updateInviteStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="updateInviteStatusQuart" />
+		<property name="targetMethod" value="updateInviteStatus" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="updateInviteStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="updateInviteStatusJob" />
+		<property name="cronExpression">
+			<value>0 0 9 * * ?</value>
+		</property>
+	</bean>
+
+	<!--优惠卷定时器，用于推送通知-->
+	<bean id="userCouponQuarts" class="com.flf.job.NotifyUserCouponQuarts" />
+	<!-- ************************************ -->
+	<!-- 派发当天优惠卷推送通知-->
+	<!-- ************************************ -->
+	<bean id="distributeCoupon" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="userCouponQuarts" />
+		<property name="targetMethod" value="notifyDistributeCoupon" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="distributeCouponTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="distributeCoupon" />
+		<property name="cronExpression">
+			<value>0 00 21 * * ?</value>
+		</property>
+	</bean>
+	<!-- 派发当天过期优惠卷通知-->
+	<!-- ************************************ -->
+	<bean id="overdueCoupon" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="userCouponQuarts" />
+		<property name="targetMethod" value="notifyOverdueCoupon" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="overdueCouponTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="overdueCoupon" />
+		<property name="cronExpression">
+			<value>0 0 9 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 每天早上8点更新订单为已完成状态 -->
+	<!-- ************************************ -->
+	<bean id="updateHajOrderStatusQuartz" class="com.flf.job.UpdateHajOrderStatusQuarts" />
+	<bean id="updateHajOrderStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="updateHajOrderStatusQuartz" />
+		<property name="targetMethod" value="tips" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="updateHajOrderStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="updateHajOrderStatusJob" />
+		<property name="cronExpression">
+			<value>0 0 8 * * ?</value>
+		</property>
+	</bean>
+
+
+	<!-- ************************************ -->
+	<!-- 更新退款流水 -->
+	<!-- ************************************ -->
+	<bean id="updateRefundRecordQuartz" class="com.flf.job.UpdateRefundRecordQuarts" />
+	<bean id="updateRefundRecordJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="updateRefundRecordQuartz" />
+		<property name="targetMethod" value="tips" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="updateRefundRecordTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="updateRefundRecordJob" />
+		<property name="cronExpression">
+			<value>0 00 22 * * ?</value>
+		</property>
+	</bean>
+
+
+	<!-- ************************************ -->
+	<!-- 生成商品分拣单 -->
+	<!-- ************************************ -->
+	<bean id="addSortingOrderQuartz" class="com.flf.job.AddSortingOrderQuarts" />
+	<bean id="addSortingOrderJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="addSortingOrderQuartz" />
+		<property name="targetMethod" value="sorting" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="addSortingOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="addSortingOrderJob" />
+		<property name="cronExpression">
+			<value>0 15 18 * * ?</value>
+		</property>
+	</bean>
+	
+	
+	<!-- ************************************ -->
+	<!-- 商品相关调度 -->
+	<!-- ************************************ -->
+	<bean id="upCommoidtyQuartz" class="com.flf.job.UpCommoidtyQuartz" />
+
+	<!-- 部分商品下架16:00:00-->
+	<bean id="upCommoidtyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="upCommoidtyQuartz" />
+		<property name="targetMethod" value="pullOffShelves" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="upCommoidtyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="upCommoidtyJob" />
+		<property name="cronExpression">
+			<value>00 00 16 * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 部分商品下架18:00:00-->
+	<bean id="pullOffShelvesJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="upCommoidtyQuartz" />
+		<property name="targetMethod" value="pullOffShelves2" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="pullOffShelvesTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="pullOffShelvesJob2" />
+		<property name="cronExpression">
+			<value>00 00 18 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 部分商品上架 -->
+	<bean id="putOnShelvesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="upCommoidtyQuartz" />
+		<property name="targetMethod" value="putOnShelves" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="putOnShelvesTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="putOnShelvesJob" />
+		<property name="cronExpression">
+			<value>00 00 23 * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 清空商品毛重-->
+	<bean id="resetGrossWeightJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="upCommoidtyQuartz" />
+		<property name="targetMethod" value="resetGrossWeight" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="resetGrossWeightTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="resetGrossWeightJob" />
+		<property name="cronExpression">
+			<value>00 00 19 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 同步wms库存-->
+	<bean id="wmsInventorySyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="upCommoidtyQuartz" />
+		<property name="targetMethod" value="wmsInventorySync" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="wmsInventorySyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="wmsInventorySyncJob" />
+		<property name="cronExpression" value="00 00 19 * * ?"/>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 生成订单运费 -->
+	<!-- ************************************ -->
+	<!-- A.配置调度的任务对应bean的id和自定义class -->
+	<bean id="makeOrderPostFeeQuartz" class="com.flf.job.calOrderPostFeeQuarts" />
+	<!-- B.配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="makeOrderPostFeeJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="makeOrderPostFeeQuartz" />
+		<property name="targetMethod" value="orderPostFee" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="makeOrderPostFeeTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="makeOrderPostFeeJob" />
+		<property name="cronExpression">
+			<value>0 40 23 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 订单同步WMS -->
+	<!-- ************************************ -->
+	<!-- A.配置调度的任务对应bean的id和自定义class -->
+	<bean id="synchronizeOrderWMSQuartz" class="com.flf.job.SynchronizeOrderWMSQuarts" />
+	<!-- B.配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="synchronizeOrderWMSJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="synchronizeOrderWMSQuartz" />
+		<property name="targetMethod" value="synchronizeOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="synchronizeOrderWMSTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="synchronizeOrderWMSJobs" />
+		<property name="cronExpression">
+			<!--<value>0 0 19,20,21 * * ?</value> 每天晚上19，20，21跑一次-->
+			<value>0 0/10 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 清理超时未支付订单 -->
+	<!-- ************************************ -->
+	<!-- A.配置调度的任务对应bean的id和自定义class -->
+	<bean id="clearOrderQuartz" class="com.flf.job.ClearOrderQuarts" />
+	<!-- B.配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="clearOrderJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clearOrderQuartz" />
+		<property name="targetMethod" value="clearOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="clearOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="clearOrderJobs" />
+		<property name="cronExpression">
+			<value>0 0/5 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 清理超时未使用的优惠卷-->
+	<!-- ************************************ -->
+	<!-- A.配置调度的任务对应bean的id和自定义class -->
+	<bean id="clearUserCouponQuarts" class="com.flf.job.ClearUserCouponQuarts" />
+	<!-- B.配置调度任务对应的bean的id和执行的方法,作业不并发调度 -->
+	<bean id="clearUserCouponJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clearUserCouponQuarts" />
+		<property name="targetMethod" value="clearUserCoupon" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="clearUserCouponJobsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="clearUserCouponJobs" />
+		<property name="cronExpression">
+			<value>0 0/30 * * * ?</value>
+		</property>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 销售订单同步至京东WMS平台 -->
+	<!-- ************************************ -->
+	<bean id="wmsOrderQuartz" class="com.flf.job.WmsOrderQuarts" />
+	<bean id="wmsOrderJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="wmsOrderQuartz" />
+		<property name="targetMethod" value="synchronizeOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="wmsOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="wmsOrderJobs" />
+		<property name="cronExpression">
+			<value>00 33 17 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- ************************************ -->
+	<!-- 采购单同步至京东WMS平台 -->
+	<!-- ************************************ -->
+	<bean id="wmsPoOrderJobs" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="wmsOrderQuartz" />
+		<property name="targetMethod" value="synchronizePoOrder" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="wmsPoOrderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="wmsPoOrderJobs" />
+		<property name="cronExpression">
+			<value>00 52 11 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- Quartz的调度工厂，调度工厂只能有一个，多个调度任务在list中添加 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<!-- 所有的调度列表 -->
+			<list>
+				<!-- 正式环境不执行 makePurchaseListTrigger,updateHajOrderStatusTrigger 这两个调度，放在内网中执行 -->
+				<ref bean="makePurchaseListTrigger" />
+				<ref bean="updateHajOrderStatusTrigger" />
+				<!--&lt;!&ndash; 更新退款流水，测试环境不需执行此调度(updateRefundRecordTrigger)，避免对第三方支付平台请求过多 &ndash;&gt;-->
+				<!--&lt;!&ndash;<ref bean="updateRefundRecordTrigger" /> &ndash;&gt;-->
+				<ref bean="addSortingOrderTrigger" />
+				<ref bean="upCommoidtyTrigger" />
+				<ref bean="putOnShelvesTrigger" />
+
+				<ref bean="pullOffShelvesTrigger2" />
+				<ref bean="makeOrderPostFeeTrigger" />
+				<!--&lt;!&ndash; 清理超时未使用的优惠卷&ndash;&gt;-->
+				<ref bean="clearUserCouponJobsTrigger" />
+				<ref bean="clearOrderTrigger" />
+				<!-- 执行优惠卷派发，过期通知 -->
+				<ref bean="distributeCouponTrigger" />
+				<ref bean="overdueCouponTrigger" />
+				<!--同步erp
+				<ref bean="erpPurchaseOrderTrigger" />
+				<ref bean="erpSalesOrderTrigger" />
+				<ref bean="erpProductionOrderTrigger" />
+				-->
+				<!-- 执行优惠卷派发，过期通知 -->
+				<!--
+				<ref bean="distributeCouponTrigger" />
+				<ref bean="overdueCouponTrigger" />
+				  执行更新邀请有礼状态
+				<ref bean="updateInviteStatusTrigger"/>
+				-->
+			</list>
+		</property>
+	</bean>
+</beans> 

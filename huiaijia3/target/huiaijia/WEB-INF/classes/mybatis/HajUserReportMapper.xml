@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajUserReportMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajUserReport">
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="villageCode" property="villageCode" />
+		<result column="reportTime" property="reportTime" />
+		<result column="area" property="area" />
+		<result column="pushStatus" property="pushStatus" />
+	</resultMap>
+
+	<!-- haj_user_report table all fields -->
+	<sql id="Base_Column_List">
+		id,userId,villageCode,reportTime,area,pushStatus
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''">
+				and userId = #{condition.userId}
+			</if>
+			<if test="condition.villageCode != null and condition.villageCode != ''">
+				and villageCode = #{condition.villageCode}
+			</if>
+			<if test="condition.reportTime != null and condition.reportTime != ''">
+				and reportTime = #{condition.reportTime}
+			</if>
+			<if test="condition.area != null and condition.area != ''">
+				and area = #{condition.area}
+			</if>
+			<if test="condition.pushStatus != null and condition.pushStatus != ''">
+				and pushStatus = #{condition.pushStatus}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_user_report(id,userId,villageCode,reportTime,area,pushStatus)
+		values(#{id},#{userId},#{villageCode},#{reportTime},#{area},#{pushStatus})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_user_report set
+		userId=#{userId},villageCode=#{villageCode},reportTime=#{reportTime},area=#{area},pushStatus=#{pushStatus} where
+		id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_user_report set
+		<trim suffixOverrides=",">
+			<if test="userId != null  ">
+				userId=#{userId},
+			</if>
+			<if test="villageCode != null  ">
+				villageCode=#{villageCode},
+			</if>
+			<if test="reportTime != null  ">
+				reportTime=#{reportTime},
+			</if>
+			<if test="area != null  ">
+				area=#{area},
+			</if>
+			<if test="pushStatus != null  ">
+				pushStatus=#{pushStatus},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_user_report where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_user_report where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_user_report
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_user_report
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<select id="listPageReport" resultType="java.util.HashMap" parameterType="Object">
+		SELECT r.*,u.username,u.mobilePhone
+		FROM haj_user_report r JOIN haj_front_user u ON r.userId=u.id
+		where 1=1
+		
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		
+		<if test="area != null and area != ''">
+			and area = #{area}
+		</if>
+		<if test="pushStatus != null and pushStatus != ''">
+			and pushStatus = #{pushStatus}
+		</if>
+		<if test="communityName != null and communityName != ''">
+			and villageCode LIKE CONCAT('%', #{communityName}, '%')
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="listAllReport" resultType="java.util.HashMap" parameterType="Object">
+		SELECT r.*,u.username,u.mobilePhone
+		FROM haj_user_report r JOIN haj_front_user u ON r.userId=u.id
+		where 1=1
+		
+		<if test="areaCode != null and areaCode != ''" >
+			and u.areaCode  =  #{areaCode}
+		</if>
+		
+		<if test="area != null and area != ''">
+			and area = #{area}
+		</if>
+		<if test="pushStatus != null and pushStatus != ''">
+			and pushStatus = #{pushStatus}
+		</if>
+		<if test="communityName != null and communityName != ''">
+			and villageCode LIKE CONCAT('%', #{communityName}, '%')
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="checkTheUniqueness" parameterType="HajUserReport" resultType="HajUserReport">
+		SELECT * FROM haj_user_report WHERE userId=#{userId} AND `area`=#{area} AND villageCode=#{villageCode} LIMIT 1
+	</select>
+	
+	<update id="updatePushStatus" parameterType="String">
+		UPDATE haj_user_report r SET r.`pushStatus`=1
+		WHERE r.`userId`=(
+			SELECT u.id FROM haj_front_user u WHERE u.`mobilePhone`=#{mobile}
+		) AND r.`pushStatus`=0
+	</update>
+
+
+</mapper>   

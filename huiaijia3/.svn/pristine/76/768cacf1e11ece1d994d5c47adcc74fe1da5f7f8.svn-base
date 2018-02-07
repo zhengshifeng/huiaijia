@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajSortingOrderMapper" >
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajSortingOrder" >
+		<result column="id" property="id"/>
+		<result column="sortingNo" property="sortingNo"/>
+		<result column="commodityNo" property="commodityNo"/>
+		<result column="createTime" property="createTime"/>
+		<result column="number" property="number"/>
+		<result column="price" property="price"/>
+		<result column="money" property="money"/>
+		<result column="saleMoney" property="saleMoney"/>
+		<result column="version" property="version"/>
+		<result column="residential" property="residential"/>
+	</resultMap>
+	       
+	<!-- haj_sorting_order table all fields -->
+	<sql id="Base_Column_List" >
+		 id,sortingNo,commodityNo,createTime,number,price,money,saleMoney,version,residential
+	</sql>
+	   
+	   
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+	where 1=1
+	<trim  suffixOverrides="," >
+		<if test="condition.id != null and condition.id != ''" >
+		    and id =  #{condition.id}
+		</if>
+		<if test="condition.sortingNo != null and condition.sortingNo != ''" >
+		    and sortingNo =  #{condition.sortingNo}
+		</if>
+		<if test="condition.commodityNo != null and condition.commodityNo != ''" >
+		    and commodityNo =  #{condition.commodityNo}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''" >
+		    and createTime =  #{condition.createTime}
+		</if>
+		<if test="condition.number != null and condition.number != ''" >
+		    and number =  #{condition.number}
+		</if>
+		<if test="condition.price != null and condition.price != ''" >
+		    and price =  #{condition.price}
+		</if>
+		<if test="condition.money != null and condition.money != ''" >
+		    and money =  #{condition.money}
+		</if>
+		<if test="condition.saleMoney != null and condition.saleMoney != ''" >
+		    and saleMoney =  #{condition.saleMoney}
+		</if>
+		<if test="condition.version != null and condition.version != ''" >
+		    and version =  #{condition.version}
+		</if>
+		<if test="condition.residential != null and condition.residential != ''" >
+		    and residential =  #{condition.residential}
+		</if>
+	</trim>
+	</sql>
+	   
+	
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+	  </selectKey>
+	  insert into haj_sorting_order(id,sortingNo,commodityNo,createTime,number,price,money,saleMoney,version,residential)
+	 values(#{id},#{sortingNo},#{commodityNo},now(),#{number},#{price},#{money},#{saleMoney},#{version},#{residential})
+	</insert>
+	
+	<!-- 根据id，修改记录-->  
+	 <update id="update" parameterType="Object" >
+	  update haj_sorting_order set sortingNo=#{sortingNo},commodityNo=#{commodityNo},number=#{number},price=#{price},money=#{money},saleMoney=#{saleMoney},version=#{version},residential=#{residential} where id=#{id}
+	 </update>
+	 
+	 <!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_sorting_order set 
+		<trim  suffixOverrides="," >
+		<if test="sortingNo != null  ">
+			sortingNo=#{sortingNo},
+		</if>
+		<if test="commodityNo != null  ">
+			commodityNo=#{commodityNo},
+		</if>
+		<if test="createTime != null  ">
+			createTime=#{createTime},
+		</if>
+		<if test="number != null  ">
+			number=#{number},
+		</if>
+		<if test="price != null  ">
+			price=#{price},
+		</if>
+		<if test="money != null  ">
+			money=#{money},
+		</if>
+		<if test="saleMoney != null  ">
+			saleMoney=#{saleMoney},
+		</if>
+		<if test="version != null  ">
+			version=#{version},
+		</if>
+		<if test="residential != null  ">
+			residential=#{residential},
+		</if>
+		</trim> where id=#{id}
+	</update>
+	
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete 	 from haj_sorting_order where id = #{id}
+	</delete>
+	 
+	<!-- 根据id查询  -->
+	<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" /> 
+		 from haj_sorting_order where id = #{id}
+	</select>
+	
+	<!--  列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+		select count(1) from haj_sorting_order 
+		<include refid="Example_Where_Clause"/>
+	</select>
+	  	
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+		select 
+		<include refid="Base_Column_List"/>
+		from haj_sorting_order 
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+	       order by  ${orderByClause}
+	    </if>
+	    <if test="limitClause != null and limitClause != ''" >
+	       ${limitClause}
+	    </if>
+	</select>
+	
+	
+	<select id="listPageOrder" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT po.id,po.commodityNo,ct.commodityAttr,c.name,ct.typeName AS
+		sTypeName,ct1.typeName AS bTypeName,(select `name`  from `haj_supply_chain` where id=c.`supplyChain` ) as
+		supplyChain,po.createTime,po.number,po.price,po.money,po.sortingNo,c.weight,po.saleMoney,po.residential
+		
+		FROM haj_sorting_order po LEFT JOIN haj_commodity c ON
+		c.commodityNo=po.commodityNo LEFT JOIN haj_commodity_type ct ON
+		ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+		<if test="supplyChain != null and supplyChain != ''">
+			LEFT JOIN haj_supply_chain hsc ON hsc.id=c.supplyChain 
+		</if>
+		
+		WHERE 1=1
+			 
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="residential != null and residential != ''">
+			and po.residential LIKE CONCAT('%', #{residential}, '%')
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND po.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">  
+				#{residentialList}
+			</foreach>
+		</if>
+		order by po.createTime desc
+	</select>
+	  	
+  	
+  	<select id="listPageTodaySorting" resultType="java.util.HashMap"
+		parameterType="Object">
+		
+		SELECT o.residential,o.delflag,c.name,c.commodityNo,c.costPrice ,SUM(d.number) AS number,(SUM(d.number)*c.costPrice) AS money,SUM(d.actualPayment) AS saleMoney,ct.typeName AS
+		sTypeName,ct1.typeName AS bTypeName,ct.commodityAttr,c.`weight`,o.createTime
+		FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo LEFT JOIN haj_commodity_type ct ON
+		ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.status=2 AND o.delflag=0
+		 
+		 <if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="beginTime != null and beginTime != ''">
+			and o.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and o.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="residential != null and residential != ''">
+			and o.residential LIKE CONCAT('%', #{residential}, '%')
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND o.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">  
+				#{residentialList}
+			</foreach>
+		</if>
+		 GROUP BY c.commodityNo,o.residential
+	</select>
+	
+  	<select id="queryTotalSorting" resultType="java.util.HashMap" parameterType="Object">
+		SELECT SUM(number) AS sumNumber,SUM(money) AS sumMoney,COUNT(1) AS totalCount,
+			sum(saleMoney) as sumSaleMoney
+		FROM (
+			SELECT sum(po.number) as number,sum(po.money) as money,sum(po.saleMoney) AS saleMoney
+			FROM haj_sorting_order po
+			<if test="areaCode != null and areaCode != ''
+				or commodityNo != null and commodityNo != ''
+				or sTypeName != null and sTypeName != '' or bTypeName != null and bTypeName != ''
+				or supplyChain != null and supplyChain != ''
+				or residentialList != null and residentialList != '[]'">
+				LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+				LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+				LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+				LEFT JOIN haj_supply_chain hsc ON hsc.id=c.supplyChain
+			</if>
+			WHERE 1=1
+			<if test="areaCode != null and areaCode != '' ">
+				and c.areaCode = #{areaCode}
+			</if>
+
+			<if test="beginTime != null and beginTime != ''">
+				and po.createTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and po.createTime &lt;= #{endTime}
+			</if>
+			<if test="commodityNo != null and commodityNo != ''">
+				and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+			</if>
+			<if test="supplyChain != null and supplyChain != ''">
+				and hsc.name = #{supplyChain}
+			</if>
+			<if test="bTypeName != null and bTypeName != ''">
+				and ct1.id = #{bTypeName}
+			</if>
+			<if test="sTypeName != null and sTypeName != ''">
+				and ct.typeName = #{sTypeName}
+			</if>
+			<if test="residentialList != null and residentialList != '[]'">
+				AND po.residential IN
+				<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+					#{residentialList}
+				</foreach>
+			</if>
+			<if test="commodityAttr != null and commodityAttr != ''">
+				and ct.commodityAttr = #{commodityAttr}
+			</if>
+			GROUP BY po.commodityNo
+		) a
+	</select>
+
+  	<select id="queryTotalTodaySorting" resultType="java.util.HashMap" parameterType="Object">
+		SELECT SUM(number) AS sumNumber,SUM(totalMoney) AS sumMoney,COUNT(1) AS
+		totalCount,sum(totalSaleMoney) as sumSaleMoney,COUNT(DISTINCT a.name) as commodityNumber  FROM (
+		
+		SELECT o.residential,o.delflag,c.name,c.commodityNo,c.costPrice ,SUM(d.number) AS number,(SUM(d.number)*c.costPrice) AS totalMoney,SUM(d.actualPayment) AS totalSaleMoney,ct.typeName AS
+		sTypeName,ct1.typeName AS bTypeName,c.`weight` 
+		FROM haj_order o LEFT JOIN haj_order_details d ON o.id=d.orderId LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo  LEFT JOIN haj_commodity_type ct ON
+		ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.status=2 AND o.delflag=0
+	
+		 <if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="beginTime != null and beginTime != ''">
+			and o.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and o.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="residential != null and residential != ''">
+			and o.residential LIKE CONCAT('%', #{residential}, '%')
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND o.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">  
+				#{residentialList}
+			</foreach>
+		</if>
+		 GROUP BY c.commodityNo,o.residential) a
+	</select>
+	
+	<select id="listAllHajSortingOrder" resultType="java.util.HashMap" parameterType="Object">
+		SELECT po.id,po.commodityNo,ct.commodityAttr,c.name,ct.typeName AS sTypeName,
+			ct1.typeName AS bTypeName,hsc.name as supplyChain,po.createTime,po.number,po.price,
+			po.money,po.sortingNo,po.createTime,c.weight,po.saleMoney,po.residential, IFNULL(c.sku, '') sku,
+			IFNULL(c.storageNo, '') storageNo
+		FROM haj_sorting_order po
+		LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_supply_chain hsc ON hsc.id=c.supplyChain
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="residential != null and residential != ''">
+			and po.residential LIKE CONCAT('%', #{residential}, '%')
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND po.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">  
+				#{residentialList}
+			</foreach>
+		</if>
+		order by po.createTime desc
+	</select>
+	
+	<select id="ListAllexportSortOrder" resultType="java.util.HashMap"
+		parameterType="Object">
+		SELECT po.id,po.commodityNo,ct.commodityAttr,c.name,ct.typeName AS
+			sTypeName,ct1.typeName AS bTypeName,(select `name`  from `haj_supply_chain` where id=c.`supplyChain` ) as
+			supplyChain,po.createTime,sum(po.number) AS number,po.sortingNo,po.createTime,c.weight,
+			GROUP_CONCAT(CONCAT((po.residential),'*',po.number)) as residential, IFNULL(c.sku, '') sku,
+			IFNULL(c.storageNo, '') storageNo
+		FROM haj_sorting_order po
+		LEFT JOIN haj_commodity c ON c.commodityNo=po.commodityNo
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+		<if test="supplyChain != null and supplyChain != ''">
+		LEFT JOIN haj_supply_chain hsc ON hsc.id=c.supplyChain
+		</if>
+		WHERE 1=1
+		
+		<if test="areaCode != null and areaCode != '' ">
+			and c.areaCode = #{areaCode}
+		</if>
+		
+		<if test="beginTime != null and beginTime != ''">
+			and po.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and po.createTime &lt;= #{endTime}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (po.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			and hsc.name = #{supplyChain}
+		</if>
+		<if test="bTypeName != null and bTypeName != ''">
+			and ct1.id = #{bTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="residential != null and residential != ''">
+			and po.residential LIKE CONCAT('%', #{residential}, '%')
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			and ct.commodityAttr = #{commodityAttr}
+		</if>
+		<if test="residentialList != null and residentialList != '[]'">
+			AND po.residential IN
+			<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">  
+				#{residentialList}
+			</foreach>
+		</if>
+		GROUP BY po.commodityNo order by ct.commodityAttr,ct1.typeName ,ct.typeName DESC
+	</select>
+	
+	<select id="ListAllexportTodaySortOrder" resultType="java.util.HashMap" parameterType="Object">
+		SELECT GROUP_CONCAT(CONCAT((o.residential),'*',o.number)) AS residential,o.commodityAttr,o.name,
+			o.commodityNo,SUM(o.number) AS number, o.sTypeName,o.bTypeName,o.`weight`,o.sku, o.storageNo,
+			o.sortingBatch
+		FROM (
+			SELECT o.residential,ct.commodityAttr,o.delflag,c.name,c.commodityNo,c.costPrice ,
+				SUM(d.number) AS number,(SUM(d.number)*c.costPrice) AS totalMoney,SUM(d.actualPayment) AS totalSaleMoney,
+				ct.typeName AS sTypeName,ct1.typeName AS bTypeName,c.`weight` ,IFNULL(c.sortingBatch, '') sortingBatch,
+				IFNULL(c.sku, '') sku, IFNULL(c.storageNo, '') storageNo
+			FROM haj_order o
+			LEFT JOIN haj_order_details d ON o.id=d.orderId
+			LEFT JOIN haj_commodity c ON c.commodityNo=d.commodityNo
+			LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+			LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+			WHERE TO_DAYS(o.createTime) = TO_DAYS(NOW()) AND o.status=2 AND o.delflag=0
+			<if test="areaCode != null and areaCode != '' ">
+				and c.areaCode = #{areaCode}
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and o.createTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and o.createTime &lt;= #{endTime}
+			</if>
+			<if test="commodityNo != null and commodityNo != ''">
+				and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+			</if>
+
+			<if test="bTypeName != null and bTypeName != ''">
+				and ct1.id = #{bTypeName}
+			</if>
+			<if test="sTypeName != null and sTypeName != ''">
+				and ct.typeName = #{sTypeName}
+			</if>
+			<if test="residential != null and residential != ''">
+				and o.residential LIKE CONCAT('%', #{residential}, '%')
+			</if>
+			<if test="commodityAttr != null and commodityAttr != ''">
+				and ct.commodityAttr = #{commodityAttr}
+			</if>
+			<if test="residentialList != null and residentialList != '[]'">
+				AND o.residential IN
+				<foreach item="residentialList" index="index" collection="residentialList" open="(" separator="," close=")">
+					#{residentialList}
+				</foreach>
+			</if>
+			GROUP BY c.commodityNo, o.residential
+		) o GROUP BY o.name order by o.commodityAttr, o.bTypeName, o.sTypeName DESC
+	</select>
+</mapper>

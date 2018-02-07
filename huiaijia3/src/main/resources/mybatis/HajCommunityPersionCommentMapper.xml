@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommunityPersionCommentMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.flf.entity.HajCommunityPersionComment" >
+	<result column="id" property="id"/>
+	<result column="communityId" property="communityId"/>
+	<result column="content" property="content"/>
+	<result column="createTime" property="createTime"/>
+	<result column="contactPhone" property="contactPhone"/>
+	<result column="quickComment" property="quickComment"/>
+	<result column="commentName" property="commentName"/>
+</resultMap>
+       
+<!-- haj_community_persion_comment table all fields -->
+<sql id="Base_Column_List" >
+	 id,communityId,content,createTime,contactPhone,quickComment,commentName
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="condition.id != null and condition.id != ''" >
+	    and id =  #{condition.id}
+	</if>
+	<if test="condition.communityId != null and condition.communityId != ''" >
+	    and communityId =  #{condition.communityId}
+	</if>
+	<if test="condition.content != null and condition.content != ''" >
+	    and content =  #{condition.content}
+	</if>
+	<if test="condition.createTime != null and condition.createTime != ''" >
+	    and createTime =  #{condition.createTime}
+	</if>
+	<if test="condition.contactPhone != null and condition.contactPhone != ''" >
+	    and contactPhone =  #{condition.contactPhone}
+	</if>
+	<if test="condition.quickComment != null and condition.quickComment != ''" >
+	    and quickComment =  #{condition.quickComment}
+	</if>
+	<if test="condition.commentName != null and condition.commentName != ''" >
+	    and commentName =  #{condition.commentName}
+	</if>
+	
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into haj_community_persion_comment(id,communityId,content,createTime,contactPhone,quickComment,commentName)
+ values(#{id},#{communityId},#{content},now(),#{contactPhone},#{quickComment},#{commentName})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update haj_community_persion_comment set communityId=#{communityId},content=#{content},contactPhone=#{contactPhone},quickComment=#{quickComment},commentName=#{commentName} where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update haj_community_persion_comment set 
+	<trim  suffixOverrides="," >
+	<if test="communityId != null  ">
+		communityId=#{communityId},
+	</if>
+	<if test="content != null  ">
+		content=#{content},
+	</if>
+	<if test="createTime != null  ">
+		createTime=#{createTime},
+	</if>
+	<if test="contactPhone != null  ">
+		contactPhone=#{contactPhone},
+	</if>
+	<if test="quickComment != null  ">
+		quickComment=#{quickComment},
+	</if>
+	<if test="commentName != null  ">
+		commentName=#{commentName},
+	</if>
+	
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from haj_community_persion_comment where id = #{id}
+</delete>
+ 
+<!-- 根据id查询 前台用户表 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from haj_community_persion_comment where id = #{id}
+</select>
+
+<!-- 前台用户表 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from haj_community_persion_comment 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询前台用户表列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from haj_community_persion_comment 
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by  ${orderByClause}
+    </if>
+    <if test="limitClause != null and limitClause != ''" >
+       ${limitClause}
+    </if>
+</select>
+  	
+</mapper>   

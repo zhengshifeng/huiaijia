@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityCategoryMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodityCategory">
+		<result column="id" property="id" />
+		<result column="commodityId" property="commodityId" />
+		<result column="cateId" property="cateId" />
+		<result column="createTime" property="createTime" />
+		<result column="endTime" property="endTime" />
+	</resultMap>
+
+	<!-- haj_commodity_category table all fields -->
+	<sql id="Base_Column_List">
+		id, commodityId, cateId, createTime, endTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.commodityId != null and condition.commodityId != ''">
+			AND commodityId = #{condition.commodityId}
+		</if>
+		<if test="condition.cateId != null and condition.cateId != ''">
+			AND cateId = #{condition.cateId}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			AND endTime = #{condition.endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="commodityId != null and commodityId != ''">
+			AND commodityId = #{commodityId}
+		</if>
+		<if test="cateId != null and cateId != ''">
+			AND cateId = #{cateId}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND endTime = #{endTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_commodity_category(id, commodityId, cateId, createTime, endTime)
+		VALUES(#{id}, #{commodityId}, #{cateId}, now(), #{endTime})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_commodity_category SET commodityId = #{commodityId}, cateId = #{cateId}, endTime = #{endTime} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_commodity_category SET 
+		<trim suffixOverrides=",">
+			<if test="commodityId != null">
+				commodityId = #{commodityId},
+			</if>
+			<if test="cateId != null">
+				cateId = #{cateId},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_commodity_category WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_category WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_commodity_category
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_commodity_category
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCommodityCategory" parameterType="HajCommodityCategory">
+		SELECT * FROM haj_commodity_category
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="list4app" resultType="HashMap" parameterType="HajCommodityCategory">
+		SELECT *
+		FROM haj_commodity_category
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+
+	<!--插入数据时，判断数据是否存在，如果不存在就插入否则不做处理-->
+	<insert id="saveCommoditysToThreeCate" parameterType="HajCommodityCategory">
+		INSERT INTO haj_commodity_category(commodityId,cateId)
+		SELECT
+		#{commodityId},#{cateId}
+		FROM DUAL
+		WHERE NOT EXISTS(SELECT 1 FROM haj_commodity_category hcc
+		WHERE hcc.commodityId = #{commodityId} AND hcc.cateId = #{cateId})
+	</insert>
+
+	<!--从指定类目中删除指定商品-->
+	<delete id="deleteCommodityFromCategory" parameterType="HajCommodityCategory">
+		DELETE FROM haj_commodity_category WHERE commodityId = #{commodityId}   AND  cateId = #{cateId}
+	</delete>
+
+
+	<!--查询三级类目下是否有商品-->
+	<select id="getCommodityByThreeId" parameterType="Integer" resultType="int">
+		SELECT COUNT(1) FROM haj_commodity_category WHERE cateId = #{threeId}
+	</select>
+
+
+</mapper>

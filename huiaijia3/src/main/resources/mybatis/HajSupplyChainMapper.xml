@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajSupplyChainMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajSupplyChain">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="supplyNo" property="supplyNo" />
+		<result column="address" property="address" />
+		<result column="docker" property="docker" />
+		<result column="cellphone" property="cellphone" />
+		<result column="areaId" property="areaId" />
+		<result column="typeId" property="typeId" />
+		<result column="hajdocker" property="hajdocker" />
+		<result column="hajcellphone" property="hajcellphone" />
+		<result column="status" property="status" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime" />
+		<result column="contractPeriod" property="contractPeriod" />
+		<result column="payTime" property="payTime" />
+		<result column="payStatus" property="payStatus" />
+		<result column="payee" property="payee" />
+		<result column="payeeCellphone" property="payeeCellphone" />
+		<result column="createTime" property="createTime" />
+		<result column="remark1" property="remark1" />
+		<result column="remark2" property="remark2" />
+		<result column="remark3" property="remark3" />
+		<result column="cloudsSupplierId" property="cloudsSupplierId" />
+
+	</resultMap>
+
+	<!-- haj_supply_chain table all fields -->
+	<sql id="Base_Column_List">
+		id,name,supplyNo,address,docker,cellphone,areaId,typeId,hajdocker,hajcellphone,status,beginTime,endTime,
+		contractPeriod,payTime,payStatus,payee,payeeCellphone,createTime,remark1,remark2,remark3,cloudsSupplierId
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.name != null and condition.name != ''">
+				and name = #{condition.name}
+			</if>
+			<if test="condition.supplyNo != null and condition.supplyNo != ''">
+				and supplyNo = #{condition.supplyNo}
+			</if>
+			<if test="condition.address != null and condition.address != ''">
+				and address = #{condition.address}
+			</if>
+			<if test="condition.docker != null and condition.docker != ''">
+				and docker = #{condition.docker}
+			</if>
+			<if test="condition.cellphone != null and condition.cellphone != ''">
+				and cellphone = #{condition.cellphone}
+			</if>
+			<if test="condition.areaId != null and condition.areaId != ''">
+				and areaId = #{condition.areaId}
+			</if>
+			<if test="condition.hajdocker != null and condition.hajdocker != ''">
+				and hajdocker = #{condition.hajdocker}
+			</if>
+			<if test="condition.hajcellphone != null and condition.hajcellphone != ''">
+				and hajcellphone = #{condition.hajcellphone}
+			</if>
+			<if test="condition.status != null and condition.status != ''">
+				and status = #{condition.status}
+			</if>
+			<if test="condition.beginTime != null and condition.beginTime != ''">
+				and beginTime = #{condition.beginTime}
+			</if>
+			<if test="condition.endTime != null and condition.endTime != ''">
+				and endTime = #{condition.endTime}
+			</if>
+			<if test="condition.contractPeriod != null and condition.contractPeriod != ''">
+				and contractPeriod = #{condition.contractPeriod}
+			</if>
+			<if test="condition.payTime != null and condition.payTime != ''">
+				and payTime = #{condition.payTime}
+			</if>
+			<if test="condition.payStatus != null and condition.payStatus != ''">
+				and payStatus = #{condition.payStatus}
+			</if>
+			<if test="condition.payee != null and condition.payee != ''">
+				and payee = #{condition.payee}
+			</if>
+			<if test="condition.payeeCellphone != null and condition.payeeCellphone != ''">
+				and payeeCellphone = #{condition.payeeCellphone}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.remark1 != null and condition.remark1 != ''">
+				and remark1 = #{condition.remark1}
+			</if>
+			<if test="condition.remark2 != null and condition.remark2 != ''">
+				and remark2 = #{condition.remark2}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''">
+				and remark3 = #{condition.remark3}
+			</if>
+			<if test="condition.cloudsSupplierId != null and condition.cloudsSupplierId != ''">
+				and cloudsSupplierId = #{condition.cloudsSupplierId}
+			</if>
+
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		haj_supply_chain(id,name,supplyNo,address,docker,cellphone,areaId,typeId,hajdocker,hajcellphone,status,
+			beginTime,endTime,contractPeriod,payTime,payStatus,payee,payeeCellphone,createTime,remark1,remark2,remark3
+			,cloudsSupplierId
+		)
+		values(#{id},#{name},#{supplyNo},#{address},#{docker},#{cellphone},#{areaId},#{typeId},#{hajdocker},
+			#{hajcellphone},#{status},#{beginTime},#{endTime},#{contractPeriod},#{payTime},#{payStatus},#{payee},
+			#{payeeCellphone},now(),#{remark1},#{remark2},#{remark3},#{cloudsSupplierId}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录 。注：supplyNo编号生成后不能修改-->
+	<update id="update" parameterType="Object">
+		update haj_supply_chain set
+		name=#{name},address=#{address},docker=#{docker},cellphone=#{cellphone},areaId=#{areaId},typeId=#{typeId},hajdocker=#{hajdocker},hajcellphone=#{hajcellphone},status=#{status},beginTime=#{beginTime},endTime=#{endTime},contractPeriod=#{contractPeriod},payTime=#{payTime},payStatus=#{payStatus},payee=#{payee},payeeCellphone=#{payeeCellphone},remark1=#{remark1},remark2=#{remark2},remark3=#{remark3}
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_supply_chain set
+		<trim suffixOverrides=",">
+			<if test="name != null  ">
+				name=#{name},
+			</if>
+			<if test="supplyNo != null  ">
+				supplyNo=#{supplyNo},
+			</if>
+			<if test="address != null  ">
+				address=#{address},
+			</if>
+			<if test="docker != null  ">
+				docker=#{docker},
+			</if>
+			<if test="cellphone != null  ">
+				cellphone=#{cellphone},
+			</if>
+			<if test="areaId != null  ">
+				areaId=#{areaId},
+			</if>
+			<if test="typeId != null  ">
+				typeId=#{typeId},
+			</if>
+			<if test="hajdocker != null  ">
+				hajdocker=#{hajdocker},
+			</if>
+			<if test="hajcellphone != null  ">
+				hajcellphone=#{hajcellphone},
+			</if>
+			<if test="status != null  ">
+				status=#{status},
+			</if>
+			<if test="beginTime != null  ">
+				beginTime=#{beginTime},
+			</if>
+			<if test="endTime != null  ">
+				endTime=#{endTime},
+			</if>
+			<if test="contractPeriod != null  ">
+				contractPeriod=#{contractPeriod},
+			</if>
+			<if test="payTime != null  ">
+				payTime=#{payTime},
+			</if>
+			<if test="payStatus != null  ">
+				payStatus=#{payStatus},
+			</if>
+			<if test="payee != null  ">
+				payee=#{payee},
+			</if>
+			<if test="payeeCellphone != null  ">
+				payeeCellphone=#{payeeCellphone},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="remark1 != null  ">
+				remark1=#{remark1},
+			</if>
+			<if test="remark2 != null  ">
+				remark2=#{remark2},
+			</if>
+			<if test="remark3 != null  ">
+				remark3=#{remark3},
+			</if>
+			<if test="cloudsSupplierId != null  ">
+				cloudsSupplierId=#{cloudsSupplierId},
+			</if>
+
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_supply_chain
+		where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_supply_chain where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from haj_supply_chain
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_supply_chain
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" parameterType="HajSupplyChainVo" resultType="HajSupplyChainVo">
+		SELECT supply.id, supply.supplyNo, supply.`name` supplyName, supply.address, supply.docker, 
+			supply.cellphone, supply.hajdocker, supply.hajcellphone, supply.createTime,
+			supply.`status`, supply.contractPeriod, supply.areaId, areas.`code` communityCode,
+			(SELECT `code` FROM haj_areas WHERE `code`=areas.`p_code`) cityCode,
+			(SELECT `p_code` FROM haj_areas WHERE `code`=cityCode) provinceCode,
+			areas.name community,
+			(SELECT `name` FROM haj_areas WHERE `code`=areas.`p_code`) city,
+			(SELECT `name` FROM haj_areas WHERE `code`=provinceCode) province,
+			supply.`typeId`,
+			(SELECT parentId FROM haj_commodity_type WHERE id=supply.`typeId`) parentTypeId,
+			(SELECT typeName FROM haj_commodity_type WHERE id=parentTypeId) parentTypeName,
+			ty.typeName, ty.`commodityAttr`
+		FROM haj_supply_chain supply LEFT JOIN haj_areas areas ON areas.`id`=supply.`areaId`
+		LEFT JOIN haj_commodity_type ty ON ty.`id`=supply.`typeId`
+		
+		<if test="commodityNo != null and commodityNo != ''">
+		INNER JOIN (
+			SELECT typeId FROM haj_commodity WHERE commodityNo=#{commodityNo} OR `name`=#{commodityNo}
+			GROUP BY typeId
+		) commodity ON commodity.typeId=supply.`typeId`
+		</if>
+		WHERE 1=1
+		<if test="commodityAttr != null and commodityAttr != '' and commodityAttr != '不限'">
+			AND ty.`commodityAttr` = #{commodityAttr}
+		</if>
+		<if test="typeId != null and typeId != ''">
+			AND ty.`id` = #{typeId}
+		</if>
+		<if test="communityCode != null and communityCode != ''">
+			AND areas.`code` = #{communityCode}
+		</if>
+		<if test="status != null and status != ''">
+			AND supply.`status` = #{status}
+		</if>
+		<if test="supplyNo != null and supplyNo != ''">
+			AND (supply.supplyNo = #{supplyNo} or supply.name = #{supplyNo})
+		</if>
+		ORDER BY supply.id ASC
+		<if test="orderByClause != null and orderByClause != ''">
+			, ${orderByClause}
+		</if>
+	</select>
+	
+	<select id="getSupplyChainVoById" parameterType="Integer" resultType="HajSupplyChainVo">
+		SELECT supply.id, supply.supplyNo, supply.`name` supplyName, supply.address, supply.docker, 
+			supply.cellphone, supply.hajdocker, supply.hajcellphone, supply.createTime,
+			supply.`status`, supply.contractPeriod, supply.areaId, supply.beginTime, supply.endTime,
+			areas.`code` communityCode,
+			(SELECT `code` FROM haj_areas WHERE `code`=areas.`p_code`) cityCode,
+			(SELECT `p_code` FROM haj_areas WHERE `code`=cityCode) provinceCode,
+			areas.name community,
+			(SELECT `name` FROM haj_areas WHERE `code`=areas.`p_code`) city,
+			(SELECT `name` FROM haj_areas WHERE `code`=provinceCode) province,
+			supply.`typeId`,
+			(SELECT parentId FROM haj_commodity_type WHERE id=supply.`typeId`) parentTypeId,
+			(SELECT typeName FROM haj_commodity_type WHERE id=parentTypeId) parentTypeName,
+			ty.typeName, ty.`commodityAttr` ,
+			supply.cloudsSupplierId
+		FROM haj_supply_chain supply LEFT JOIN haj_areas areas ON areas.`id`=supply.`areaId`
+		LEFT JOIN haj_commodity_type ty ON ty.`id`=supply.`typeId`
+		WHERE supply.`id`=#{id}
+	</select>
+	
+	<select id="getSupplyChainNames" resultType="HajSupplyChain">
+		SELECT cloudsSupplierId, `name` FROM haj_supply_chain
+	</select>
+	
+	<select id="getSupplyChainByName" parameterType="String" resultType="HajSupplyChain">
+		SELECT id, `name` FROM haj_supply_chain WHERE `name`=#{name} LIMIT 1
+	</select>
+	
+	<select id="getByNo" resultType="HajSupplyChain">
+		SELECT id, `name` FROM haj_supply_chain WHERE `supplyNo`=#{supplyNo} LIMIT 1
+	</select>
+
+	<select id="getTotalByCloudsSupplierId" parameterType="Integer" resultType="int">
+			SELECT COUNT(1) FROM `haj_supply_chain` WHERE cloudsSupplierId = #{cloudsSupplierId}
+	</select>
+
+	<!--根据CloudsSupplierId修改供应商-->
+	<update id="updateByCloudsSupplierId" parameterType="HajSupplyChain">
+		  UPDATE haj_supply_chain SET
+		<trim suffixOverrides=",">
+			<if test="supplyNo != null">
+				supplyNo = #{supplyNo},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="areaId != null">
+				areaId = #{areaId},
+			</if>
+		</trim>
+		WHERE cloudsSupplierId = #{cloudsSupplierId}
+	</update>
+</mapper>   

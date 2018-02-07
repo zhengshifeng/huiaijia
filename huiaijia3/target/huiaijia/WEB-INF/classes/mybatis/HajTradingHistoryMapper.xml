@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajTradingHistoryMapper">
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajTradingHistory">
+		<result column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="tradingContent" property="tradingContent"/>
+		<result column="createTime" property="createTime"/>
+		<result column="tradingStatus" property="tradingStatus"/>
+		<result column="money" property="money"/>
+		<result column="balance" property="balance"/>
+		<result column="type" property="type"/>
+		<result column="quickComment" property="quickComment"/>
+		<result column="remark3" property="remark3"/>
+	</resultMap>
+
+	<!-- haj_trading_history table all fields -->
+	<sql id="Base_Column_List">
+		id,userId,tradingContent,createTime,tradingStatus,money,balance,type,quickComment,remark3
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''">
+				and userId = #{condition.userId}
+			</if>
+			<if test="condition.tradingContent != null and condition.tradingContent != ''">
+				and tradingContent = #{condition.tradingContent}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.tradingStatus != null and condition.tradingStatus != ''">
+				and tradingStatus = #{condition.tradingStatus}
+			</if>
+			<if test="condition.money != null and condition.money != ''">
+				and money = #{condition.money}
+			</if>
+			<if test="condition.balance != null and condition.balance != ''">
+				and balance = #{condition.balance}
+			</if>
+			<if test="condition.type != null and condition.type != ''">
+				and type = #{condition.type}
+			</if>
+			<if test="condition.quickComment != null and condition.quickComment != ''">
+				and quickComment = #{condition.quickComment}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''">
+				and remark3 = #{condition.remark3}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into
+		haj_trading_history(id,userId,tradingContent,createTime,tradingStatus,money,balance,type,quickComment,remark3)
+		values(#{id},#{userId},#{tradingContent},now(),#{tradingStatus},#{money},#{balance},#{type},#{quickComment},#{remark3})
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object">
+		UPDATE haj_trading_history
+		SET userId  = #{userId}, tradingContent = #{tradingContent}, tradingStatus = #{tradingStatus}, money = #{money},
+			balance = #{balance}, type = #{type}, quickComment = #{quickComment}, remark3 = #{remark3}
+		WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_trading_history set
+		<trim suffixOverrides=",">
+			<if test="userId != null  ">
+				userId=#{userId},
+			</if>
+			<if test="tradingContent != null  ">
+				tradingContent=#{tradingContent},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="tradingStatus != null  ">
+				tradingStatus=#{tradingStatus},
+			</if>
+			<if test="money != null  ">
+				money=#{money},
+			</if>
+			<if test="balance != null  ">
+				balance=#{balance},
+			</if>
+			<if test="type != null  ">
+				type=#{type},
+			</if>
+			<if test="quickComment != null  ">
+				quickComment=#{quickComment},
+			</if>
+			<if test="remark3 != null  ">
+				remark3=#{remark3},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_trading_history
+		WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_trading_history where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_trading_history
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_trading_history
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="getTradingHistoryByUserId" resultType="java.util.HashMap" parameterType="Object">
+		SELECT * FROM haj_trading_history WHERE 1=1
+		<if test="condition.userId != null and condition.userId != ''">
+			AND userId=#{condition.userId}
+		</if>
+		ORDER BY createTime DESC
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPageTradingHistory" resultMap="BaseResultMap" parameterType="HajTradingHistory">
+		SELECT
+			id,
+			tradingContent,
+			createTime,
+			tradingStatus,
+			money
+		FROM haj_trading_history
+		WHERE userId = #{userId}
+		ORDER BY id DESC
+	</select>
+
+	<select id="excelbatchFinancial" parameterType="Object" resultType="java.util.HashMap">
+		SELECT o.dispensingTip, u.receiver, o.id AS orderId, o.`orderNo`, o.`createTime`,
+			u.`residential`, u.`address`, u.`shippingAddress`, u.`username`, u.`id`, u.`mobilePhone`,
+			o.`number`, (o.`actualPayment` + o.dispensingTip + o.postFee) AS actualPayment,
+			o.`commodityCost`, (o.actualPayment - o.commodityCost) AS orderRealPay,
+			o.postFee, o.totalMoney, (o.`points` + o.dispensingTip + o.postFee) AS points,
+			o.`status`, o.feeWaiver, o.`isGrouponOrder`, u.`areaCode`, o.`paymentTime`, o.`paymentWay`,
+			o.`counponMoney` ,IFNULL(os.money, 0) AS refundMoney
+		FROM haj_order o
+		LEFT JOIN haj_front_user u ON o.`userId` = u.`id`
+		LEFT JOIN (SELECT orderId, money FROM haj_order_sale WHERE isdeal = 1) os ON os.orderId = o.id
+		WHERE delflag = 0
+		<if test="residential != null and residential != ''">
+			AND u.residential = #{residential}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			AND o.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND o.createTime &lt;= #{endTime}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND (u.username = #{mobilePhone} or u.id = #{mobilePhone} or u.mobilePhone=#{mobilePhone})
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND u.areaCode = #{areaCode}
+		</if>
+		ORDER BY o.createTime DESC
+	</select>
+
+</mapper>   

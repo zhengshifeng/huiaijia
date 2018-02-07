@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajActivityMapper">
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajActivity">
+		<result column="id" property="id"/>
+		<result column="activityName" property="activityName"/>
+		<result column="status" property="status"/>
+		<result column="DiscountAmount" property="discountAmount"/>
+		<result column="beginTime" property="beginTime"/>
+		<result column="endTime" property="endTime"/>
+		<result column="createTime" property="createTime"/>
+		<result column="number" property="number"/>
+		<result column="residentials" property="residentials"/>
+		<result column="useNumber" property="useNumber"/>
+		<result column="operator" property="operator"/>
+		<result column="describer" property="describer"/>
+		<result column="areaCode" property="areaCode"/>
+		<result column="activityType" property="activityType"/>
+		<result column="img" property="img"/>
+		<result column="link" property="link"/>
+	</resultMap>
+
+	<!-- haj_activity table all fields -->
+	<sql id="Base_Column_List">
+		id,activityName,status,DiscountAmount,beginTime,endTime,createTime,number,
+		residentials,useNumber,operator,describer,areaCode,activityType,img,link
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.activityName != null and condition.activityName != ''">
+				and activityName = #{condition.activityName}
+			</if>
+			<if test="condition.status != null and condition.status != ''">
+				and status = #{condition.status}
+			</if>
+			<if test="condition.discountAmount != null and condition.discountAmount != ''">
+				and DiscountAmount = #{condition.discountAmount}
+			</if>
+			<if test="condition.beginTime != null and condition.beginTime != ''">
+				and beginTime = #{condition.beginTime}
+			</if>
+			<if test="condition.endTime != null and condition.endTime != ''">
+				and endTime = #{condition.endTime}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.number != null and condition.number != ''">
+				and number = #{condition.number}
+			</if>
+			<if test="condition.residentials != null and condition.residentials != ''">
+				and residentials = #{condition.residentials}
+			</if>
+			<if test="condition.useNumber != null and condition.useNumber != ''">
+				and useNumber = #{condition.useNumber}
+			</if>
+			<if test="condition.operator != null and condition.operator != ''">
+				and operator = #{condition.operator}
+			</if>
+			<if test="condition.describer != null and condition.describer != ''">
+				and describer = #{condition.describer}
+			</if>
+			<if test="condition.areaCode != null and condition.areaCode != ''">
+				and areaCode = #{condition.areaCode}
+			</if>
+			<if test="condition.activityType != null and condition.activityType != ''">
+				and activityType = #{condition.activityType}
+			</if>
+			<if test="condition.img != null and condition.img != ''">
+				and img = #{condition.img}
+			</if>
+			<if test="condition.link != null and condition.link != ''">
+				and link = #{condition.link}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO
+		haj_activity(id,activityName,status,DiscountAmount,beginTime,endTime,createTime,number,
+			residentials,useNumber,operator,describer,areaCode,activityType,img,link)
+		VALUES(#{id},#{activityName},#{status},#{discountAmount},#{beginTime},#{endTime},now(),#{number},
+			#{residentials},#{useNumber},#{operator},#{describer},#{areaCode},#{activityType},#{img},#{link})
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object">
+		update haj_activity set
+			activityName=#{activityName},status=#{status},DiscountAmount=#{discountAmount},beginTime=#{beginTime},
+			endTime=#{endTime},number=#{number},residentials=#{residentials},useNumber=#{useNumber},
+			operator=#{operator},describer=#{describer},areaCode=#{areaCode},activityType=#{activityType},
+			img=#{img},link=#{link}
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_activity set
+		<trim suffixOverrides=",">
+			<if test="activityName != null">
+				activityName=#{activityName},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+			<if test="discountAmount != null">
+				DiscountAmount=#{discountAmount},
+			</if>
+			<if test="beginTime != null">
+				beginTime=#{beginTime},
+			</if>
+			<if test="endTime != null">
+				endTime=#{endTime},
+			</if>
+			<if test="createTime != null">
+				createTime=#{createTime},
+			</if>
+			<if test="number != null">
+				number=#{number},
+			</if>
+			<if test="residentials != null">
+				residentials=#{residentials},
+			</if>
+			<if test="useNumber != null">
+				useNumber=#{useNumber},
+			</if>
+			<if test="operator != null">
+				operator=#{operator},
+			</if>
+			<if test="describer != null">
+				describer=#{describer},
+			</if>
+			<if test="areaCode != null">
+				areaCode=#{areaCode},
+			</if>
+			<if test="activityType != null">
+				activityType=#{activityType},
+			</if>
+			<if test="img != null">
+				img=#{img},
+			</if>
+			<if test="link != null">
+				link=#{link},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_activity where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_activity where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_activity
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_activity
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPageOrder" parameterType="Object" resultType="java.util.HashMap">
+		SELECT * FROM haj_activity where 1=1
+		<if test="activityName != null and activityName != ''">
+			and activityName = #{activityName}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and endTime &gt;= #{endTime}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and beginTime &lt;= #{beginTime}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			and areaCode = #{areaCode}
+		</if>
+		<if test="activityType != null">
+			and activityType = #{activityType}
+		</if>
+		order by status DESC, id DESC
+	</select>
+
+	<select id="querylistAllOrderCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_activity where 1=1
+		<if test="condition.activityName != null and condition.activityName != ''">
+			and activityName = #{condition.activityName}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			and createTime &lt;= #{condition.endTime}
+		</if>
+		<if test="condition.beginTime != null and condition.beginTime != ''">
+			and createTime &gt;= #{condition.beginTime}
+		</if>
+		order by createTime desc
+	</select>
+
+	<select id="getHajActivityCommotidyList" resultType="java.util.HashMap" parameterType="Object">
+		SELECT ct1.id AS sbTypeId,c.name,ct.typeName AS sTypeName,ct1.typeName AS sbTypeName,
+			ct.commodityAttr,c.id,c.commodityNo,c.activityId,c.shelves
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId
+		LEFT JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity a on a.id=c.activityid
+		WHERE ct.display=1 AND ct1.display=1 AND c.`shelves`=1
+		AND (promotionAreaId &lt; 1 || promotionAreaId IS NULL)
+		AND ct.`commodityAttr` != '团购'
+		<if test="activityName != '1元购'">
+			AND (a.activityName != '1元购' OR a.`activityName` IS NULL)
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			and (c.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="sbTypeName != null and sbTypeName != ''">
+			and ct1.id = #{sbTypeName}
+		</if>
+		<if test="sTypeName != null and sTypeName != ''">
+			and ct.typeName = #{sTypeName}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			and (c.areaCode = #{areaCode} OR a.areaCode = #{areaCode})
+		</if>
+		ORDER BY c.activityId DESC, c.id DESC
+	</select>
+
+	<select id="queryActivityByName" resultMap="BaseResultMap">
+		SELECT a.`id`, a.`activityName`, a.`status`, a.`number`,
+			DATE_FORMAT(a.`beginTime`, '%Y/%m/%d %T') beginTime,
+			DATE_FORMAT(a.`endTime`, '%Y/%m/%d %T') endTime
+		FROM haj_activity a
+		WHERE a.activityName=#{activityName}
+			AND a.areaCode=#{areaCode}
+		LIMIT 1
+	</select>
+
+	<select id="listActivityByType" resultType="Map" parameterType="HajActivity">
+		SELECT a.id, a.`activityName`, a.`link`, a.`img`
+		FROM haj_activity a
+		WHERE a.`activityType` = #{activityType} AND a.`areaCode` = #{areaCode} AND a.`status` = 1
+		ORDER BY a.id DESC
+	</select>
+
+</mapper>

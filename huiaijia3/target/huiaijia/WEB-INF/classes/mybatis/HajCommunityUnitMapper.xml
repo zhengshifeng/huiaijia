@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommunityUnitMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommunityUnit">
+		<result column="id" property="id" />
+		<result column="unit" property="unit" />
+		<result column="sort" property="sort" />
+		<result column="communityId" property="communityId" />
+		<result column="buildingId" property="buildingId" />
+	</resultMap>
+
+	<!-- haj_community_unit table all fields -->
+	<sql id="Base_Column_List">
+		id, unit, sort, communityId, buildingId
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.unit != null and condition.unit != ''">
+				and unit = #{condition.unit}
+			</if>
+			<if test="condition.sort != null and condition.sort != ''">
+				and sort = #{condition.sort}
+			</if>
+			<if test="condition.communityId != null and condition.communityId != ''">
+				and communityId = #{condition.communityId}
+			</if>
+			<if test="condition.buildingId != null">
+				and buildingId = #{condition.buildingId}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_community_unit(id, unit, sort, communityId, buildingId)
+		values(#{id},#{unit},#{sort},#{communityId},#{buildingId})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_community_unit set
+		unit=#{unit},sort=#{sort},communityId=#{communityId},buildingId=#{buildingId}
+		where
+		id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_community_unit set
+		<trim suffixOverrides=",">
+			<if test="unit != null">
+				unit=#{unit},
+			</if>
+			<if test="sort != null">
+				sort=#{sort},
+			</if>
+			<if test="communityId != null">
+				communityId=#{communityId},
+			</if>
+			<if test="buildingId != null">
+				buildingId=#{buildingId},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_community_unit where id = #{id}
+	</delete>
+
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_community_unit where id = #{id}
+	</select>
+
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_community_unit
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_community_unit
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+	
+	<select id="getUnit" resultType="HajCommunityUnit" parameterType="HajCommunityUnit">
+		SELECT * FROM haj_community_unit WHERE communityId=#{communityId} AND unit=#{unit}
+	</select>
+	
+	<select id="getUnitList" resultType="HajCommunityUnit" parameterType="Integer">
+		SELECT * FROM haj_community_unit WHERE communityId=#{communityId} ORDER BY sort LIMIT 1000
+	</select>
+
+	<select id="getCountOfUnitUsed" resultType="Integer" parameterType="Integer">
+		SELECT COUNT(*) FROM haj_front_user u WHERE u.`communityUnitId` = #{unitId}
+	</select>
+
+
+
+</mapper>   

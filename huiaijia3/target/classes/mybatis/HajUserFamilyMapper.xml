@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajUserFamilyMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.flf.entity.HajUserFamily" >
+	<result column="id" property="id"/>
+	<result column="userId" property="userId"/>
+	<result column="familyId" property="familyId"/>
+	<result column="nameRemark" property="nameRemark"/>
+	<result column="commoditys" property="commoditys"/>
+	<result column="photo" property="photo"/>
+</resultMap>
+       
+<!-- haj_user_family table all fields -->
+<sql id="Base_Column_List" >
+	 id,userId,familyId,nameRemark,commoditys,photo
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="condition.id != null and condition.id != ''" >
+	    and id =  #{condition.id}
+	</if>
+	<if test="condition.userId != null and condition.userId != ''" >
+	    and userId =  #{condition.userId}
+	</if>
+	<if test="condition.familyId != null and condition.familyId != ''" >
+	    and familyId =  #{condition.familyId}
+	</if>
+	<if test="condition.nameRemark != null and condition.nameRemark != ''" >
+	    and nameRemark =  #{condition.nameRemark}
+	</if>
+	<if test="condition.commoditys != null and condition.commoditys != ''" >
+	    and commoditys =  #{condition.commoditys}
+	</if>
+	<if test="condition.photo != null and condition.photo != ''" >
+	    and photo =  #{condition.photo}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into haj_user_family(id,userId,familyId,nameRemark,commoditys,photo)
+ values(#{id},#{userId},#{familyId},#{nameRemark},#{commoditys},#{photo})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update haj_user_family set userId=#{userId},familyId=#{familyId},nameRemark=#{nameRemark},commoditys=#{commoditys},photo=#{photo} where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update haj_user_family set 
+	<trim  suffixOverrides="," >
+	<if test="userId != null  ">
+		userId=#{userId},
+	</if>
+	<if test="familyId != null  ">
+		familyId=#{familyId},
+	</if>
+	<if test="nameRemark != null  ">
+		nameRemark=#{nameRemark},
+	</if>
+	<if test="commoditys != null  ">
+		commoditys=#{commoditys},
+	</if>
+	<if test="photo != null  ">
+		photo=#{photo},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from haj_user_family where id = #{id}
+</delete>
+ 
+<!-- 根据id查询 前台用户表 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from haj_user_family where id = #{id}
+</select>
+
+<!-- 前台用户表 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from haj_user_family 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询前台用户表列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from haj_user_family 
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by  ${orderByClause}
+    </if>
+    <if test="limitClause != null and limitClause != ''" >
+       ${limitClause}
+    </if>
+</select>
+  	
+  	
+<select id="querryPriceByName" parameterType="java.lang.String" resultType="java.util.HashMap" >
+	SELECT c.id,c.name,c.originalPrice,c.promotionPrice,c.marketPrice,ct1.typeName
+	FROM haj_commodity c LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId LEFT JOIN haj_commodity_type  ct1  ON ct.parentId=ct1.id 
+	WHERE  c.name=#{name}
+</select>
+</mapper>   

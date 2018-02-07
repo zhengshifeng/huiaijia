@@ -1,0 +1,1668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityMapper">
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodity">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="description" property="description"/>
+		<result column="details" property="details"/>
+		<result column="imagePath" property="imagePath"/>
+		<result column="clickNumber" property="clickNumber"/>
+		<result column="originalPrice" property="originalPrice"/>
+		<result column="promotionPrice" property="promotionPrice"/>
+		<result column="salesVolume" property="salesVolume"/>
+		<result column="typeId" property="typeId"/>
+		<result column="producer" property="producer"/>
+		<result column="activityId" property="activityId"/>
+		<result column="intrapartum" property="intrapartum"/>
+		<result column="supplyChain" property="supplyChain"/>
+		<result column="ishot" property="ishot"/>
+		<result column="isNew" property="isNew"/>
+		<result column="weight" property="weight"/>
+		<result column="smallPic" property="smallPic"/>
+		<result column="shelves" property="shelves"/>
+		<result column="isTop" property="isTop"/>
+		<result column="costPrice" property="costPrice"/>
+		<result column="marketPrice" property="marketPrice"/>
+		<result column="familyPreferences" property="familyPreferences"/>
+		<result column="commodityNo" property="commodityNo"/>
+		<result column="recommend" property="recommend"/>
+		<result column="searchCount" property="searchCount"/>
+		<result column="alias" property="alias"/>
+		<result column="acidDischarge" property="acidDischarge"/>
+		<result column="praise" property="praise"/>
+		<result column="orderClassification" property="orderClassification"/>
+		<result column="mark" property="mark"/>
+		<result column="label3" property="label3"/>
+		<result column="inventory" property="inventory"/>
+		<result column="mustBuy" property="mustBuy"/>
+		<result column="stamp" property="stamp"/>
+		<result column="discountWord" property="discountWord"/>
+		<result column="promotionAreaId" property="promotionAreaId"/>
+		<result column="grossWeight" property="grossWeight"/>
+		<result column="packedWeight" property="packedWeight"/>
+		<result column="selfPackaging" property="selfPackaging"/>
+		<result column="invalid" property="invalid"/>
+		<result column="image3" property="image3"/>
+		<result column="description2" property="description2"/>
+		<result column="sort" property="sort"/>
+		<result column="areaCode" property="areaCode"/>
+		<result column="sortingBatch" property="sortingBatch"/>
+		<result column="sku" property="sku"/>
+		<result column="warningInvt" property="warningInvt"/>
+		<result column="syncInvt" property="syncInvt"/>
+		<result column="brandId" property="brandId"/>
+		<result column="storageNo" property="storageNo"/>
+		<result column="inventoryInit" property="inventoryInit"/>
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="description" property="description"/>
+		<result column="details" property="details"/>
+		<result column="imagePath" property="imagePath"/>
+		<result column="clickNumber" property="clickNumber"/>
+		<result column="originalPrice" property="originalPrice"/>
+		<result column="promotionPrice" property="promotionPrice"/>
+		<result column="salesVolume" property="salesVolume"/>
+		<result column="typeId" property="typeId"/>
+		<result column="producer" property="producer"/>
+		<result column="activityId" property="activityId"/>
+		<result column="intrapartum" property="intrapartum"/>
+		<result column="supplyChain" property="supplyChain"/>
+		<result column="ishot" property="ishot"/>
+		<result column="isNew" property="isNew"/>
+		<result column="weight" property="weight"/>
+		<result column="smallPic" property="smallPic"/>
+		<result column="shelves" property="shelves"/>
+		<result column="isTop" property="isTop"/>
+		<result column="costPrice" property="costPrice"/>
+		<result column="marketPrice" property="marketPrice"/>
+		<result column="familyPreferences" property="familyPreferences"/>
+		<result column="commodityNo" property="commodityNo"/>
+		<result column="recommend" property="recommend"/>
+		<result column="searchCount" property="searchCount"/>
+		<result column="alias" property="alias"/>
+		<result column="acidDischarge" property="acidDischarge"/>
+		<result column="praise" property="praise"/>
+		<result column="orderClassification" property="orderClassification"/>
+		<result column="mark" property="mark"/>
+		<result column="label3" property="label3"/>
+		<result column="inventory" property="inventory"/>
+		<result column="mustBuy" property="mustBuy"/>
+		<result column="stamp" property="stamp"/>
+		<result column="discountWord" property="discountWord"/>
+		<result column="promotionAreaId" property="promotionAreaId"/>
+		<result column="grossWeight" property="grossWeight"/>
+		<result column="packedWeight" property="packedWeight"/>
+		<result column="selfPackaging" property="selfPackaging"/>
+		<result column="invalid" property="invalid"/>
+		<result column="image3" property="image3"/>
+		<result column="description2" property="description2"/>
+		<result column="sort" property="sort"/>
+		<result column="areaCode" property="areaCode"/>
+		<result column="sortingBatch" property="sortingBatch"/>
+		<result column="sku" property="sku"/>
+		<result column="warningInvt" property="warningInvt"/>
+		<result column="syncInvt" property="syncInvt"/>
+		<result column="brandId" property="brandId"/>
+		<result column="storageNo" property="storageNo"/>
+		<result column="inventoryInit" property="inventoryInit"/>
+		<result column="attribute" property="attribute"/>
+		<result column="cloudsId" property="cloudsId"/>
+		<result column="percentLoss" property="percentLoss"/>
+		<result column="isaddcate" property="isaddcate"/>
+
+	</resultMap>
+
+	<!-- haj_commodity table all fields -->
+	<sql id="Base_Column_List">
+		id,name,description,details,imagePath,clickNumber,originalPrice,promotionPrice,salesVolume,
+		typeId,producer,activityId,intrapartum,supplyChain,ishot,isNew,weight,smallPic,shelves,isTop,
+		costPrice,marketPrice,familyPreferences,commodityNo,recommend,searchCount,alias,acidDischarge,
+		praise,orderClassification,mark,label3,inventory,mustBuy,stamp,discountWord,promotionAreaId,
+		grossWeight,packedWeight,selfPackaging,invalid,image3,description2,sort,areaCode,sortingBatch,
+		sku, warningInvt, syncInvt, brandId, storageNo, inventoryInit, attribute, cloudsId, percentLoss
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.name != null and condition.name != ''">
+				and name = #{condition.name}
+			</if>
+			<if test="condition.description != null and condition.description != ''">
+				and description = #{condition.description}
+			</if>
+			<if test="condition.details != null and condition.details != ''">
+				and details = #{condition.details}
+			</if>
+			<if test="condition.imagePath != null and condition.imagePath != ''">
+				and imagePath = #{condition.imagePath}
+			</if>
+			<if test="condition.clickNumber != null and condition.clickNumber != ''">
+				and clickNumber = #{condition.clickNumber}
+			</if>
+			<if
+					test="condition.originalPrice != null and condition.originalPrice != ''">
+				and originalPrice = #{condition.originalPrice}
+			</if>
+			<if
+					test="condition.promotionPrice != null and condition.promotionPrice != ''">
+				and promotionPrice = #{condition.promotionPrice}
+			</if>
+			<if test="condition.costPrice != null and condition.costPrice != ''">
+				and costPrice = #{condition.costPrice}
+			</if>
+			<if test="condition.marketPrice != null and condition.marketPrice != ''">
+				and marketPrice = #{condition.marketPrice}
+			</if>
+			<if test="condition.salesVolume != null and condition.salesVolume != ''">
+				and salesVolume = #{condition.salesVolume}
+			</if>
+			<if test="condition.typeId != null and condition.typeId != ''">
+				and typeId = #{condition.typeId}
+			</if>
+			<if test="condition.producer != null and condition.producer != ''">
+				and producer = #{condition.producer}
+			</if>
+			<if test="condition.activityId != null and condition.activityId != ''">
+				and activityId = #{condition.activityId}
+			</if>
+			<if test="condition.intrapartum != null and condition.intrapartum != ''">
+				and intrapartum = #{condition.intrapartum}
+			</if>
+			<if test="condition.supplyChain != null and condition.supplyChain != ''">
+				and supplyChain = #{condition.supplyChain}
+			</if>
+			<if test="condition.ishot != null and condition.ishot != ''">
+				and ishot = #{condition.ishot}
+			</if>
+			<if test="condition.isNew != null and condition.isNew != ''">
+				and isNew = #{condition.isNew}
+			</if>
+			<if test="condition.weight != null and condition.weight != ''">
+				and weight = #{condition.weight}
+			</if>
+			<if test="condition.smallPic != null and condition.smallPic != ''">
+				and smallPic = #{condition.smallPic}
+			</if>
+			<if test="condition.shelves != null and condition.shelves != ''">
+				and shelves = #{condition.shelves}
+			</if>
+			<if test="condition.isTop != null and condition.isTop != ''">
+				and isTop = #{condition.isTop}
+			</if>
+			<if test="condition.familyPreferences != null and condition.familyPreferences != ''">
+				and familyPreferences = #{condition.familyPreferences}
+			</if>
+			<if test="condition.commodityNo != null and condition.commodityNo != ''">
+				and commodityNo = #{condition.commodityNo}
+			</if>
+			<if test="condition.recommend != null and condition.recommend != ''">
+				and recommend = #{condition.recommend}
+			</if>
+			<if test="condition.searchCount != null and condition.searchCount != ''">
+				and searchCount = #{condition.searchCount}
+			</if>
+			<if test="condition.inventory != null and condition.inventory != ''">
+				and inventory = #{condition.inventory}
+			</if>
+			<if test="condition.grossWeight != null and condition.grossWeight != ''">
+				and grossWeight = #{condition.grossWeight}
+			</if>
+			<if test="condition.packedWeight != null and condition.packedWeight != ''">
+				and packedWeight = #{condition.packedWeight}
+			</if>
+			<if test="condition.selfPackaging != null and condition.selfPackaging != ''">
+				and selfPackaging = #{condition.selfPackaging}
+			</if>
+			<if test="condition.invalid != null and condition.invalid != ''">
+				and invalid = #{condition.invalid}
+			</if>
+			<if test="condition.image3 != null and condition.image3 != ''">
+				and image3 = #{condition.image3}
+			</if>
+			<if test="condition.description2 != null and condition.description2 != ''">
+				and description2 = #{condition.description2}
+			</if>
+			<if test="condition.sort != null and condition.sort != ''">
+				and sort = #{condition.sort}
+			</if>
+			<if test="condition.areaCode != null and condition.areaCode != ''">
+				and areaCode = #{condition.areaCode}
+			</if>
+			<if test="condition.sortingBatch != null and condition.sortingBatch != ''">
+				and sortingBatch = #{condition.sortingBatch}
+			</if>
+			<if test="condition.sku != null and condition.sku != ''">
+				AND sku = #{condition.sku}
+			</if>
+			<if test="condition.warningInvt != null and condition.warningInvt != ''">
+				AND warningInvt = #{condition.warningInvt}
+			</if>
+			<if test="condition.syncInvt != null and condition.syncInvt != ''">
+				AND syncInvt = #{condition.syncInvt}
+			</if>
+			<if test="condition.storageNo != null and condition.storageNo != ''">
+				AND storageNo = #{condition.storageNo}
+			</if>
+			<if test="condition.inventoryInit != null">
+				AND inventoryInit = #{condition.inventoryInit}
+			</if>
+			<if test="condition.attribute != null">
+				AND attribute = #{condition.attribute}
+			</if>
+			<if test="condition.cloudsId != null">
+				AND cloudsId = #{condition.cloudsId}
+			</if>
+			<if test="condition.percentLoss != null">
+				AND percentLoss = #{condition.percentLoss}
+			</if>
+			<if test="condition.isaddcate != null and condition.isaddcate != ''">
+				AND isaddcate = #{condition.isaddcate}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="filterSomething">
+		<if test="communityId != null and communityId > 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{communityId}
+			)
+		</if>
+		<if test="areaCode != null">
+			AND c.`areaCode` = #{areaCode}
+		</if>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO
+		haj_commodity (id,name,description,details,imagePath,clickNumber,originalPrice,promotionPrice,
+		salesVolume,typeId,producer,activityId,intrapartum,supplyChain,ishot,isNew,weight,smallPic,
+		shelves,isTop,costPrice,marketPrice,familyPreferences,commodityNo,recommend,searchCount,
+		alias,acidDischarge,praise,orderClassification,mark,label3,mustBuy,stamp,discountWord,
+		promotionAreaId,grossWeight,packedWeight,selfPackaging,areaCode,sortingBatch, sku, warningInvt,
+		syncInvt, brandId, storageNo, inventoryInit, attribute, cloudsId, percentLoss,isaddcate
+		) VALUES (#{id},#{name},#{description},#{details},#{imagePath},#{clickNumber},#{originalPrice},
+		#{promotionPrice},#{salesVolume},#{typeId},#{producer},#{activityId},#{intrapartum},#{supplyChain},
+		#{ishot},#{isNew},#{weight},#{smallPic},#{shelves},#{isTop},#{costPrice},#{marketPrice},
+		#{familyPreferences},#{commodityNo},#{recommend},#{searchCount},#{alias},#{acidDischarge},#{praise},
+		#{orderClassification},#{mark},#{label3},#{mustBuy},#{stamp},#{discountWord},#{promotionAreaId},
+		#{grossWeight},#{packedWeight},#{selfPackaging},#{areaCode},#{sortingBatch}, #{sku}, #{warningInvt},
+		#{syncInvt},#{brandId},#{storageNo},#{inventoryInit},#{attribute},#{cloudsId},#{percentLoss},#{isaddcate}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_commodity SET
+			name=#{name},description=#{description},details=#{details},imagePath=#{imagePath},clickNumber=#{clickNumber},
+			originalPrice=#{originalPrice},promotionPrice=#{promotionPrice},salesVolume=#{salesVolume},typeId=#{typeId},
+			producer=#{producer},activityId=#{activityId},intrapartum=#{intrapartum},supplyChain=#{supplyChain},
+			ishot=#{ishot},isNew=#{isNew},weight=#{weight},smallPic=#{smallPic},shelves=#{shelves},isTop=#{isTop},
+			costPrice=#{costPrice},marketPrice=#{marketPrice},familyPreferences=#{familyPreferences},
+			commodityNo=#{commodityNo},recommend=#{recommend},searchCount=#{searchCount},
+			alias=#{alias},acidDischarge=#{acidDischarge},praise=#{praise},orderClassification=#{orderClassification},
+			mark=#{mark},label3=#{label3},inventory=#{inventory},mustBuy=#{mustBuy},stamp=#{stamp},
+			discountWord=#{discountWord},promotionAreaId=#{promotionAreaId},grossWeight=#{grossWeight},
+			packedWeight=#{packedWeight},selfPackaging=#{selfPackaging},areaCode=#{areaCode},
+			sortingBatch=#{sortingBatch}, sku = #{sku}, warningInvt = #{warningInvt}, syncInvt = #{syncInvt},
+			storageNo=#{storageNo}, inventoryInit = #{inventoryInit},attribute = #{attribute}, cloudsId = #{cloudsId},
+			percentLoss = #{percentLoss},isaddcate = #{isaddcate}
+		WHERE id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_commodity set
+		<trim suffixOverrides=",">
+			<if test="name != null ">
+				name=#{name},
+			</if>
+			<if test="description != null ">
+				description=#{description},
+			</if>
+			<if test="details != null ">
+				details=#{details},
+			</if>
+			<if test="imagePath != null ">
+				imagePath=#{imagePath},
+			</if>
+			<if test="clickNumber != null ">
+				clickNumber=#{clickNumber},
+			</if>
+			<if test="originalPrice != null ">
+				originalPrice=#{originalPrice},
+			</if>
+			<if test="promotionPrice != null ">
+				promotionPrice=#{promotionPrice},
+			</if>
+			<if test="salesVolume != null ">
+				salesVolume=#{salesVolume},
+			</if>
+			<if test="typeId != null ">
+				typeId=#{typeId},
+			</if>
+			<if test="producer != null ">
+				producer=#{producer},
+			</if>
+			<if test="activityId != null ">
+				activityId=#{activityId},
+			</if>
+			<if test="intrapartum != null ">
+				intrapartum=#{intrapartum},
+			</if>
+			<if test="supplyChain != null ">
+				supplyChain=#{supplyChain},
+			</if>
+			<if test="ishot != null ">
+				ishot=#{ishot},
+			</if>
+			<if test="isNew != null ">
+				isNew=#{isNew},
+			</if>
+			<if test="weight != null ">
+				weight=#{weight},
+			</if>
+			<if test="smallPic != null ">
+				smallPic=#{smallPic},
+			</if>
+			<if test="shelves != null ">
+				shelves=#{shelves},
+			</if>
+			<if test="isTop != null ">
+				isTop=#{isTop},
+			</if>
+			<if test="costPrice != null ">
+				costPrice=#{costPrice},
+			</if>
+			<if test="marketPrice != null ">
+				marketPrice=#{marketPrice},
+			</if>
+			<if test="familyPreferences != null ">
+				familyPreferences=#{familyPreferences},
+			</if>
+			<if test="commodityNo != null ">
+				commodityNo=#{commodityNo},
+			</if>
+			<if test="recommend != null ">
+				recommend=#{recommend},
+			</if>
+			<if test="searchCount != null ">
+				searchCount=#{searchCount},
+			</if>
+			<if test="alias != null ">
+				alias=#{alias},
+			</if>
+			<if test="acidDischarge != null ">
+				acidDischarge=#{acidDischarge},
+			</if>
+			<if test="praise != null ">
+				praise=#{praise},
+			</if>
+			<if test="orderClassification != null ">
+				orderClassification=#{orderClassification},
+			</if>
+			<if test="mark != null ">
+				mark=#{mark},
+			</if>
+			<if test="label3 != null ">
+				label3=#{label3},
+			</if>
+			<if test="inventory != null ">
+				inventory=#{inventory},
+			</if>
+			<if test="mustBuy != null ">
+				mustBuy=#{mustBuy},
+			</if>
+			<if test="stamp != null ">
+				stamp=#{stamp},
+			</if>
+			<if test="discountWord != null ">
+				discountWord=#{discountWord},
+			</if>
+			<if test="promotionAreaId != null ">
+				promotionAreaId=#{promotionAreaId},
+			</if>
+			<if test="grossWeight != null ">
+				grossWeight=#{grossWeight},
+			</if>
+			<if test="packedWeight != null ">
+				packedWeight=#{packedWeight},
+			</if>
+			<if test="selfPackaging != null ">
+				selfPackaging=#{selfPackaging},
+			</if>
+			<if test="invalid != null ">
+				invalid=#{invalid},
+			</if>
+			<if test="image3 != null  ">
+				image3=#{image3},
+			</if>
+			<if test="description2 != null  ">
+				description2=#{description2},
+			</if>
+			<if test="sort != null  ">
+				sort=#{sort},
+			</if>
+			<if test="areaCode != null  ">
+				areaCode=#{areaCode},
+			</if>
+			<if test="sortingBatch != null  ">
+				sortingBatch=#{sortingBatch},
+			</if>
+			<if test="sku != null">
+				sku = #{sku},
+			</if>
+			<if test="warningInvt != null">
+				warningInvt = #{warningInvt},
+			</if>
+			<if test="syncInvt != null">
+				syncInvt = #{syncInvt},
+			</if>
+			<if test="brandId != null">
+				brandId = #{brandId},
+			</if>
+			<if test="storageNo != null">
+				storageNo = #{storageNo},
+			</if>
+			<if test="shelvesWay != null">
+				shelvesWay = #{shelvesWay},
+			</if>
+			<if test="inventoryInit != null">
+				inventoryInit = #{inventoryInit},
+			</if>
+			<if test="attribute != null">
+				attribute = #{attribute},
+			</if>
+			<if test="cloudsId != null">
+				cloudsId = #{cloudsId},
+			</if>
+			<if test="percentLoss != null">
+				percentLoss = #{percentLoss},
+			</if>
+			<if test="isaddcate != null and isaddcate != ''">
+				isaddcate = #{isaddcate}
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_commodity where id = #{id}
+	</delete>
+
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_commodity where id = #{id}
+	</select>
+
+	<select id="queryByCount" resultType="java.lang.Integer"
+			parameterType="Object">
+		select count(1) from haj_commodity
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<select id="queryByList" resultMap="BaseResultMap"
+			parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_commodity
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="queryAllList" resultType="java.util.HashMap">
+		SELECT c.description,c.alias,c.acidDischarge,c.praise,c.recommend,c.id,c.name,c.imagePath,c.originalPrice,
+		IFNULL(c.promotionPrice,0) AS promotionPrice,c.typeId,c.producer,IFNULL(c.intrapartum,'') AS intrapartum,
+		c.weight,c.smallPic,c.marketPrice,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,ct1.typeName,
+		IFNULL(v.activityName,'') AS activityName, ct.commodityAttr,IFNULL(c.activityId,0) AS activityId,
+		ct1.id AS bigTypeId, IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,
+		ct1.`description` AS typeDescription ,IFNULL(c.areaCode, '') areaCode, c.sortingBatch,
+		c.`sku`, c.`warningInvt`, c.`syncInvt`,c.shelves
+		FROM haj_commodity c INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE  c.shelves=1 AND  ct.display=1 AND ct1.display=1 AND c.`invalid` = 0
+		AND ct.commodityAttr !='团购'
+	</select>
+
+	<select id="queryAllListById" resultType="java.util.HashMap" parameterType="int">
+		SELECT c.description,c.alias,c.acidDischarge,c.praise,c.recommend,c.id,c.name,c.imagePath,c.originalPrice,
+			IFNULL(c.promotionPrice,0) AS promotionPrice,c.typeId,c.producer,IFNULL(c.intrapartum,'') AS intrapartum,
+			c.weight,c.smallPic,c.marketPrice,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,ct1.typeName,
+			IFNULL(v.activityName,'') AS activityName, ct.commodityAttr,
+			IFNULL(c.activityId,0) AS activityId,ct1.id AS bigTypeId, IFNULL(c.mark, '') mark,
+			IFNULL(c.label3, '') label3,IFNULL(c.areaCode, '') areaCode, c.sortingBatch,
+			c.`sku`, c.`warningInvt`, c.`syncInvt`,c.shelves
+		FROM haj_commodity c INNER JOIN haj_commodity_type ct ON ct.id=c.typeId 
+			INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+			LEFT JOIN haj_activity v ON v.id=c.activityId 
+		WHERE  ct.display=1 AND ct1.display=1 AND ct.commodityAttr !='团购' AND c.invalid=0 AND c.shelves=1
+			   AND c.id=#{id}
+	</select>
+
+	<select id="getCommodityByParentId" parameterType="int"
+			resultType="java.util.HashMap">
+		SELECT c.id,c.name,t.typeName FROM haj_commodity c INNER JOIN haj_commodity_type
+		t ON t.id=c.typeId WHERE t.parentId= #{parentId}
+	</select>
+
+	<select id="getCommodityByTypeId" parameterType="Object" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1 AND shelves=1 AND ct.display=1 AND ct1.display=1
+		<if test="condition.commodityAttr != null and condition.commodityAttr != ''">
+			AND ct.commodityAttr = #{condition.commodityAttr}
+		</if>
+		<if test="condition.parentId != null and condition.parentId > 0">
+			AND ct.parentId = #{condition.parentId}
+		</if>
+		<if test="condition.typeId != null and condition.typeId > 0">
+			AND c.typeId = #{condition.typeId}
+		</if>
+		<if test="condition.communityId != null and condition.communityId > 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{condition.communityId}
+			)
+		</if>
+		<if test="condition.areaCode != null and condition.areaCode != ''">
+			AND c.areaCode = #{condition.areaCode}
+		</if>
+		ORDER BY
+		<if test="condition.sort != null and condition.sort != ''">
+			c.${condition.sort} DESC,
+		</if>
+		ct1.sort ASC, ct.sort ASC, c.sort DESC, c.originalPrice ASC, c.`id` DESC
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<!--获取三级类目下的商品列表-->
+	<select id="getCategoryListByThreeId" parameterType="Object" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1 AND ct.display=1 AND ct1.display=1 AND invalid=0
+		<if test="condition.commodityAttr != null and condition.commodityAttr != ''">
+			AND ct.commodityAttr = #{condition.commodityAttr}
+		</if>
+		<if test="condition.communityId != null and condition.communityId > 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{condition.communityId}
+			)
+		</if>
+		<if test="condition.threeId != null and condition.threeId > 0">
+			AND c.id IN (
+			SELECT commodityId FROM haj_commodity_category cf WHERE cf.`cateId`=${condition.threeId}
+			)
+		</if>
+		<if test="condition.areaCode != null and condition.areaCode != ''">
+			AND c.areaCode = #{condition.areaCode}
+		</if>
+		ORDER BY c.shelves DESC ,convert(c.alias USING gbk) asc
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<select id="getCommodityCountByTypeId" parameterType="Object"
+			resultType="java.lang.Integer">
+		SELECT count(1) FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1
+		<if test="parentId != null">
+			AND ct.parentId = #{parentId}
+		</if>
+		<if test="typeId != null">
+			AND c.typeId = #{typeId}
+		</if>
+	</select>
+
+	<select id="getCommodityByName" parameterType="Object" resultType="java.util.HashMap">
+		SELECT c.commodityNo,c.`costPrice`, IFNULL(c.`promotionPrice`, 0) promotionPrice, c.`originalPrice`,
+			c.`shelves`, t.`commodityAttr`
+		FROM haj_commodity c LEFT JOIN haj_commodity_type t ON t.id = c.typeId 
+		WHERE c.`name` = #{name} and c.areaCode =  #{areaCode}
+	</select>
+
+	<select id="getCommodityByActionId" parameterType="int" resultType="java.util.HashMap">
+		SELECT c.name,ct.typeName as scTypeName,ct1.typeName AS sbTypeName,ct.commodityAttr,
+			c.id,c.commodityNo, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice,
+			c.marketPrice, c.sort, c.recommend, c.areaCode
+		FROM haj_commodity c LEFT JOIN haj_commodity_type ct ON ct.id=c.typeId LEFT JOIN
+		haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE c.activityId = #{activityId}
+		ORDER BY c.`sort` , c.`recommend` DESC, c.`id` DESC
+	</select>
+
+	<update id="updateCommodityActivityId" parameterType="Object">
+		update haj_commodity set activityId=#{activityId},promotionPrice=#{promotionPrice} where id=#{id}
+	</update>
+
+	<!--新品推荐-->
+	<select id="getFamilyPreferences" resultType="java.util.HashMap"  parameterType="Object">
+		SELECT c.*, (SELECT commodityAttr FROM haj_commodity_type WHERE id=c.typeId ) AS commodityAttr,
+		(SELECT parentId FROM haj_commodity_type WHERE id=c.typeId ) AS bigTypeId,
+		(SELECT typeName FROM haj_commodity_type WHERE id=bigTypeId ) AS typeName,
+		(SELECT description FROM haj_commodity_type WHERE id=bigTypeId ) AS typeDescription
+		FROM haj_commodity c
+		WHERE c.familyPreferences = 1 AND c.`invalid` = 0
+		<if test="condition.communityId != null and condition.communityId > 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{condition.communityId}
+			)
+		</if>
+		<if test="condition.areaCode != null">
+			AND c.`areaCode` = #{condition.areaCode}
+		</if>
+		ORDER BY c.`sort`, convert(c.alias USING gbk) asc
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<!--家人喜好-->
+	<select id="getNewProducts" resultType="java.util.HashMap">
+		SELECT c.*, (SELECT commodityAttr FROM haj_commodity_type WHERE id=c.typeId ) AS commodityAttr,
+		(SELECT parentId FROM haj_commodity_type WHERE id=c.typeId ) AS bigTypeId,
+		(SELECT typeName FROM haj_commodity_type WHERE id=bigTypeId ) AS typeName,
+		(SELECT description FROM haj_commodity_type WHERE id=bigTypeId ) AS typeDescription
+		FROM haj_commodity c
+		WHERE c.familyPreferences = 1 AND c.`invalid` = 0 and shelves=1
+		<include refid="filterSomething"/>
+		ORDER BY c.`sort`, convert(c.alias USING gbk) asc
+	</select>
+
+	<select id="getSearchCommodity" resultType="java.util.HashMap">
+		SELECT c.recommend,c.id,c.alias name,c.imagePath,c.originalPrice,IFNULL(c.promotionPrice,'') AS promotionPrice,
+		c.typeId,c.producer,IFNULL(c.intrapartum,'') AS intrapartum,c.weight,c.smallPic,c.marketPrice,ct1.typeName,
+		IFNULL(v.activityName,'') AS activityName, IFNULL(c.activityId,'') AS activityId,ct1.id AS bigTypeId,c.shelves,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct.commodityAttr, ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE c.ishot = 1 AND c.shelves=1
+		<include refid="filterSomething"/>
+	</select>
+
+	<select id="getSearchRecord" resultType="java.util.HashMap">
+		select * from haj_commodity where searchCount > 0
+	</select>
+
+	<!--按条件查询商品列表-->
+	<select id="listPage" parameterType="HajCommodityVo" resultType="HajCommodityVo">
+		SELECT distinct c.id, c.`commodityNo`, ctype.`commodityAttr`,
+		(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+		ctype.`typeName`, c.`name` commodityName, spc.`name` supplyName, spc.`supplyNo`,
+		c.`costPrice`, c.`marketPrice`, c.`originalPrice`, c.`promotionPrice`,
+		c.`shelves`, c.`isTop`, c.`producer`, c.`intrapartum`, c.`weight`,c.`ishot`,
+		c.`familyPreferences`, c.`recommend`, c.acidDischarge, c.isNew,c.description,
+		c.orderClassification,c.inventory,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		c.grossWeight,c.packedWeight,c.selfPackaging,c.invalid,c.sortingBatch,c.areaCode,
+		c.smallPic,cbrand.name brand,c.alias,c.sku
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		LEFT JOIN haj_supply_chain spc ON spc.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN haj_areas areas ON areas.`id`=spc.`areaId`
+		LEFT JOIN haj_areas areas2 ON areas2.`code`=areas.`p_code`
+		LEFT JOIN haj_commodity_brand cbrand ON cbrand.id=c.`brandId`
+		LEFT JOIN haj_special_topic_commodity tc ON tc.commodityId=c.`id`
+		LEFT JOIN haj_special_topic topic ON topic.id=tc.`specialTopicId`
+		<if test="promotionAreaId != null">
+			LEFT JOIN haj_commodity_promotion_area hcpa ON c.id = hcpa.commodityId
+		</if>
+		<if test="threec != null">
+			LEFT JOIN haj_commodity_category hcc ON c.id = hcc.commodityId
+		</if>
+		WHERE 1=1
+		<if test="shelves != null">
+			AND c.`shelves`=#{shelves}
+		</if>
+		<if test="invalid != null">
+			AND c.`invalid`=#{invalid}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="provinceCode != null and provinceCode != '' and provinceCode != 0">
+			AND areas2.`p_code`=#{provinceCode}
+			<if test="cityCode != null and cityCode != '' and cityCode != 0">
+				AND areas2.`code`=#{cityCode}
+				<if test="communityCode != null and communityCode != '' and communityCode != 0">
+					AND areas.`code`=#{communityCode}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%'))
+		</if>
+		<if test="promotionAreaId != null">
+			AND hcpa.`areaId`=#{promotionAreaId}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.`areaCode`=#{areaCode}
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			AND spc.`name`=#{supplyChain}
+		</if>
+		<if test="activityId != null and activityId != ''">
+			AND c.activityId=#{activityId}
+		</if>
+		<if test="brandId != null">
+			AND c.`brandId`=#{brandId}
+		</if>
+		<if test="isaddcate != null">
+			AND c.isaddcate = #{isaddcate}
+		</if>
+		<if test="threec != null and threec != ''">
+			AND cateId = #{threec}
+		</if>
+		<if test="specialTopicId != null and specialTopicId != ''">
+			AND tc.specialTopicId = #{specialTopicId}
+		</if>
+		<if test="mark != null and mark != ''">
+			AND c.mark = #{mark}
+		</if>
+		<if test="mustBuy != null and mustBuy != ''">
+			AND c.mustBuy = #{mustBuy}
+		</if>
+		<if test="familyPreferences != null and familyPreferences != ''">
+			AND c.familyPreferences = #{familyPreferences}
+		</if>
+		<if test="ishot != null and ishot != ''">
+			AND c.ishot = #{ishot}
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause},
+		</if>
+		c.id DESC
+
+	</select>
+
+
+	<!--按条件查询商品列表(分页跳转)-->
+	<select id="getCommodityList" parameterType="Object" resultType="java.util.HashMap">
+		SELECT c.id, c.`commodityNo`, ctype.`commodityAttr`,
+		(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+		ctype.`typeName`, c.`name` commodityName, spc.`name` supplyName, spc.`supplyNo`,
+		c.`costPrice`, c.`marketPrice`, c.`originalPrice`, c.`promotionPrice`,
+		c.`shelves`, c.`isTop`, c.`producer`, c.`intrapartum`, c.`weight`,c.`ishot`,
+		c.`familyPreferences`, c.`recommend`, c.acidDischarge, c.isNew,c.description,
+		c.orderClassification,c.inventory,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		c.grossWeight,c.packedWeight,c.selfPackaging,c.invalid,c.sortingBatch,c.areaCode,
+		c.smallPic,cbrand.name brand,c.alias,c.sku
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		LEFT JOIN haj_supply_chain spc ON spc.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN haj_areas areas ON areas.`id`=spc.`areaId`
+		LEFT JOIN haj_areas areas2 ON areas2.`code`=areas.`p_code`
+		LEFT JOIN haj_commodity_brand cbrand ON cbrand.id=c.`brandId`
+		<if test="threec != null and threec!=''">
+			LEFT JOIN haj_commodity_category hcc ON c.id = hcc.commodityId
+		</if>
+		WHERE 1=1
+		<if test="shelves != null">
+			AND c.`shelves`=#{shelves}
+		</if>
+		<if test="invalid != null">
+			AND c.`invalid`=#{invalid}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != 0">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != 0">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="provinceCode != null and provinceCode != '' and provinceCode != 0">
+			AND areas2.`p_code`=#{provinceCode}
+			<if test="cityCode != null and cityCode != '' and cityCode != 0">
+				AND areas2.`code`=#{cityCode}
+				<if test="communityCode != null and communityCode != '' and communityCode != 0">
+					AND areas.`code`=#{communityCode}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%'))
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			AND spc.`name`=#{supplyChain}
+		</if>
+		<if test="brandId != null">
+			AND c.`brandId`=#{brandId}
+		</if>
+		<if test="isaddcate != null and isaddcate != ''">
+			AND c.isaddcate = #{isaddcate}
+		</if>
+		<if test="threec != null and threec!=''">
+			AND hcc.cateId = #{threec}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.`areaCode`=#{areaCode}
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause},
+		</if>
+		c.id DESC
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<update id="deleteActivity" parameterType="Object">
+		UPDATE haj_commodity SET activityId = '0' WHERE activityId=#{activityId}
+	</update>
+
+	<select id="getBySupplyChainId" parameterType="Object" resultType="HajCommodityVo">
+		SELECT c.id, c.`name`, c.`commodityNo`, ct.`commodityAttr`, 
+			(SELECT typeName FROM haj_commodity_type WHERE ct.`parentId`=id) parentTypeName, ct.`typeName`
+		FROM haj_commodity c LEFT JOIN haj_supply_chain supply ON supply.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.`typeId` 
+		WHERE 1=1 AND c.`supplyChain`=#{supplyChainid} 
+		ORDER BY c.id DESC
+	</select>
+
+	<select id="getCommodityById" parameterType="Integer" resultType="HajCommodityVo">
+		SELECT c.brandId,c.id, c.`name`, c.`description`, c.`commodityNo`, c.`supplyChain`, ct.`commodityAttr`,
+			(SELECT typeName FROM haj_commodity_type WHERE ct.`parentId`=id) parentTypeName, ct.`typeName`,
+			c.`typeId`, ct.`parentId` parentTypeId, c.`costPrice`, c.`marketPrice`, c.`originalPrice`,
+			c.promotionPrice, c.`weight`, c.`producer`, c.`intrapartum`, c.`shelves`, c.`smallPic`,
+			c.`imagePath`, c.`ishot`, c.`familyPreferences`, c.`alias`, c.`acidDischarge`, c.`praise`,
+			c.salesVolume, c.recommend, c.isNew,c.orderClassification, c.activityId,
+			IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3, c.inventory,c.mustBuy,c.stamp,
+			c.discountWord,c.promotionAreaId, c.grossWeight,c.packedWeight,c.selfPackaging,c.invalid,
+			(SELECT description FROM haj_commodity_type WHERE ct.`parentId`=id) typeDescription,
+			c.sort,c.areaCode,c.sortingBatch,c.`sku`, c.`warningInvt`, c.`syncInvt`, c.`sku`, c.storageNo,
+			c.inventoryInit,c.percentLoss,c.attribute,c.cloudsId
+		FROM haj_commodity c LEFT JOIN haj_supply_chain supply ON supply.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.`typeId` 
+		WHERE 1=1 AND c.`id`=#{id} 
+		ORDER BY c.id DESC
+	</select>
+
+
+	<select id="getCommodity" parameterType="Integer" resultType="HajCommodity">
+		SELECT *
+		FROM haj_commodity c
+		WHERE 1=1 AND c.`id`=#{id}
+	</select>
+
+	<select id="deleteCommotidyActivity" parameterType="Integer">
+		update haj_commodity set activityId= 0 ,promotionPrice=0 where activityId = #{activityId} 
+	</select>
+
+	<select id="getAllComodityList" resultType="java.util.HashMap">
+		select id,name from haj_commodity where shelves=1
+	</select>
+
+	<select id="getAllCommodityPrice" resultType="java.util.HashMap">
+		SELECT
+			c.id,c.name,c.imagePath,c.recommend,c.shelves,c.originalPrice,IFNULL(c.promotionPrice,0) AS promotionPrice,
+			c.typeId,c.producer,IFNULL(c.intrapartum,'') as	intrapartum,c.weight,c.smallPic,c.marketPrice,
+			ct1.typeName,IFNULL(v.activityName,'') as activityName,IFNULL(c.activityId,0) AS activityId,
+			ct1.id AS bigTypeId, c.alias, c.description, c.acidDischarge, c.praise, c.mark, c.label3,
+			c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId, ct.commodityAttr, ct1.`description` AS typeDescription,
+			c.areaCode as areaCode
+		FROM haj_commodity c 
+			INNER JOIN haj_commodity_type ct ON ct.id=c.typeId 
+			INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+			LEFT JOIN haj_activity v ON v.id=c.activityId
+	</select>
+
+	<select id="getIdByCommodityNo" resultType="Integer">
+		SELECT id FROM haj_commodity WHERE `commodityNo` = #{commodityNo}
+	</select>
+
+	<update id="updatePrice" parameterType="HajCommodity">
+		UPDATE haj_commodity
+		SET costPrice=#{costPrice}, marketPrice=#{marketPrice}, originalPrice=#{originalPrice}
+		WHERE id=#{id}
+	</update>
+
+	<select id="getAllCommodity4Export" resultType="HajCommodityVo">
+		SELECT distinct c.`id`, c.`name`, ctype.`commodityAttr`,
+		(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName, ctype.`typeName`,
+		c.`weight`, c.`producer`, c.`intrapartum`, c.`shelves`, c.`costPrice`, c.`marketPrice`, c.`originalPrice`,
+		c.`alias`, c.`description`, c.`acidDischarge`, c.`recommend`, c.`ishot`, c.`familyPreferences`,
+		c.`salesVolume`, c.`praise`, c.`orderClassification`, c.`discountWord`, c.`invalid`, c.`commodityNo`,
+		IFNULL(c.promotionPrice,0) AS promotionPrice, c.`areaCode`, c.sort, spc.`supplyNo`, c.sortingBatch,
+		(SELECT a.`name` FROM haj_areas a WHERE a.`code` = c.`areaCode`) city,
+		c.`sku`, c.storageNo, spc.`name` supplyName, IFNULL(c.brandId, 0) brandId,c.attribute,c.syncInvt,c.cloudsId
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		LEFT JOIN haj_supply_chain spc ON spc.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN haj_areas areas ON areas.`id`=spc.`areaId`
+		LEFT JOIN haj_areas areas2 ON areas2.`code`=areas.`p_code`
+		LEFT JOIN haj_special_topic_commodity tc ON tc.commodityId=c.`id`
+		<if test="promotionAreaId != null">
+			LEFT JOIN `haj_commodity_promotion_area` hcpa ON hcpa.commodityId = c.id
+		</if>
+		WHERE 1=1
+		<if test="shelves != null">
+			AND c.`shelves`=#{shelves}
+		</if>
+		<if test="invalid != null">
+			AND c.`invalid`=#{invalid}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="provinceCode != null and provinceCode != '' and provinceCode != 0">
+			AND areas2.`p_code`=#{provinceCode}
+			<if test="cityCode != null and cityCode != '' and cityCode != 0">
+				AND areas2.`code`=#{cityCode}
+				<if test="communityCode != null and communityCode != '' and communityCode != 0">
+					AND areas.`code`=#{communityCode}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%'))
+		</if>
+		<if test="promotionAreaId != null">
+			AND hcpa.`areaId`=#{promotionAreaId}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.`areaCode`=#{areaCode}
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			AND spc.`name`=#{supplyChain}
+		</if>
+		<if test="activityId != null">
+			AND c.`activityId`=#{activityId}
+		</if>
+		<if test="brandId != null">
+			AND c.`brandId`=#{brandId}
+		</if>
+		<if test="plate != null and plate !=''">
+			<if test="plate == 'mustBuy'">
+				AND c.`mustBuy`=1
+			</if>
+			<if test="plate == 'familyPreferences'">
+				AND c.`familyPreferences`=1
+			</if>
+			<if test="plate == 'ishot'">
+				AND c.`ishot`=1
+			</if>
+		</if>
+		<if test="mark != null and mark != ''">
+			AND c.mark = #{mark}
+		</if>
+		<if test="specialTopicId != null and specialTopicId != ''">
+			AND tc.specialTopicId = #{specialTopicId}
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause},
+		</if>
+		c.id DESC
+	</select>
+
+	<update id="updateUpCommoidtyList">
+		update haj_commodity set shelves = 0 where typeId IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="shangJia">
+		UPDATE haj_commodity SET shelves = 1 WHERE typeId IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<!-- 手动下架的商品只能手动上架 -->
+		AND shelvesWay = 0
+	</update>
+
+	<update id="updateCommodityUpByNo" parameterType="String">
+		UPDATE haj_commodity SET shelves = 1
+		WHERE `commodityNo` = #{commodityNo}
+			and shelves = 0 and invalid=0 AND shelvesWay = 0
+	</update>
+
+	<select id="getTeamPurchasingCommodity" resultType="HashMap" parameterType="Object">
+		SELECT c.id, c.`name`, c.`alias`, c.`description`, c.`marketPrice`, c.`originalPrice`,
+		c.`label3` as deliveryTime, c.`salesVolume`, c.`smallPic`, c.`activityId`,
+		ct1.`commodityAttr`, ct1.`typeName` parentTypeName, ct.`typeName`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ct ON ct.id=c.`typeId`
+		LEFT JOIN haj_commodity_type ct1 ON ct1.id=ct.`parentId`
+		WHERE ct.`commodityAttr` = '团购' AND c.`shelves` = 1
+		<if test="commodityId != null and commodityId > 0">
+			AND c.id=#{commodityId}
+		</if>
+		<include refid="filterSomething"/>
+		ORDER BY c.`sort` DESC, c.`recommend` DESC, c.`id` DESC
+		LIMIT 0, 100
+	</select>
+
+	<select id="getInventoryByNO" parameterType="String" resultType="Integer">
+		SELECT inventory FROM haj_commodity WHERE `commodityNo` = #{commodityNo} LIMIT 1
+	</select>
+
+	<update id="updateInventoryReduce" parameterType="HajOrderDetails">
+		UPDATE haj_commodity SET inventory = inventory - #{number} 
+		WHERE `commodityNo` = #{commodityNo} AND inventory >= #{number}
+	</update>
+
+	<update id="updateInventoryAdd" parameterType="HajOrderDetails">
+		UPDATE haj_commodity SET inventory = inventory + #{number} WHERE `commodityNo` = #{commodityNo}
+	</update>
+
+	<update id="updateSoldOut" parameterType="String">
+		UPDATE haj_commodity SET shelves = 0 WHERE `commodityNo` = #{commodityNo}
+	</update>
+
+	<select id="getShelvesByNO" parameterType="String" resultType="Integer">
+		SELECT shelves FROM haj_commodity WHERE `commodityNo` = #{commodityNo} LIMIT 1
+	</select>
+
+	<select id="excelInventoryList" parameterType="HajCommodityVo" resultType="HajCommodityVo">
+		SELECT c.`commodityNo`, ctype.`commodityAttr`,c.`weight`,
+		(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+		ctype.`typeName`, c.`name` commodityName,c.inventory,c.`shelves`,
+		IFNULL(orders.todaySales,0) as todaySales,c.grossWeight,c.packedWeight,
+		c.selfPackaging,c.invalid ,spc.`name` supplyName, c.`warningInvt`, c.sku,c.orderClassification,
+		c.storageNo, c.areaCode, c.`costPrice`, c.`originalPrice`, c.`inventoryInit`
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		LEFT JOIN haj_supply_chain spc ON spc.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN (
+		SELECT IFNULL(SUM(d.number),0) AS todaySales,d.`commodityName`,d.`commodityNo`
+		FROM `haj_order_details` d
+		LEFT JOIN `haj_order` o ON o.`id` = d.`orderId`
+		WHERE DATE(o.createTime)=DATE(NOW()) AND o.`status`=2 AND o.delflag=0
+		GROUP BY d.`commodityNo`
+		) orders on orders.commodityNo = c.`commodityNo`
+		WHERE 1=1
+		<if test="shelves != null">
+			AND c.`shelves`=#{shelves}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%') OR
+			c.sku=#{commodityNo})
+		</if>
+		<if test="invalid != null">
+			AND c.`invalid`=#{invalid}
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			AND spc.`name`=#{supplyChain}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.`areaCode`=#{areaCode}
+		</if>
+		<if test="todaySales != null and todaySales != ''">
+			AND orders.todaySales > 0
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause},
+		</if>
+		c.shelves DESC, c.id DESC
+	</select>
+
+	<select id="listPageInventory" parameterType="HajCommodityVo" resultType="HajCommodityVo">
+		SELECT c.id, c.`commodityNo`, ctype.`commodityAttr`, c.selfPackaging, c.invalid,
+		(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+		ctype.`typeName`, c.`name` commodityName, c.inventory, c.`shelves`, c.`weight`,
+		IFNULL(orders.todaySales,0) AS todaySales, c.grossWeight, c.packedWeight,
+		spc.`name` supplyName, spc.`supplyNo`, c.`costPrice`, c.`marketPrice`, c.`originalPrice`,
+		c.`promotionPrice`, c.`salesVolume`, c.`warningInvt`, c.sku, c.areaCode, c.inventoryInit,
+		(SELECT ar.`name` FROM haj_areas ar WHERE ar.`code` = c.areaCode) city
+		FROM haj_commodity c
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		LEFT JOIN haj_supply_chain spc ON spc.cloudsSupplierId=c.`supplyChain`
+		LEFT JOIN (
+		SELECT IFNULL(SUM(d.number),0) AS todaySales,d.`commodityNo`
+		FROM `haj_order_details` d
+		LEFT JOIN `haj_order` o ON o.`id` =d.`orderId`
+		WHERE DATE(o.createTime)=DATE(NOW()) AND o.`status`=2 AND o.delflag=0 GROUP BY d.`commodityNo`
+		) orders ON orders.commodityNo = c.`commodityNo`
+		WHERE 1=1
+		<if test="shelves != null">
+			AND c.`shelves`=#{shelves}
+		</if>
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (c.`commodityNo`=#{commodityNo} OR c.`name` LIKE CONCAT('%', #{commodityNo}, '%') OR
+			c.sku=#{commodityNo})
+		</if>
+		<if test="invalid != null">
+			AND c.`invalid`=#{invalid}
+		</if>
+		<if test="supplyChain != null and supplyChain != ''">
+			AND spc.`name`=#{supplyChain}
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.`areaCode`=#{areaCode}
+		</if>
+		<if test="todaySales != null and todaySales != ''">
+			AND orders.todaySales > 0
+		</if>
+		ORDER BY
+		<if test="orderByClause != null and orderByClause != ''">
+			${orderByClause},
+		</if>
+		c.shelves DESC, c.id DESC
+	</select>
+
+	<select id="getCommoidtyByName" resultType="java.util.HashMap" parameterType="Object">
+		SELECT `name`,marketPrice as originalPrice,t.commodityAttr,c.areaCode as areaCode
+		FROM haj_commodity c LEFT JOIN haj_commodity_type t ON c.typeId = t.id WHERE `name`=#{name}
+		<if test="areaCode != null and areaCode != ''">
+			and c.areaCode = #{areaCode}
+		</if>
+		AND c.shelves = 1
+		LIMIT 1
+	</select>
+
+	<update id="updatePromotionAreaIdTo0">
+		UPDATE haj_commodity SET promotionAreaId = 0 WHERE id IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!--推荐专区首页显示商品列表-->
+	<select id="getCommodityByPromotionAreaIdOld" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_promotion_area pa
+		LEFT JOIN haj_commodity_promotion_area cpa ON pa.id = cpa.areaId
+		LEFT JOIN haj_commodity c ON cpa.commodityId = c.id
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+
+		WHERE 1=1 AND c.`invalid` = 0 AND ct.display=1 AND ct1.display=1
+		AND pa.`display`=1 AND pa.id=#{promotionAreaId}
+		<include refid="filterSomething"/>
+		/*ORDER BY c.`sort` DESC, c.`recommend` DESC, c.`id` DESC*/
+		ORDER BY c.`sort` asc , convert(c.alias USING gbk) asc
+		<if test="pageSize != null and pageSize > 0">
+			LIMIT 0, #{pageSize}
+		</if>
+	</select>
+
+	<select id="getCommodityByPromotionAreaId" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_promotion_area pa
+		LEFT JOIN haj_commodity_promotion_area cpa ON pa.id = cpa.areaId
+		LEFT JOIN haj_commodity c ON cpa.commodityId = c.id
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+
+		WHERE 1=1 AND c.`invalid` = 0 AND ct.display=1 AND ct1.display=1 AND c.shelves=1
+		AND pa.`display`=1 AND pa.id=#{promotionAreaId}
+		<include refid="filterSomething"/>
+		/*ORDER BY c.`sort` DESC, c.`recommend` DESC, c.`id` DESC*/
+		ORDER BY c.`sort` asc , convert(c.alias USING gbk) asc
+		<if test="pageSize != null and pageSize > 0">
+			LIMIT 0, #{pageSize}
+		</if>
+	</select>
+
+	<!--根据专区id获取专区下商品列表-->
+	<select id="getCommodityListByPromotionAreaId" resultType="java.util.HashMap" parameterType="Object">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,c.sort,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_promotion_area pa
+		LEFT JOIN haj_commodity_promotion_area cpa ON pa.id = cpa.areaId
+		LEFT JOIN haj_commodity c ON cpa.commodityId = c.id
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+
+		WHERE 1=1 AND ct.display=1 AND ct1.display=1 AND c.`invalid` = 0
+		AND pa.`display`=1 AND pa.id=#{condition.promotionAreaId}
+		<if test="condition.communityId != null and condition.communityId > 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{condition.communityId}
+			)
+		</if>
+		<if test="condition.areaCode != null and condition.areaCode != ''">
+			AND c.areaCode = #{condition.areaCode}
+		</if>
+		ORDER BY c.`sort` asc , convert(c.alias USING gbk) asc
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<!--新业主推荐-->
+	<select id="getCommodityMustBuy" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias, c.sort,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1 AND c.`invalid` = 0 AND ct.display=1 AND ct1.display=1
+		AND c.mustBuy = 1
+		<include refid="filterSomething"/>
+		ORDER BY c.`sort`, convert(c.alias USING gbk) asc, c.`recommend` DESC, c.`id` DESC
+		LIMIT 6
+	</select>
+
+	<select id="getCommoditysMustBuy" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias, c.sort,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1 AND c.`invalid` = 0 AND ct.display=1 AND ct1.display=1
+		AND c.mustBuy = 1 AND shelves=1
+		<include refid="filterSomething"/>
+		ORDER BY c.`sort`, convert(c.alias USING gbk) asc, c.`recommend` DESC, c.`id` DESC
+		LIMIT 6
+	</select>
+
+
+	<!--今日特价商品列表-->
+	<select id="getBuyLimitCommodity" resultType="java.util.HashMap">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice, 0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '')
+		label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,c.`inventory`,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE 1=1 AND ct.display=1 AND ct1.display=1
+		AND v.`status` = 1 AND v.`activityType`=0 AND c.invalid=0
+		<include refid="filterSomething"/>
+		ORDER BY c.`sort` , c.`recommend` DESC, c.`id` DESC
+	</select>
+
+	<update id="updateCommodityClearActivity">
+		UPDATE haj_commodity c SET c.activityId=0, c.promotionPrice=0, c.`discountWord`=''
+		WHERE c.`activityId`=(
+			SELECT id FROM haj_activity
+			WHERE activityName=#{activityName} AND areaCode=#{areaCode} LIMIT 1
+		)
+	</update>
+
+	<update id="updateResetGrossWeight">
+		UPDATE haj_commodity SET grossWeight = 0
+	</update>
+
+	<select id="getById" resultType="java.util.HashMap" parameterType="Integer">
+		SELECT
+			c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend, 
+			c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias, 
+			c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+			IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId, 
+			ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`, 
+			ct1.`description` AS typeDescription
+		FROM haj_commodity c 
+			INNER JOIN haj_commodity_type ct ON ct.id=c.typeId 
+			INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id 
+			LEFT JOIN haj_activity v ON v.id=c.activityId 
+		WHERE 1=1 AND shelves=1 AND ct.display=1 AND ct1.display=1
+		AND c.id=#{commodityId} LIMIT 1
+	</select>
+
+	<select id="getByName" resultType="HajCommodity">
+		SELECT * FROM haj_commodity
+		WHERE name=#{name}
+		<if test="areaCode != null">
+			AND areaCode = #{areaCode}
+		</if>
+		LIMIT 1
+	</select>
+
+	<update id="updateShelvesById" parameterType="HajCommodity">
+		UPDATE haj_commodity SET shelves = #{shelves}
+		WHERE id = #{id}
+		<if test="invalid != null">
+			AND invalid = #{invalid}
+		</if>
+	</update>
+
+	<update id="updateShelvesByManual" parameterType="HajCommodity">
+		UPDATE haj_commodity SET shelves = #{shelves}
+		<if test="shelvesWay != null">
+			, shelvesWay = #{shelvesWay}
+		</if>
+		WHERE id = #{id}
+		<if test="invalid != null">
+			AND invalid = #{invalid}
+		</if>
+	</update>
+
+	<update id="updateSalesVolume">
+		UPDATE haj_commodity c, (
+			SELECT IFNULL(SUM(d.number),0) AS salesVolume,d.`commodityNo`
+			FROM `haj_order_details` d
+			LEFT JOIN `haj_order` o ON o.`id` =d.`orderId`
+			WHERE DATE(o.createTime)=DATE(DATE_ADD(NOW(),INTERVAL -1 DAY)) AND o.`status`=4 AND o.delflag=0
+			GROUP BY d.`commodityNo`
+		) sales
+		SET c.`salesVolume` = c.`salesVolume` + sales.salesVolume
+		WHERE c.`commodityNo` = sales.commodityNo
+		AND sales.commodityNo IS NOT NULL
+	</update>
+
+	<select id="getCountByType" parameterType="HajCommodityType" resultType="Integer">
+		SELECT COUNT(*)
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE c.shelves=1 AND ct.display=1 AND ct1.display=1
+		AND ct.commodityAttr = #{commodityAttr}
+		AND ct.parentId = #{parentId}
+		AND c.typeId = #{id}
+		AND c.areaCode = #{areaCode}
+		<if test="remark3 != null and remark3 != 'null' and remark3 != '' and remark3 != '0'">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{remark3}
+			)
+		</if>
+	</select>
+
+	<select id="getCommodityAttrList" resultType="HashMap">
+		SELECT attr.commodityAttr, IFNULL(valid.total, 0) total
+		FROM (
+		SELECT ct.`commodityAttr` FROM haj_commodity_type ct GROUP BY ct.`commodityAttr`
+		) attr LEFT JOIN (
+		SELECT ct.`commodityAttr`, COUNT(*) total
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE shelves=1 AND c.`invalid` = 0 AND ct.display=1 AND ct1.display=1
+		<if test="communityId != null and communityId != 0">
+			AND c.id NOT IN (
+			SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{communityId}
+			)
+		</if>
+		<if test="areaCode != null and areaCode != ''">
+			AND c.areaCode = #{areaCode}
+		</if>
+		GROUP BY ct.`commodityAttr`
+		) valid ON valid.commodityAttr = attr.`commodityAttr`
+	</select>
+
+	<select id="getCommodityByNo" parameterType="String" resultType="HajCommodity">
+		SELECT * FROM haj_commodity WHERE `commodityNo` = #{commodityNo} LIMIT 1
+	</select>
+
+	<select id="getInvtSyncSkuList" resultType="String">
+		SELECT c.`sku` FROM haj_commodity c WHERE c.`syncInvt` = 1
+	</select>
+
+	<update id="updateInventory" parameterType="com.wms.entity.WmsInventory">
+		UPDATE haj_commodity c SET c.`inventory` = #{avlqty}
+		<!--库存小于1的商品自动下架-->
+		<if test="avlqty &lt; 1">
+			, c.`shelves` = 0
+		</if>
+		WHERE c.`sku` = #{sku}
+	</update>
+
+	<select id="getCountByActivity" resultType="Integer" parameterType="HajActivity">
+		SELECT COUNT(*) FROM haj_commodity c
+		LEFT JOIN haj_activity a ON a.`id` = c.`activityId`
+		WHERE a.`activityType` = #{activityType}
+			AND a.`areaCode` = #{areaCode}
+			AND a.`status` = 1
+			AND c.`shelves` = 1
+		LIMIT 1
+	</select>
+
+	<select id="listByActivity" resultType="HashMap" parameterType="HajActivity">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, IFNULL(v.activityName,'') AS activityName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		LEFT JOIN haj_activity v ON v.id=c.activityId
+		WHERE ct.display=1 AND ct1.display=1 AND v.`status` = 1
+		<if test="activityType != null and activityType != ''">
+			AND v.`activityType` = #{activityType}
+		</if>
+		<if test="id != null">
+			AND v.`id` = #{id}
+		</if>
+		AND v.`areaCode` = #{areaCode}
+		ORDER BY c.sort
+	</select>
+
+	<select id="listByTypeIds" resultType="String">
+		SELECT c.`commodityNo` FROM haj_commodity c WHERE c.`typeId` IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="listByBrandIds" resultType="String">
+		SELECT c.`commodityNo` FROM haj_commodity c WHERE c.`brandId` IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getByMark" resultType="HashMap" parameterType="HajCommodity">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription, c.`areaCode`
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE ct.display=1 AND ct1.display=1 AND c.shelves=1
+		AND c.`areaCode` = #{areaCode}
+		<if test="mark != null">
+			AND c.`mark` = #{mark}
+		</if>
+		ORDER BY c.`sort` asc , convert(c.alias USING gbk) asc
+	</select>
+
+	<!--新版分页-->
+	<select id="getByMarkPage" resultType="HashMap" parameterType="HajCommodity">
+		SELECT
+		c.id, c.name, c.originalPrice, IFNULL(c.promotionPrice,0) AS promotionPrice, c.marketPrice, c.recommend,
+		c.producer, IFNULL(c.intrapartum,'') AS intrapartum, c.weight, c.imagePath, c.smallPic, c.alias,
+		c.description, c.acidDischarge, c.praise, c.shelves, IFNULL(c.activityId,0) AS activityId, c.typeId,
+		IFNULL(c.mark, '') mark, IFNULL(c.label3, '') label3,c.mustBuy,c.stamp,c.discountWord,c.promotionAreaId,
+		ct1.id AS bigTypeId, ct1.typeName, ct.`commodityAttr`,
+		ct1.`description` AS typeDescription, c.`areaCode`
+		FROM haj_commodity c
+		INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+		INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+		WHERE ct.display=1 AND ct1.display=1 AND c.`invalid` = 0
+		AND c.`areaCode` = #{condition.areaCode}
+		<if test="condition.mark != null">
+			AND c.`mark` = #{condition.mark}
+		</if>
+		ORDER BY c.`sort` asc , convert(c.alias USING gbk) asc
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+
+	<!--根据FMaterialId查询总数-->
+	<select id="getTotalBycloudsId" parameterType="Integer" resultType="int">
+		SELECT COUNT(1) FROM haj_commodity WHERE cloudsId = #{cloudsId}
+	</select>
+
+	<!--同步erp更新物料-->
+	<update id="updateCommodityByCloudsId" parameterType="HajCommodity">
+		UPDATE haj_commodity
+		SET
+		<trim suffixOverrides=",">
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="weight != null">
+				weight = #{weight},
+			</if>
+			<if test="sku != null">
+				sku = #{sku},
+			</if>
+			<if test="producer != null">
+				producer = #{producer},
+			</if>
+			<if test="supplyChain != null">
+				supplyChain = #{supplyChain},
+			</if>
+			<if test="costPrice != null">
+				costPrice = #{costPrice},
+			</if>
+			<if test="originalPrice != null">
+				originalPrice = #{originalPrice},
+			</if>
+			<if test="marketPrice != null">
+				marketPrice = #{marketPrice},
+			</if>
+			<if test="areaCode != null">
+				areaCode = #{areaCode},
+			</if>
+		</trim>
+		WHERE cloudsId = #{cloudsId}
+	</update>
+	<!--同步所有商品的erp库存-->
+	<update id="updateCommodityInventory" parameterType="map">
+		update haj_commodity set
+		inventory=
+		<foreach collection="list" item="item" index="index" separator=" " open="case" close="end">
+			when sku=#{item.FItemCode,jdbcType=DECIMAL} and areaCode=#{item.FOrgCode,jdbcType=DECIMAL} then #{item.FQty}
+		</foreach>
+		,inventoryInit=
+		<foreach collection="list" item="item" index="index" separator=" " open="case" close="end">
+			when sku=#{item.FItemCode,jdbcType=DECIMAL} and areaCode=#{item.FOrgCode,jdbcType=DECIMAL} then #{item.FQty}
+		</foreach>
+		where areaCode in
+		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			#{item.FOrgCode}
+		</foreach>
+		and sku in
+		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			#{item.FItemCode}
+		</foreach>
+		and syncInvt=1
+	</update>
+
+
+</mapper>

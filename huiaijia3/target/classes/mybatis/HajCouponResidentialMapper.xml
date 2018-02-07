@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCouponResidentialMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCouponResidential">
+		<result column="id" property="id" />
+		<result column="couponId" property="couponId" />
+		<result column="communityId" property="communityId" />
+	</resultMap>
+
+	<!-- haj_coupon_residential table all fields -->
+	<sql id="Base_Column_List">
+		id, couponId, communityId
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.couponId != null and condition.couponId != ''">
+			AND couponId = #{condition.couponId}
+		</if>
+		<if test="condition.communityId != null and condition.communityId != ''">
+			AND communityId = #{condition.communityId}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="couponId != null and couponId != ''">
+			AND couponId = #{couponId}
+		</if>
+		<if test="communityId != null and communityId != ''">
+			AND communityId = #{communityId}
+		</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_coupon_residential(id, couponId, communityId)
+		VALUES(#{id}, #{couponId}, #{communityId})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_coupon_residential SET couponId = #{couponId}, communityId = #{communityId} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_coupon_residential SET 
+		<trim suffixOverrides=",">
+			<if test="couponId != null">
+				couponId = #{couponId},
+			</if>
+			<if test="communityId != null">
+				communityId = #{communityId},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_coupon_residential WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_residential WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_coupon_residential
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_residential
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCouponResidential" parameterType="HajCouponResidential">
+		SELECT * FROM haj_coupon_residential
+		WHERE 1=1
+		ORDER BY id DESC
+	</select>
+
+	<select id="listResidentialByCoupon" resultType="Integer" parameterType="Integer">
+		SELECT communityId FROM haj_coupon_residential
+		WHERE couponId = #{couponId}
+	</select>
+
+	<delete id="deleteByCoupon" parameterType="Integer">
+		DELETE FROM haj_coupon_residential WHERE couponId = #{couponId}
+	</delete>
+
+	<select id="getIsResidential" resultType="HajCouponResidential" parameterType="HajCouponResidential">
+		SELECT * FROM haj_coupon_residential where couponId = #{couponId} and communityId = #{communityId}
+	</select>
+
+	<insert id="addBatch" useGeneratedKeys="true">
+		<selectKey resultType="Integer" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_coupon_residential(couponId, communityId)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{couponId}, #{item})
+		</foreach>
+	</insert>
+
+
+</mapper>   

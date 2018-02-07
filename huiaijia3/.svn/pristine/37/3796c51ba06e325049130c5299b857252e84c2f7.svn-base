@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderActivityMapper" > 
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderActivity" >
+	<result column="id" property="id"/>
+	<result column="orderId" property="orderId"/>
+	<result column="activityId" property="activityId"/>
+	<result column="DiscountAmount" property="discountAmount"/>
+	<result column="remark1" property="remark1"/>
+	<result column="remark2" property="remark2"/>
+	<result column="remark3" property="remark3"/>
+</resultMap>
+       
+<!-- haj_order_activity table all fields -->
+<sql id="Base_Column_List" >
+	 id,orderId,activityId,DiscountAmount,remark1,remark2,remark3
+</sql>
+   
+   
+<!-- 查询条件 -->
+<sql id="Example_Where_Clause">
+where 1=1
+<trim  suffixOverrides="," >
+	<if test="condition.id != null and condition.id != ''" >
+	    and id =  #{condition.id}
+	</if>
+	<if test="condition.orderId != null and condition.orderId != ''" >
+	    and orderId =  #{condition.orderId}
+	</if>
+	<if test="condition.activityId != null and condition.activityId != ''" >
+	    and activityId =  #{condition.activityId}
+	</if>
+	<if test="condition.discountAmount != null and condition.discountAmount != ''" >
+	    and DiscountAmount =  #{condition.discountAmount}
+	</if>
+	<if test="condition.remark1 != null and condition.remark1 != ''" >
+	    and remark1 =  #{condition.remark1}
+	</if>
+	<if test="condition.remark2 != null and condition.remark2 != ''" >
+	    and remark2 =  #{condition.remark2}
+	</if>
+	<if test="condition.remark3 != null and condition.remark3 != ''" >
+	    and remark3 =  #{condition.remark3}
+	</if>
+</trim>
+</sql>
+   
+
+<!-- 插入记录 -->
+<insert id="add" parameterType="Object" >
+<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	SELECT LAST_INSERT_ID()
+  </selectKey>
+  insert into haj_order_activity(id,orderId,activityId,DiscountAmount,remark1,remark2,remark3)
+ values(#{id},#{orderId},#{activityId},#{discountAmount},#{remark1},#{remark2},#{remark3})
+</insert>
+
+<!-- 根据id，修改记录-->  
+ <update id="update" parameterType="Object" >
+  update haj_order_activity set orderId=#{orderId},activityId=#{activityId},DiscountAmount=#{discountAmount},remark1=#{remark1},remark2=#{remark2},remark3=#{remark3} where id=#{id}
+ </update>
+ 
+ <!-- 修改记录，只修改只不为空的字段 -->
+<update id="updateBySelective" parameterType="Object" >
+	update haj_order_activity set 
+	<trim  suffixOverrides="," >
+	<if test="orderId != null  ">
+		orderId=#{orderId},
+	</if>
+	<if test="activityId != null  ">
+		activityId=#{activityId},
+	</if>
+	<if test="discountAmount != null  ">
+		DiscountAmount=#{discountAmount},
+	</if>
+	<if test="remark1 != null  ">
+		remark1=#{remark1},
+	</if>
+	<if test="remark2 != null  ">
+		remark2=#{remark2},
+	</if>
+	<if test="remark3 != null  ">
+		remark3=#{remark3},
+	</if>
+	</trim> where id=#{id}
+</update>
+
+<!-- 删除记录 -->
+<delete id="delete" parameterType="Object">
+	delete 	 from haj_order_activity where id = #{id}
+</delete>
+ 
+<!-- 根据id查询 前台用户表 -->
+<select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+	select <include refid="Base_Column_List" /> 
+	 from haj_order_activity where id = #{id}
+</select>
+
+<!-- 前台用户表 列表总数-->
+<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+	select count(1) from haj_order_activity 
+	<include refid="Example_Where_Clause"/>
+</select>
+  	
+<!-- 查询前台用户表列表 -->
+<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+	select 
+	<include refid="Base_Column_List"/>
+	from haj_order_activity 
+	<include refid="Example_Where_Clause"/>
+	<if test="orderByClause != null and orderByClause != ''" >
+       order by  ${orderByClause}
+    </if>
+    <if test="limitClause != null and limitClause != ''" >
+       ${limitClause}
+    </if>
+</select>
+  	
+</mapper>   

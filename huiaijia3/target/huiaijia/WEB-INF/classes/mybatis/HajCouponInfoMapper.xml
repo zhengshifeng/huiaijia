@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCouponInfoMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCouponInfo">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="remark" property="remark" />
+		<result column="rule" property="rule" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime" />
+		<result column="dateNumbers" property="dateNumbers" />
+		<result column="couponNo" property="couponNo" />
+		<result column="sendType" property="sendType" />
+		<result column="couponMoney" property="couponMoney" />
+		<result column="number" property="number" />
+		<result column="status" property="status" />
+		<result column="limitNumber" property="limitNumber" />
+		<result column="type" property="type" />
+		<result column="createTime" property="createTime" />
+		<result column="creator" property="creator" />
+		<result column="invalidWay" property="invalidWay" />
+		<result column="memberLimit" property="memberLimit" />
+		<result column="category" property="category" />
+		<result column="createRemark" property="createRemark" />
+	</resultMap>
+
+	<!-- haj_coupon_info table all fields -->
+	<sql id="Base_Column_List">
+		id, name, remark, rule, beginTime, endTime, dateNumbers, couponNo, sendType, couponMoney, number,
+		status, limitNumber, type, createTime, creator, invalidWay, memberLimit, category, createRemark
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.name != null and condition.name != ''">
+			AND name = #{condition.name}
+		</if>
+		<if test="condition.remark != null and condition.remark != ''">
+			AND remark = #{condition.remark}
+		</if>
+		<if test="condition.rule != null and condition.rule != ''">
+			AND rule = #{condition.rule}
+		</if>
+		<if test="condition.beginTime != null and condition.beginTime != ''">
+			AND beginTime = #{condition.beginTime}
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			AND endTime = #{condition.endTime}
+		</if>
+		<if test="condition.dateNumbers != null and condition.dateNumbers != ''">
+			AND dateNumbers = #{condition.dateNumbers}
+		</if>
+		<if test="condition.couponNo != null and condition.couponNo != ''">
+			AND couponNo = #{condition.couponNo}
+		</if>
+		<if test="condition.sendType != null and condition.sendType != ''">
+			AND sendType = #{condition.sendType}
+		</if>
+		<if test="condition.couponMoney != null and condition.couponMoney != ''">
+			AND couponMoney = #{condition.couponMoney}
+		</if>
+		<if test="condition.number != null and condition.number != ''">
+			AND number = #{condition.number}
+		</if>
+		<if test="condition.status != null and condition.status != ''">
+			AND status = #{condition.status}
+		</if>
+		<if test="condition.limitNumber != null and condition.limitNumber != ''">
+			AND limitNumber = #{condition.limitNumber}
+		</if>
+		<if test="condition.type != null and condition.type != ''">
+			AND type = #{condition.type}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.creator != null and condition.creator != ''">
+			AND creator = #{condition.creator}
+		</if>
+		<if test="condition.invalidWay != null and condition.invalidWay != ''">
+			AND invalidWay = #{condition.invalidWay}
+		</if>
+		<if test="condition.memberLimit != null and condition.memberLimit != ''">
+			AND memberLimit = #{condition.memberLimit}
+		</if>
+		<if test="condition.category != null and condition.category != ''">
+			AND category = #{condition.category}
+		</if>
+		<if test="condition.createRemark != null and condition.createRemark != ''">
+			AND createRemark = #{condition.createRemark}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="name != null and name != ''">
+			AND name = #{name}
+		</if>
+		<if test="remark != null and remark != ''">
+			AND remark = #{remark}
+		</if>
+		<if test="rule != null and rule != ''">
+			AND rule = #{rule}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			AND beginTime = #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND endTime = #{endTime}
+		</if>
+		<if test="dateNumbers != null and dateNumbers != ''">
+			AND dateNumbers = #{dateNumbers}
+		</if>
+		<if test="couponNo != null and couponNo != ''">
+			AND couponNo = #{couponNo}
+		</if>
+		<if test="sendType != null and sendType != ''">
+			AND sendType = #{sendType}
+		</if>
+		<if test="couponMoney != null and couponMoney != ''">
+			AND couponMoney = #{couponMoney}
+		</if>
+		<if test="number != null and number != ''">
+			AND number = #{number}
+		</if>
+		<if test="status != null and status != ''">
+			AND status = #{status}
+		</if>
+		<if test="limitNumber != null and limitNumber != ''">
+			AND limitNumber = #{limitNumber}
+		</if>
+		<if test="type != null and type != ''">
+			AND type = #{type}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="creator != null and creator != ''">
+			AND creator = #{creator}
+		</if>
+		<if test="invalidWay != null and invalidWay != ''">
+			AND invalidWay = #{invalidWay}
+		</if>
+		<if test="memberLimit != null and memberLimit != ''">
+			AND memberLimit = #{memberLimit}
+		</if>
+		<if test="category != null and category != ''">
+			AND category = #{category}
+		</if>
+		<if test="createRemark != null and createRemark != ''">
+			AND createRemark = #{createRemark}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_coupon_info(id, name, remark, rule, beginTime, endTime, dateNumbers, couponNo,
+			sendType, couponMoney, number, status, limitNumber, type, createTime, creator, invalidWay,
+			memberLimit, category, createRemark
+		)
+		VALUES(#{id}, #{name}, #{remark}, #{rule}, #{beginTime}, #{endTime}, #{dateNumbers}, #{couponNo},
+			#{sendType}, #{couponMoney}, #{number}, #{status}, #{limitNumber}, #{type}, now(), #{creator},
+			#{invalidWay}, #{memberLimit}, #{category}, #{createRemark}
+		)
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_coupon_info SET name = #{name}, remark = #{remark}, rule = #{rule}, beginTime = #{beginTime},
+			endTime = #{endTime}, dateNumbers = #{dateNumbers}, couponNo = #{couponNo}, sendType = #{sendType},
+			couponMoney = #{couponMoney}, number = #{number}, status = #{status}, limitNumber = #{limitNumber},
+			type = #{type}, creator = #{creator}, invalidWay = #{invalidWay}, memberLimit = #{memberLimit},
+			category = #{category}, createRemark = #{createRemark}
+		WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_coupon_info SET 
+		<trim suffixOverrides=",">
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="rule != null">
+				rule = #{rule},
+			</if>
+			<if test="beginTime != null">
+				beginTime = #{beginTime},
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime},
+			</if>
+			<if test="dateNumbers != null">
+				dateNumbers = #{dateNumbers},
+			</if>
+			<if test="couponNo != null">
+				couponNo = #{couponNo},
+			</if>
+			<if test="sendType != null">
+				sendType = #{sendType},
+			</if>
+			<if test="couponMoney != null">
+				couponMoney = #{couponMoney},
+			</if>
+			<if test="number != null">
+				number = #{number},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="limitNumber != null">
+				limitNumber = #{limitNumber},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="creator != null">
+				creator = #{creator},
+			</if>
+			<if test="invalidWay != null">
+				invalidWay = #{invalidWay},
+			</if>
+			<if test="memberLimit != null">
+				memberLimit = #{memberLimit},
+			</if>
+			<if test="category != null">
+				category = #{category},
+			</if>
+			<if test="createRemark != null">
+				createRemark = #{createRemark},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_coupon_info WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_info WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_coupon_info
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_info
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="java.util.HashMap" parameterType="HajCouponInfo">
+		SELECT ci.`id`, ci.`name`, ci.`rule`, ci.`couponMoney`, ci.`number`, ci.`beginTime`,
+			ci.`endTime`, ci.`status`, ci.`sendType`,
+			(SELECT COUNT(*) FROM haj_coupon_user cu WHERE cu.`couponId` = ci.id) receiveQuantity,
+			(SELECT COUNT(*) FROM haj_coupon_user cu WHERE cu.`couponId` = ci.id AND cu.isUsed = 1) usedQuantity
+		FROM haj_coupon_info ci
+		WHERE 1=1
+		<if test="name != null and name != ''">
+			AND ci.name LIKE CONCAT('%', #{name}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND ci.status = #{status}
+		</if>
+		<if test="category != null and category != ''">
+			AND ci.category = #{category}
+		</if>
+		GROUP BY ci.id ORDER BY id DESC
+	</select>
+
+	<select id="queryRateById" resultType="Double" parameterType="Integer">
+		SELECT IFNULL(FORMAT(SUM(o.counponMoney) / SUM(o.actualPayment) * 100, 2),0)
+		FROM haj_order o
+		WHERE o.`counponId` IN (
+			SELECT cu.id FROM haj_coupon_user cu WHERE cu.`couponId` = #{couponId}
+		) AND o.status > 1 AND o.status &lt; 9
+	</select>
+	
+	<select id="getCouponInfoByNo" resultMap="BaseResultMap" parameterType="String">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_info WHERE 	couponNo = #{couponNo} and `status` != 3
+	</select>
+	
+	<select id="checkTheSameCoupon" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) FROM haj_coupon_info c WHERE c.`status` != 3 AND c.`couponNo` = #{couponNo} LIMIT 1
+	</select>
+
+	<select id="listPageCouponUseInfo" resultType="HajCouponUseInfoVo" parameterType="Integer">
+		SELECT u.`mobilePhone`,
+			(SELECT communityName FROM haj_community_persion WHERE id = u.`villageId`) communityName,
+			cu.`createTime`, ci.`sendType`, cu.`isUsed`,
+			cu.`isValidate`, o.id orderId, o.orderNo, o.actualPayment, o.`status` orderStatus
+		FROM haj_coupon_user cu
+		LEFT JOIN haj_coupon_info ci ON ci.`id` = cu.`couponId`
+		LEFT JOIN haj_front_user u ON u.`id` = cu.`userId`
+		LEFT JOIN haj_order o ON o.`counponId` = cu.`id`
+		WHERE cu.`couponId` = #{id} AND ci.`sendType` > 0
+			<!-- 过滤掉一些失效的订单，避免关联出有多条数据 -->
+			AND (o.`status` IN (2,4,5,6,7) or o.`counponId` IS NULL )
+	</select>
+	
+	<select id="listTodayInvalidCoupon" resultType="HajCouponInfo">
+		SELECT *
+		FROM haj_coupon_info ci
+		WHERE
+			ci.`dateNumbers` = 0
+			AND ci.`endTime` IS NOT NULL
+			AND TO_DAYS(NOW()) = TO_DAYS(ci.`endTime`)
+			AND ci.`status` &lt; 3
+	</select>
+
+	<select id="listByCouponIds" resultType="HajCouponInfo" parameterType="List">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_coupon_info ci
+		WHERE ci.`id` IN
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>   

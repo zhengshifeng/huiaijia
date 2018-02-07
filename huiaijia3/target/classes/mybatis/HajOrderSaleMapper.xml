@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderSaleMapper">
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderSale">
+		<result column="id" property="id"/>
+		<result column="cellPhone" property="cellPhone"/>
+		<result column="quersion" property="quersion"/>
+		<result column="orderId" property="orderId"/>
+		<result column="isdeal" property="isdeal"/>
+		<result column="dealer" property="dealer"/>
+		<result column="money" property="money"/>
+		<result column="refundNo" property="refundNo"/>
+		<result column="applicant" property="applicant"/>
+		<result column="dealTime" property="dealTime"/>
+		<result column="problemId" property="problemId"/>
+	</resultMap>
+
+	<!-- haj_order_sale table all fields -->
+	<sql id="Base_Column_List">
+		id,cellPhone,quersion,orderId,isdeal,dealer,money,refundNo,createTime,applicant,dealTime,problemId
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.cellPhone != null and condition.cellPhone != ''">
+				and cellPhone = #{condition.cellPhone}
+			</if>
+			<if test="condition.quersion != null and condition.quersion != ''">
+				and quersion = #{condition.quersion}
+			</if>
+			<if test="condition.orderId != null and condition.orderId != ''">
+				and orderId = #{condition.orderId}
+			</if>
+			<if test="condition.isdeal != null and condition.isdeal != ''">
+				and isdeal = #{condition.isdeal}
+			</if>
+			<if test="condition.dealer != null and condition.dealer != ''">
+				and dealer = #{condition.dealer}
+			</if>
+			<if test="condition.money != null and condition.money != ''">
+				and money = #{condition.money}
+			</if>
+			<if test="condition.refundNo != null and condition.refundNo != ''">
+				and refundNo = #{condition.refundNo}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.applicant != null and condition.applicant != ''">
+				and applicant = #{condition.applicant}
+			</if>
+			<if test="condition.dealTime != null and condition.dealTime != ''">
+				and dealTime = #{condition.dealTime}
+			</if>
+			<if test="condition.problemId != null and condition.problemId != ''">
+				and problemId = #{condition.problemId}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_order_sale(id,cellPhone,quersion,orderId,isdeal,dealer,money,refundNo,createTime,
+			applicant,dealTime,problemId)
+		values(#{id},#{cellPhone},#{quersion},#{orderId},#{isdeal},#{dealer},#{money},#{refundNo},#{createTime},
+			#{applicant},#{dealTime},#{problemId})
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object">
+		update haj_order_sale
+		set cellPhone=#{cellPhone},quersion=#{quersion},orderId=#{orderId},isdeal=#{isdeal},dealer=#{dealer},
+			money=#{money},refundNo=#{refundNo},createTime=#{createTime},applicant=#{applicant},
+			dealTime=#{dealTime},problemId=#{problemId}
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_order_sale set
+		<trim suffixOverrides=",">
+			<if test="cellPhone != null  ">
+				cellPhone=#{cellPhone},
+			</if>
+			<if test="quersion != null  ">
+				quersion=#{quersion},
+			</if>
+			<if test="orderId != null  ">
+				orderId=#{orderId},
+			</if>
+			<if test="isdeal != null  ">
+				isdeal=#{isdeal},
+			</if>
+			<if test="dealer != null  ">
+				dealer=#{dealer},
+			</if>
+			<if test="money != null  ">
+				money=#{money},
+			</if>
+			<if test="refundNo != null  ">
+				refundNo=#{refundNo},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="applicant != null  ">
+				applicant=#{applicant},
+			</if>
+			<if test="dealTime != null  ">
+				dealTime=#{dealTime},
+			</if>
+			<if test="problemId != null  ">
+				problemId=#{problemId},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_order_sale where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_order_sale where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_order_sale
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_order_sale
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPageHajOrderSale" resultType="java.util.HashMap" parameterType="com.flf.vo.HajOrderSaleDTO">
+		SELECT os.`id`, os.`refundNo`, u.`mobilePhone`, u.`areaCode`,
+			(SELECT `name` FROM haj_areas a WHERE a.code = u.`areaCode`) city,
+			p.`communityName`, o.`createTime` orderTime,
+			os.`createTime` refundTime, (o.`actualPayment` + o.`dispensingTip` + o.`postFee`) actualPayment,
+			os.`money`, os.`quersion`, os.`dealer`,
+			o.orderNo, o.`status`, o.`paymentWay`, os.`isdeal`, u.`id` userId, os.`applicant`, os.`dealTime`
+		FROM haj_order_sale os
+		LEFT JOIN haj_order o ON o.id=os.orderId
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.`villageId`
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != ''">
+			and u.areaCode = #{areaCode}
+		</if>
+		<if test="residential != null and residential != ''">
+			and p.`communityName` = #{residential}
+		</if>
+		<if test="status != null and status != ''">
+			and o.status = #{status}
+		</if>
+		<if test="isdeal != null">
+			and os.isdeal = #{isdeal}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			and o.orderNo = #{orderNo}
+		</if>
+		<if test="userInfo != null and userInfo != ''">
+			and (u.username = #{userInfo} or u.id= #{userInfo} or u.mobilePhone=#{userInfo})
+		</if>
+		<if test="paymentWay != null">
+			AND o.`paymentWay` = #{paymentWay}
+		</if>
+		<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != null">
+			AND os.`createTime` BETWEEN #{dateStart} AND #{dateEnd}
+		</if>
+		ORDER BY
+		<if test="orderBy != null">
+			${orderBy},
+		</if>
+		os.id DESC
+	</select>
+
+	<select id="queryHajOrderSaleCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1)
+		FROM haj_order_sale os
+		LEFT JOIN haj_order o ON o.id=os.orderId
+		LEFT JOIN haj_front_user u ON o.`userId`=u.`id`
+		LEFT JOIN haj_community_persion p ON p.id=u.`villageId` where 1=1
+	</select>
+
+	<update id="updateSaleStatus" parameterType="Object">
+		UPDATE haj_order_sale SET isdeal=1 WHERE id = #{saleId} AND isdeal = 0
+	</update>
+
+	<select id="getThisOrderSaleTotalRefunds" resultType="BigDecimal">
+		SELECT IFNULL(SUM(osl.`money`), 0) FROM haj_order_sale osl WHERE osl.`orderId` = #{orderID}
+	</select>
+
+</mapper>

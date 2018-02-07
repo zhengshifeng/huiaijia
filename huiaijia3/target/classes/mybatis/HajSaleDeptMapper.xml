@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajSaleDeptMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajSaleDept">
+		<result column="id" property="id" />
+		<result column="problemId" property="problemId" />
+		<result column="dept" property="dept" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<!-- haj_sale_dept table all fields -->
+	<sql id="Base_Column_List">
+		id, problemId, dept, createTime
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.problemId != null and condition.problemId != ''">
+			AND problemId = #{condition.problemId}
+		</if>
+		<if test="condition.dept != null and condition.dept != ''">
+			AND dept = #{condition.dept}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="problemId != null and problemId != ''">
+			AND problemId = #{problemId}
+		</if>
+		<if test="dept != null and dept != ''">
+			AND dept = #{dept}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_sale_dept(id, problemId, dept, createTime)
+		VALUES(#{id}, #{problemId}, #{dept}, now())
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_sale_dept SET problemId = #{problemId}, dept = #{dept},  WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_sale_dept SET 
+		<trim suffixOverrides=",">
+			<if test="problemId != null">
+				problemId = #{problemId},
+			</if>
+			<if test="dept != null">
+				dept = #{dept},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_sale_dept WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询 订单问题负责部门表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_sale_dept WHERE id = #{id}
+	</select>
+
+	<!-- 订单问题负责部门表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_sale_dept
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询订单问题负责部门表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_sale_dept
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajSaleDept" parameterType="HajSaleDept">
+		SELECT * FROM haj_sale_dept
+		WHERE 1=1
+		ORDER BY id DESC
+	</select>
+
+	<select id="listByProblemId" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_sale_dept sd WHERE sd.`problemId` = #{id}
+	</select>
+
+</mapper>   

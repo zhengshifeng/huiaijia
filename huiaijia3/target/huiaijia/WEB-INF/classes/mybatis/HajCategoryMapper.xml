@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCategoryMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCategory">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="sort" property="sort" />
+	</resultMap>
+
+	<!-- haj_category table all fields -->
+	<sql id="Base_Column_List">
+		id, name, sort
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.name != null and condition.name != ''">
+			AND name = #{condition.name}
+		</if>
+		<if test="condition.sort != null and condition.sort != ''">
+			AND sort = #{condition.sort}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="name != null and name != ''">
+			AND name = #{name}
+		</if>
+		<if test="sort != null and sort != ''">
+			AND sort = #{sort}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_category(id, name, sort)
+		VALUES(#{id}, #{name}, #{sort})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_category SET name = #{name}, sort = #{sort} WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_category SET 
+		<trim suffixOverrides=",">
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_category WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_category WHERE id = #{id}
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_category
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_category
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajCategory" parameterType="HajCategory">
+		SELECT * FROM haj_category ctg
+		<include refid="query_criteria"/>
+		ORDER BY ctg.`sort` ASC, ctg.`id` DESC
+	</select>
+
+	<!-- 给APP的类目列表，如类目下无可售商品，则不返回 -->
+	<select id="list4App" resultType="HajCategory">
+		SELECT ctg.`id`, ctg.`name`
+		FROM haj_category ctg
+		WHERE 1=1
+			AND (
+				SELECT COUNT(*)
+				FROM haj_commodity c
+				INNER JOIN haj_commodity_type ct ON ct.id=c.typeId
+				INNER JOIN haj_commodity_type ct1 ON ct.parentId=ct1.id
+				INNER JOIN haj_category cg ON cg.`id` = ct1.`categoryId`
+				WHERE c.shelves=1 AND ct.display=1 AND ct1.display=1 AND cg.`id` = ctg.`id`
+					AND c.areaCode = #{areaCode}
+					<if test="communityId != null">
+					AND c.id NOT IN (
+						SELECT commodityId FROM haj_commodity_failure cf WHERE cf.`communityId`=#{communityId}
+					)
+					</if>
+			) > 0
+		ORDER BY ctg.`sort` ASC, ctg.`id` DESC
+	</select>
+
+</mapper>

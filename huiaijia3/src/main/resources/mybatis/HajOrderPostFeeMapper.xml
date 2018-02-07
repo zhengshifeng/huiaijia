@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderPostFeeMapper" > 
+	<!-- Result Map-->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderPostFee" >
+		<result column="id" property="id"/>
+		<result column="orderMoney" property="orderMoney"/>
+		<result column="postFee" property="postFee"/>
+		<result column="userId" property="userId"/>
+		<result column="orderNum" property="orderNum"/>
+		<result column="isPay" property="isPay"/>
+		<result column="remark" property="remark"/>
+		<result column="rechargeId" property="rechargeId"/>
+		<result column="payTime" property="payTime"/>
+	</resultMap>
+
+	<!-- haj_order_postFee table all fields -->
+	<sql id="Base_Column_List" >
+		id,orderMoney,postFee,userId,orderNum,isPay,remark,rechargeId,payTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides="," >
+			<if test="condition.id != null and condition.id != ''" >
+				and id =  #{condition.id}
+			</if>
+			<if test="condition.orderMoney != null and condition.orderMoney != ''" >
+				and orderMoney =  #{condition.orderMoney}
+			</if>
+			<if test="condition.postFee != null and condition.postFee != ''" >
+				and postFee =  #{condition.postFee}
+			</if>
+			<if test="condition.userId != null and condition.userId != ''" >
+				and userId =  #{condition.userId}
+			</if>
+			<if test="condition.orderNum != null and condition.orderNum != ''" >
+				and orderNum =  #{condition.orderNum}
+			</if>
+			<if test="condition.isPay != null and condition.isPay != ''" >
+				and isPay =  #{condition.isPay}
+			</if>
+			<if test="condition.remark != null and condition.remark != ''" >
+				and remark =  #{condition.remark}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object" >
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_order_postFee(id,orderMoney,postFee,userId,orderNum,isPay,remark,payTime)
+		values(#{id},#{orderMoney},#{postFee},#{userId},#{orderNum},#{isPay},#{remark},#{payTime})
+	</insert>
+
+	<!-- 根据id，修改记录-->
+	<update id="update" parameterType="Object" >
+		update haj_order_postFee set orderMoney=#{orderMoney},postFee=#{postFee},userId=#{userId},orderNum=#{orderNum},isPay=#{isPay},remark=#{remark} where id=#{id}
+	</update>
+
+	 <!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object" >
+		update haj_order_postFee set
+		<trim suffixOverrides="," >
+		<if test="orderMoney != null  ">
+			orderMoney=#{orderMoney},
+		</if>
+		<if test="postFee != null  ">
+			postFee=#{postFee},
+		</if>
+		<if test="userId != null  ">
+			userId=#{userId},
+		</if>
+		<if test="orderNum != null  ">
+			orderNum=#{orderNum},
+		</if>
+		<if test="isPay != null  ">
+			isPay=#{isPay},
+		</if>
+		<if test="remark != null  ">
+			remark=#{remark},
+		</if>
+		</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_order_postFee where id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" />
+		from haj_order_postFee where id = #{id}
+	</select>
+
+	<!-- 列表总数-->
+	<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+		select count(1) from haj_order_postFee
+		<include refid="Example_Where_Clause"/>
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+		select
+		<include refid="Base_Column_List"/>
+		from haj_order_postFee
+		<include refid="Example_Where_Clause"/>
+		<if test="orderByClause != null and orderByClause != ''" >
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''" >
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPageHajOrderPostFee" resultType="java.util.HashMap" parameterType="Object">
+		SELECT u.`mobilePhone`, opf.`postFee`, opf.`remark`, opf.`isPay`, opf.`payTime`,
+			IFNULL(r.`rechargeType`, 0) rechargeType, IFNULL(r.`bankNo`, 0) bankNo
+		FROM haj_order_postFee opf
+		LEFT JOIN haj_front_user u ON u.`id` = opf.`userId`
+		LEFT JOIN haj_recharge r ON r.`id` = opf.`rechargeId`
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != ''" >
+			AND u.areaCode = #{areaCode}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''" >
+			AND u.mobilePhone = #{mobilePhone}
+		</if>
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''" >
+			AND opf.`remark` BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		<if test="payBeginTime != null and payBeginTime != '' and payEndTime != null and payEndTime != ''" >
+			AND opf.`payTime`  BETWEEN #{payBeginTime} AND #{payEndTime}
+		</if>
+		<if test="isPay != null" >
+			AND opf.isPay=#{isPay}
+		</if>
+		<if test="rechargeType!=null and rechargeType != '-1' and rechargeType != '-2'" >
+			AND r.rechargeType=#{rechargeType}
+		</if>
+		<if test="rechargeType!=null and rechargeType == '-2'" >
+			AND r.rechargeType is null
+		</if>
+		ORDER BY opf.id DESC
+	</select>
+
+	<select id="excelOrderPostFee" resultType="java.util.HashMap" parameterType="Object">
+		SELECT u.`mobilePhone`, opf.`postFee`, opf.`remark`, opf.`isPay`, opf.`payTime`,
+			IFNULL(r.`rechargeType`, 0) rechargeType, IFNULL(r.`bankNo`, 0) bankNo
+		FROM haj_order_postFee opf
+		LEFT JOIN haj_front_user u ON u.`id` = opf.`userId`
+		LEFT JOIN haj_recharge r ON r.`id` = opf.`rechargeId`
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != ''" >
+			AND u.areaCode = #{areaCode}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''" >
+			AND u.mobilePhone = #{mobilePhone}
+		</if>
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''" >
+			AND opf.`remark` BETWEEN #{beginTime} AND #{endTime}
+		</if>
+		<if test="payBeginTime != null and payBeginTime != '' and payEndTime != null and payEndTime != ''" >
+			AND opf.`payTime` BETWEEN #{payBeginTime} AND #{payEndTime}
+		</if>
+		<if test="isPay != null" >
+			AND opf.isPay=#{isPay}
+		</if>
+		<if test="rechargeType!=null and rechargeType != '-1' and rechargeType != '-2'" >
+			AND r.rechargeType=#{rechargeType}
+		</if>
+		<if test="rechargeType!=null and rechargeType == '-2'" >
+			AND r.rechargeType is null
+		</if>
+		ORDER BY opf.id DESC
+	</select>
+
+	<select id="getHajOrderPostFeeByUserId" resultType="java.util.HashMap" parameterType="Object">
+		SELECT id,orderMoney,postFee,orderNum,isPay FROM haj_order_postFee WHERE userId = #{userId} ORDER BY id DESC LIMIT 1
+	</select>
+
+	<select id="queryByrechargeId" resultMap="BaseResultMap" parameterType="Object">
+		SELECT * FROM haj_order_postFee WHERE rechargeId = #{rechargeId} ORDER BY id DESC LIMIT 1
+	</select>
+
+	<select id="getTopOrderPostfee" resultType="Integer" parameterType="Object">
+		SELECT id FROM haj_order_postFee WHERE userId =#{userId} ORDER BY id DESC LIMIT 1
+	</select>
+
+	<update id="updateOrderPostFee" parameterType="Object" >
+		update haj_order_postFee set isPay=1,payTime=NOW() where id=#{id} and isPay=0
+	</update>
+
+	<update id="updateOrderPostStatusByUserId" parameterType="Object" >
+		UPDATE haj_order_postFee SET isPay = #{isPay} WHERE id =#{id}
+	</update>
+
+	<update id="updateOrderPostRecharge" parameterType="Object" >
+		UPDATE haj_order_postFee SET rechargeId = #{rechargeId} WHERE id =#{id}
+	</update>
+
+	<!--按条件，分组获取运费总额-->
+	<select id="getPostFeeSumByGroup" resultType="java.util.HashMap" parameterType="Object">
+		SELECT opf.isPay, IFNULL(SUM(opf.postFee), 0) postFee
+		FROM haj_order_postFee opf
+		LEFT JOIN haj_front_user u ON u.`id` = opf.`userId`
+		LEFT JOIN haj_recharge r ON r.`id` = opf.`rechargeId`
+		<where>
+			<if test="areaCode != null and areaCode != ''" >
+			    u.areaCode = #{areaCode}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''" >
+				AND u.mobilePhone = #{mobilePhone}
+			</if>
+			<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''" >
+				AND opf.`remark` BETWEEN #{beginTime} AND #{endTime}
+			</if>
+			<if test="payBeginTime != null and payBeginTime != '' and payEndTime != null and payEndTime != ''" >
+				AND opf.`payTime`  BETWEEN #{payBeginTime} AND #{payEndTime}
+			</if>
+			<if test="isPay != null" >
+				AND opf.isPay=#{isPay}
+			</if>
+			<if test="rechargeType!=null and rechargeType != '-1' and rechargeType != '-2'" >
+				AND r.rechargeType=#{rechargeType}
+			</if>
+			<if test="rechargeType!=null and rechargeType == '-2'" >
+				AND r.rechargeType is null
+			</if>
+		</where>
+		GROUP BY opf.isPay
+	</select>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.MenuMapper">
+
+	<sql id="order_by">
+		ORDER BY sort DESC, menu_id ASC
+	</sql>
+	
+	<resultMap type="Menu" id="menuResultMap">
+		<id column="menu_id" property="menuId" />
+		<result column="menu_name" property="menuName" />
+		<result column="menu_url" property="menuUrl" />
+		<result column="parent_id" property="parentId" />
+		<result column="icon" property="icon" />
+		<result column="sort" property="sort" />
+	</resultMap>
+
+	<select id="listAllParentMenu" resultMap="menuResultMap">
+		SELECT * FROM tb_menu WHERE parent_id IS NULL
+		<include refid="order_by"/>
+	</select>
+
+	<select id="listSubMenuByParentId" parameterType="int" resultMap="menuResultMap">
+		SELECT * FROM tb_menu WHERE
+		parent_id=#{parentId}
+		<include refid="order_by"/>
+	</select>
+
+	<select id="getMenuById" parameterType="int" resultMap="menuResultMap">
+		SELECT * FROM tb_menu WHERE menu_id=#{menuId}
+	</select>
+
+	<select id="listAllSubMenu" resultMap="menuResultMap">
+		SELECT * FROM tb_menu WHERE parent_id IS NOT NULL
+		<include refid="order_by"/>
+	</select>
+
+	<insert id="insertMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="menuId">
+		INSERT INTO tb_menu
+		(menu_name,menu_url,parent_id,icon) values (#{menuName},#{menuUrl},#{parentId},#{icon})
+	</insert>
+
+	<update id="updateMenu" parameterType="Menu">
+		UPDATE tb_menu SET menu_name=#{menuName}, menu_url=#{menuUrl}, parent_id=#{parentId}, icon=#{icon}, sort=#{sort}
+		WHERE menu_id=#{menuId}
+	</update>
+
+	<delete id="deleteMenuById" parameterType="int">
+		DELETE FROM tb_menu WHERE menu_id=#{menuId} OR parent_id=#{menuId}
+	</delete>
+</mapper>

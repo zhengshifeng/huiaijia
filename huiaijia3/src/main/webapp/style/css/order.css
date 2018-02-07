@@ -1,0 +1,193 @@
+/* 所有标签取消此样式 */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	color: #666;
+	text-align: center;
+}
+
+td, th {
+	border: 1px dotted #CCC;
+	border-collapse: collapse;
+}
+
+th {
+	background: #eee;
+}
+
+/* .hidden_1{
+     visibility:hidden;
+} */
+button, input[type=button] {
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid gray;
+	color: #666;
+	font-weight: bold;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	cursor: pointer;
+	text-align: center;
+	background-color: #EEE;
+}
+
+input {
+	border: 1px solid #DBDBDB;
+}
+
+thead, tr {
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+}
+
+.explain {
+	font-size: 14px;
+	margin-left: 15px;
+	color: red;
+}
+
+/*查找*/
+.search {
+	width: 100%;
+	height: 40px;
+}
+
+.search input {
+	width: 250px;
+	height: 30px;
+	line-height: 30px;
+	margin-right: 20px;
+}
+
+.search button {
+	width: 100px;
+}
+
+/*确认用户信息*/
+.confirmation {
+	width: 100%;
+	height: 150px;
+	margin-top: 10px;
+
+}
+
+.confirmation table {
+	width: 700px;
+	margin-top: 10px;
+}
+
+/*添加商品，删除*/
+.details {
+	width: 100%;
+
+}
+
+.details .addCommodity {
+	width: 100px;
+}
+
+.details .delete1 {
+	width: 130px;
+	margin-left: 30px;
+}
+
+.totalQetails {
+	width: 1100px;
+	margin-bottom: 10px;
+}
+
+.totalQetails input[type="text"] {
+	width: 90%;
+	height: 25px;
+	line-height: 25px;
+}
+
+.totalQetails tr th:nth-child(1), .totalQetails tr td:nth-child(1) {
+	padding-left: 10px;
+	width: 50px;
+}
+
+.totalQetails tr th:nth-child(2) {
+	width: 250px;
+}
+
+.totalQetails tr th:nth-child(4) {
+	width: 250px;
+}
+
+.totalQetails tr th:nth-child(6) {
+	width: 100px;
+}
+
+.allXuan, .danXuan {
+	float: left;
+	margin-top: 15px;
+}
+
+/*总结*/
+.zongJie {
+	width: 100%;
+	height: 50px;
+	margin-top: 10px;
+}
+
+.zongJie div {
+	float: left;
+	height: 50px;
+	line-height: 50px;
+
+}
+
+.zongJie div, .beiZhu {
+	font-size: 20px;
+}
+
+.zongJie .TotalMoney {
+	margin-left: 20px;
+}
+
+.zongJie button {
+	float: left;
+	width: 100px;
+	margin: 10px 10px 0 0;
+}
+
+/*备注*/
+.Remarks {
+	width: 100%;
+	margin: 10px 0 100px 0;
+
+}
+
+.Remarks .beiZhu {
+	margin-bottom: 5px;
+}
+
+textarea {
+	width: 800px;
+	line-height: 20px;
+}
+
+.Remarks .wanCheng {
+	width: 100%;
+	height: 30px;
+	margin-top: 20px;
+}
+
+.wanCheng .peple {
+	float: left;
+	height: 30px;
+	line-height: 30px;
+	margin-right: 100px;
+}
+
+.wanCheng input[type=button] {
+	width: 100px;
+}

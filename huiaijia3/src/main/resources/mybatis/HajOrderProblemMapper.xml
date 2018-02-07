@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajOrderProblemMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajOrderProblem">
+		<result column="id" property="id" />
+		<result column="orderNo" property="orderNo" />
+		<result column="commodityNo" property="commodityNo" />
+		<result column="obj" property="obj" />
+		<result column="number" property="number" />
+		<result column="method" property="method" />
+		<result column="type" property="type" />
+		<result column="pic" property="pic" />
+		<result column="createTime" property="createTime" />
+		<result column="valid" property="valid" />
+		<result column="record" property="record" />
+		<result column="operator" property="operator" />
+		<result column="refundNo" property="refundNo" />
+		<collection property="deptList" ofType="java.util.List"
+					select="com.flf.mapper.HajSaleDeptMapper.listByProblemId" column="id"/>
+	</resultMap>
+
+	<!-- haj_order_problem table all fields -->
+	<sql id="Base_Column_List">
+		id, orderNo, commodityNo, obj, number, method, type, pic, createTime, valid, record, operator, refundNo
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.orderNo != null and condition.orderNo != ''">
+			AND orderNo = #{condition.orderNo}
+		</if>
+		<if test="condition.commodityNo != null and condition.commodityNo != ''">
+			AND commodityNo = #{condition.commodityNo}
+		</if>
+		<if test="condition.obj != null and condition.obj != ''">
+			AND obj = #{condition.obj}
+		</if>
+		<if test="condition.number != null and condition.number != ''">
+			AND number = #{condition.number}
+		</if>
+		<if test="condition.method != null and condition.method != ''">
+			AND method = #{condition.method}
+		</if>
+		<if test="condition.type != null and condition.type != ''">
+			AND type = #{condition.type}
+		</if>
+		<if test="condition.pic != null and condition.pic != ''">
+			AND pic = #{condition.pic}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		<if test="condition.valid != null and condition.valid != ''">
+			AND valid = #{condition.valid}
+		</if>
+		<if test="condition.record != null and condition.record != ''">
+			AND record = #{condition.record}
+		</if>
+		<if test="condition.operator != null and condition.operator != ''">
+			AND operator = #{condition.operator}
+		</if>
+		<if test="condition.refundNo != null and condition.refundNo != ''">
+			AND refundNo = #{condition.refundNo}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND orderNo = #{orderNo}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND commodityNo = #{commodityNo}
+		</if>
+		<if test="obj != null and obj != ''">
+			AND obj = #{obj}
+		</if>
+		<if test="number != null and number != ''">
+			AND number = #{number}
+		</if>
+		<if test="method != null and method != ''">
+			AND method = #{method}
+		</if>
+		<if test="type != null and type != ''">
+			AND type = #{type}
+		</if>
+		<if test="pic != null and pic != ''">
+			AND pic = #{pic}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		<if test="valid != null and valid != ''">
+			AND valid = #{valid}
+		</if>
+		<if test="record != null and record != ''">
+			AND record = #{record}
+		</if>
+		<if test="operator != null and operator != ''">
+			AND operator = #{operator}
+		</if>
+		<if test="refundNo != null and refundNo != ''">
+			AND refundNo = #{refundNo}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_order_problem(id, orderNo, commodityNo, obj, number, method, type, pic, createTime,
+				valid, record, operator, refundNo)
+		VALUES(#{id}, #{orderNo}, #{commodityNo}, #{obj}, #{number}, #{method}, #{type}, #{pic}, now(),
+				#{valid}, #{record}, #{operator}, #{refundNo})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_order_problem
+		SET orderNo = #{orderNo}, commodityNo = #{commodityNo}, obj = #{obj}, number = #{number}, method = #{method},
+			type = #{type}, pic = #{pic}, valid = #{valid}, record = #{record}, operator = #{operator},
+			refundNo = #{refundNo}
+		WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_order_problem SET 
+		<trim suffixOverrides=",">
+			<if test="orderNo != null">
+				orderNo = #{orderNo},
+			</if>
+			<if test="commodityNo != null">
+				commodityNo = #{commodityNo},
+			</if>
+			<if test="obj != null">
+				obj = #{obj},
+			</if>
+			<if test="number != null">
+				number = #{number},
+			</if>
+			<if test="method != null">
+				method = #{method},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="pic != null">
+				pic = #{pic},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="valid != null">
+				valid = #{valid},
+			</if>
+			<if test="record != null">
+				record = #{record},
+			</if>
+			<if test="operator != null">
+				operator = #{operator},
+			</if>
+			<if test="refundNo != null">
+				refundNo = #{refundNo},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_order_problem WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询 订单问题表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_order_problem WHERE id = #{id}
+	</select>
+
+	<!-- 订单问题表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_order_problem
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询订单问题表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_order_problem
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajOrderProblem" parameterType="HajOrderProblem">
+		SELECT * FROM haj_order_problem
+		WHERE valid=1
+		ORDER BY id DESC
+	</select>
+
+	<select id="listByOrderNo" parameterType="String" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" /> FROM haj_order_problem op
+		WHERE op.`orderNo` = #{orderNo} AND op.valid = 1
+	</select>
+
+	<select id="excelOrderProblem" resultType="java.util.HashMap" parameterType="Object">
+		SELECT o.`createTime`,op.createTime AS problemTime,u.`mobilePhone`,u.`areaCode`,o.`residential`,
+			u.`address`,o.`orderNo`,op.obj,c.name as commodityNo,op.number,op.method,op.type,op.pic,c.name,
+			GROUP_CONCAT(
+				CASE sd.dept
+				WHEN 0 THEN '其他'
+				WHEN 1 THEN '生产部'
+				WHEN 2 THEN '质检部'
+				WHEN 3 THEN '配送部'
+				WHEN 4 THEN '采购部'
+				WHEN 5 THEN '仓储部'
+				END
+			) AS dept
+		FROM haj_order_problem op LEFT JOIN haj_order o ON o.orderNo=op.orderNo
+		LEFT JOIN haj_commodity c ON c.`commodityNo`=op.commodityNo
+		LEFT JOIN haj_front_user u ON u.id=o.`userId`
+		LEFT JOIN haj_sale_dept sd ON sd.problemId=op.id
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != ''">
+			AND u.areaCode = #{areaCode}
+		</if>
+		<if test="residential != null and residential != ''">
+			AND o.residential = #{residential}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND (u.mobilePhone = #{mobilePhone} or u.id=#{mobilePhone})
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND op.orderNo = #{orderNo}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (op.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="obj != null">
+			AND op.obj = #{obj}
+		</if>
+		<if test="method != null">
+			AND op.method = #{method}
+		</if>
+		<if test="type != null">
+			AND op.type = #{type}
+		</if>
+		<if test="beginTime1 != null and beginTime1 != ''">
+			and op.createTime &gt;= #{beginTime1}
+		</if>
+		<if test="endTime1 != null and endTime1 != ''">
+			and op.createTime &lt;= #{endTime1}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and o.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and o.createTime &lt;= #{endTime}
+		</if>
+		<if test="depts != null and depts != ''">
+			and sd.dept IN
+			<foreach item="item" index="index" collection="depts" open="(" separator="," close=")">
+			 #{item}
+			</foreach>
+		</if>
+		GROUP BY op.id  ORDER BY op.id DESC
+	</select>
+
+	<select id="listPageOrderProblem" resultType="java.util.HashMap" parameterType="Object">
+		SELECT o.`createTime`,op.id orderProblemId,op.createTime AS problemTime,u.`mobilePhone`,u.`areaCode`,o.`residential`,
+			u.`address`,o.`orderNo`,op.obj,op.commodityNo,op.number,op.method,op.type,op.pic,c.name,
+			GROUP_CONCAT(
+				CASE sd.dept
+				WHEN 0 THEN '其他'
+				WHEN 1 THEN '生产部'
+				WHEN 2 THEN '质检部'
+				WHEN 3 THEN '配送部'
+				WHEN 4 THEN '采购部'
+				WHEN 5 THEN '仓储部'
+				END
+			)  AS dept
+		FROM haj_order_problem op LEFT JOIN haj_order o ON o.orderNo=op.orderNo
+		LEFT JOIN haj_commodity c ON c.`commodityNo`=op.commodityNo
+		LEFT JOIN haj_front_user u ON u.id=o.`userId`
+		LEFT JOIN haj_sale_dept sd ON sd.problemId=op.id
+		WHERE 1=1
+		<if test="areaCode != null and areaCode != ''">
+			AND u.areaCode = #{areaCode}
+		</if>
+		<if test="residential != null and residential != ''">
+			AND o.residential = #{residential}
+		</if>
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND (u.mobilePhone = #{mobilePhone} or u.id=#{mobilePhone})
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND op.orderNo = #{orderNo}
+		</if>
+		<if test="commodityNo != null and commodityNo != ''">
+			AND (op.commodityNo = #{commodityNo} or c.name = #{commodityNo})
+		</if>
+		<if test="obj != null">
+			AND op.obj = #{obj}
+		</if>
+		<if test="method != null">
+			AND op.method = #{method}
+		</if>
+		<if test="type != null">
+			AND op.type = #{type}
+		</if>
+		<if test="beginTime1 != null and beginTime1 != ''">
+			and op.createTime &gt;= #{beginTime1}
+		</if>
+		<if test="endTime1 != null and endTime1 != ''">
+			and op.createTime &lt;= #{endTime1}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and o.createTime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and o.createTime &lt;= #{endTime}
+		</if>
+		<if test="depts != null and depts != ''">
+			and sd.dept IN
+			<foreach item="item" index="index" collection="depts" open="(" separator="," close=")">
+			 #{item}
+			</foreach>
+		</if>
+		GROUP BY op.id  ORDER BY op.id DESC
+	</select>
+
+	<delete id="deleteByOrderNo" parameterType="Object">
+		delete from haj_order_problem where orderNo = #{orderNo}
+	</delete>
+
+	<delete id="deleteByRefundNo" parameterType="Object">
+		DELETE FROM haj_order_problem WHERE refundNo = #{refundNo}
+	</delete>
+
+</mapper>

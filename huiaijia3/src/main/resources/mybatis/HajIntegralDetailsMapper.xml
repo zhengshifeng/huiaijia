@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajIntegralDetailsMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajIntegralDetails">
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="detail" property="detail" />
+		<result column="remark" property="remark" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<!-- haj_integral_details table all fields -->
+	<sql id="Base_Column_List">
+		id, userId, detail, remark, createTime
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			AND id = #{condition.id}
+		</if>
+		<if test="condition.userId != null and condition.userId != ''">
+			AND userId = #{condition.userId}
+		</if>
+		<if test="condition.detail != null and condition.detail != ''">
+			AND detail = #{condition.detail}
+		</if>
+		<if test="condition.remark != null and condition.remark != ''">
+			AND remark = #{condition.remark}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			AND createTime = #{condition.createTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- listPage查询条件 -->
+	<sql id="query_criteria">
+		WHERE 1=1
+		<trim suffixOverrides=",">
+		<if test="id != null and id != ''">
+			AND id = #{id}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND userId = #{userId}
+		</if>
+		<if test="detail != null and detail != ''">
+			AND detail = #{detail}
+		</if>
+		<if test="remark != null and remark != ''">
+			AND remark = #{remark}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND createTime = #{createTime}
+		</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO haj_integral_details(id, userId, detail, remark, createTime)
+		VALUES(#{id}, #{userId}, #{detail}, #{remark}, now())
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		UPDATE haj_integral_details SET userId = #{userId}, detail = #{detail}, remark = #{remark}  WHERE id = #{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		UPDATE haj_integral_details SET 
+		<trim suffixOverrides=",">
+			<if test="userId != null">
+				userId = #{userId},
+			</if>
+			<if test="detail != null">
+				detail = #{detail},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+		</trim> WHERE id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		DELETE FROM haj_integral_details WHERE id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_integral_details WHERE id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		SELECT count(1) FROM haj_integral_details
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		SELECT <include refid="Base_Column_List" />
+		FROM haj_integral_details
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			ORDER BY ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajIntegralDetails" parameterType="HajIntegralDetails">
+		SELECT * FROM haj_integral_details
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="listPage4app" resultType="HashMap" parameterType="HajIntegralDetails">
+		SELECT dtls.`id`, dtls.`remark`, dtls.`detail`, DATE_FORMAT(dtls.`createTime`,'%Y-%m-%d %H:%i:%s') createTime
+		FROM haj_integral_details dtls
+		<include refid="query_criteria"/>
+		ORDER BY id DESC
+	</select>
+
+	<select id="getRecordsByUserId" resultType="HashMap" parameterType="Integer">
+		SELECT COUNT(*) records, (SELECT IFNULL(u.rating, 0) FROM haj_front_user u WHERE u.id = #{userId}) integral
+		FROM haj_integral_details dtls
+		WHERE dtls.`userId` = #{userId}
+	</select>
+
+</mapper>

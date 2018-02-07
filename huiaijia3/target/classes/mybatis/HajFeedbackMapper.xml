@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajFeedbackMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajFeedback">
+		<result column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="telPhone" property="telPhone" />
+		<result column="createTime" property="createTime" />
+		<result column="quickComment" property="quickComment" />
+		<result column="remark2" property="remark2" />
+		<result column="remark3" property="remark3" />
+	</resultMap>
+
+	<!-- haj_feedback table all fields -->
+	<sql id="Base_Column_List">
+		id,content,telPhone,createTime,quickComment,remark2,remark3,resolved
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="condition.id != null and condition.id != ''">
+				and id = #{condition.id}
+			</if>
+			<if test="condition.content != null and condition.content != ''">
+				and content = #{condition.content}
+			</if>
+			<if test="condition.telPhone != null and condition.telPhone != ''">
+				and telPhone = #{condition.telPhone}
+			</if>
+			<if test="condition.createTime != null and condition.createTime != ''">
+				and createTime = #{condition.createTime}
+			</if>
+			<if test="condition.quickComment != null and condition.quickComment != ''">
+				and quickComment = #{condition.quickComment}
+			</if>
+			<if test="condition.remark2 != null and condition.remark2 != ''">
+				and remark2 = #{condition.remark2}
+			</if>
+			<if test="condition.remark3 != null and condition.remark3 != ''">
+				and remark3 = #{condition.remark3}
+			</if>
+			<if test="condition.resolved != null and condition.resolved != ''">
+				and remark3 = #{condition.resolved}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_feedback(id,content,telPhone,createTime,quickComment,remark2,remark3,resolved)
+		values(#{id},#{content},#{telPhone},now(),#{quickComment},#{remark2},#{remark3},#{resolved})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_feedback set
+		content=#{content},telPhone=#{telPhone},quickComment=#{quickComment},remark2=#{remark2},remark3=#{remark3},resolved=#{resolved} 
+		where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_feedback set
+		<trim suffixOverrides=",">
+			<if test="content != null  ">
+				content=#{content},
+			</if>
+			<if test="telPhone != null  ">
+				telPhone=#{telPhone},
+			</if>
+			<if test="createTime != null  ">
+				createTime=#{createTime},
+			</if>
+			<if test="quickComment != null  ">
+				quickComment=#{quickComment},
+			</if>
+			<if test="remark2 != null  ">
+				remark2=#{remark2},
+			</if>
+			<if test="remark3 != null  ">
+				remark3=#{remark3},
+			</if>
+			<if test="resolved != null  ">
+				resolved=#{resolved},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_feedback where id = #{id}
+	</delete>
+
+	<!-- 根据id查询 前台用户表 -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_feedback where id = #{id}
+	</select>
+
+	<!-- 前台用户表 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_feedback
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询前台用户表列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_feedback
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+
+	<select id="listPage" resultType="HajFeedbackVo" parameterType="HajFeedbackVo">
+		SELECT a3.`name` AS province, a2.`name` AS city, a1.`name` AS community, cp.`communityName`, 
+			u.`username`, u.`ismember`, f.id, f.`quickComment`, f.`content`, f.`createTime`, f.`telPhone`,
+			f.resolved, f.remark2
+		FROM haj_feedback f
+			LEFT JOIN haj_front_user u ON u.`mobilePhone` = f.`telPhone`
+			LEFT JOIN haj_community_persion cp ON cp.`id` = u.`villageId`
+			LEFT JOIN haj_areas a1 ON a1.`code` = cp.`communityCode`
+			LEFT JOIN haj_areas a2 ON a2.`code` = a1.`p_code`
+			LEFT JOIN haj_areas a3 ON a3.`code` = a2.`p_code`
+		WHERE 1=1 
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+			AND (f.`createTime` BETWEEN #{beginTime} AND #{endTime})
+		</if>
+		<if test="ismember != null and ismember > 0">
+			AND u.`ismember`=#{ismember}
+		</if>
+		<if test="userinfo != null and userinfo != ''">
+			AND (u.`id`=#{userinfo} OR u.`mobilePhone`=#{userinfo} OR u.`receiver`=#{userinfo})
+		</if>
+		<if test="provinceCode != null and provinceCode != 0">
+			AND a3.`code`=#{provinceCode}
+			<if test="cityCode != null and cityCode != 0">
+				AND a2.`code`=#{cityCode}
+				<if test="communityCode != null and communityCode != 0">
+					AND a1.`code`=#{communityCode}
+				</if>
+			</if>
+		</if>
+		<if test="communityInfo != null and communityInfo != ''">
+			AND (cp.id=#{communityInfo} OR cp.`communityName` LIKE CONCAT('%', #{communityInfo}, '%'))
+		</if>
+		<if test="resolved != null">
+			AND f.`resolved`=#{resolved}
+		</if>
+		<if test="areaCode != null and areaCode != '' ">
+			AND (u.areaCode = #{areaCode} OR u.areaCode IS NULL OR u.areaCode = '')
+		</if>
+
+		ORDER BY f.id DESC
+	</select>
+
+</mapper>   

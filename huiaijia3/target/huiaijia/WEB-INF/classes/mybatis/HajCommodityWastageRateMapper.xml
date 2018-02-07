@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.HajCommodityWastageRateMapper">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.flf.entity.HajCommodityWastageRate">
+		<result column="id" property="id" />
+		<result column="commodityId" property="commodityId" />
+		<result column="packedWeight" property="packedWeight" />
+		<result column="packedNumber" property="packedNumber" />
+		<result column="grossWeight" property="grossWeight" />
+		<result column="outputWeight" property="outputWeight" />
+		<result column="wastageRate" property="wastageRate" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<!-- haj_commodity_wastage_rate table all fields -->
+	<sql id="Base_Column_List">
+		id,commodityId,packedWeight,packedNumber,grossWeight,outputWeight,wastageRate,createTime
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+		<if test="condition.id != null and condition.id != ''">
+			and id = #{condition.id}
+		</if>
+		<if test="condition.commodityId != null and condition.commodityId != ''">
+			and commodityId = #{condition.commodityId}
+		</if>
+		<if test="condition.packedWeight != null and condition.packedWeight != ''">
+			and packedWeight = #{condition.packedWeight}
+		</if>
+		<if test="condition.packedNumber != null and condition.packedNumber != ''">
+			and packedNumber = #{condition.packedNumber}
+		</if>
+		<if test="condition.grossWeight != null and condition.grossWeight != ''">
+			and grossWeight = #{condition.grossWeight}
+		</if>
+		<if test="condition.outputWeight != null and condition.outputWeight != ''">
+			and outputWeight = #{condition.outputWeight}
+		</if>
+		<if test="condition.wastageRate != null and condition.wastageRate != ''">
+			and wastageRate = #{condition.wastageRate}
+		</if>
+		<if test="condition.createTime != null and condition.createTime != ''">
+			and createTime = #{condition.createTime}
+		</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haj_commodity_wastage_rate(id,commodityId,packedWeight,packedNumber,grossWeight,outputWeight,wastageRate,createTime)
+		values(#{id},#{commodityId},#{packedWeight},#{packedNumber},#{grossWeight},#{outputWeight},#{wastageRate},now())
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update haj_commodity_wastage_rate set commodityId=#{commodityId},packedWeight=#{packedWeight},packedNumber=#{packedNumber},grossWeight=#{grossWeight},outputWeight=#{outputWeight},wastageRate=#{wastageRate}, where id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update haj_commodity_wastage_rate set 
+	<trim  suffixOverrides="," >
+		<if test="commodityId != null  ">
+			commodityId=#{commodityId},
+		</if>
+		<if test="packedWeight != null  ">
+			packedWeight=#{packedWeight},
+		</if>
+		<if test="packedNumber != null  ">
+			packedNumber=#{packedNumber},
+		</if>
+		<if test="grossWeight != null  ">
+			grossWeight=#{grossWeight},
+		</if>
+		<if test="outputWeight != null  ">
+			outputWeight=#{outputWeight},
+		</if>
+		<if test="wastageRate != null  ">
+			wastageRate=#{wastageRate},
+		</if>
+		<if test="createTime != null  ">
+			createTime=#{createTime},
+		</if>
+	</trim> where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from haj_commodity_wastage_rate where id = #{id}
+	</delete>
+
+	<!-- 根据id查询  -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select <include refid="Base_Column_List" /> 
+		from haj_commodity_wastage_rate where id = #{id}
+	</select>
+
+	<!--  列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer" parameterType="Object">
+		select count(1) from haj_commodity_wastage_rate
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="queryByList" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from haj_commodity_wastage_rate
+		<include refid="Example_Where_Clause" />
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+		<if test="limitClause != null and limitClause != ''">
+			${limitClause}
+		</if>
+	</select>
+	
+	<select id="listPage" parameterType="HajCommodityWastageRateVO" resultType="HashMap">
+		SELECT cwr.id, c.id commodityId, ctype.`commodityAttr`,
+			(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+			ctype.`typeName`, c.`name` commodityName, c.`packedWeight`, orders.todaySales,
+			IFNULL(cwr.`createTime`, NOW()) createTime, 
+			IFNULL(cwr.`grossWeight`, c.`packedWeight`*orders.todaySales) grossWeight, 
+			IFNULL(cwr.`outputWeight`, 0) outputWeight,
+			IFNULL(cwr.`wastageRate`, 0) wastageRate
+		FROM (
+			SELECT IFNULL(SUM(d.number),0) AS todaySales,d.`commodityName`,d.commodityNo, o.`createTime`
+			FROM `haj_order_details` d 
+			LEFT JOIN `haj_order` o ON o.`id` =d.`orderId` 
+			WHERE DATE(o.createTime)=DATE(NOW()) AND o.`status`=2  AND o.delflag=0 
+			GROUP BY d.`commodityName` ORDER BY o.`createTime`
+		) orders LEFT JOIN haj_commodity c ON c.`commodityNo` = orders.commodityNo
+		LEFT JOIN haj_commodity_wastage_rate cwr ON cwr.`commodityId`=c.id
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		WHERE c.`selfPackaging` = 1
+		<if test="commodityAttr != null and commodityAttr != ''">
+			AND ctype.`commodityAttr`=#{commodityAttr}
+			<if test="parentTypeId != null and parentTypeId != ''">
+				AND ctype.`parentId`=#{parentTypeId}
+				<if test="typeId != null and typeId != ''">
+					AND ctype.`id`=#{typeId}
+				</if>
+			</if>
+		</if>
+		ORDER BY orders.createTime DESC
+	</select>
+	
+	<select id="listPageWithoutToday" parameterType="HajCommodityWastageRateVO" resultType="HashMap">
+		SELECT cwr.id, cwr.`commodityId`, ctype.`commodityAttr`, 
+			(SELECT typeName FROM haj_commodity_type WHERE id=ctype.`parentId`) parentTypeName,
+			ctype.`typeName`, c.`name` AS commodityName, cwr.`packedWeight`, cwr.`packedNumber`,
+			cwr.`createTime`, cwr.`grossWeight`, cwr.`outputWeight`, cwr.`wastageRate`
+		FROM haj_commodity_wastage_rate cwr
+		LEFT JOIN haj_commodity c ON c.`id`=cwr.`commodityId`
+		LEFT JOIN haj_commodity_type ctype ON ctype.id=c.`typeId`
+		WHERE 1=1
+		<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+			AND (cwr.`createTime` BETWEEN #{beginDate} AND #{endDate})
+		</if>
+		ORDER BY cwr.`id` DESC
+	</select>
+
+</mapper>   
