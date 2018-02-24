@@ -1,7 +1,7 @@
 客户端: zhengshifeng/zhengshifeng@aliyun.com
 github : zhengshifeng/zheng19920313
 
-1.git add : 提交暂存区
+1.git add name(文件名) : 提交暂存区
 2.git commit -m "": 提交本地仓
 3.git push origin master: 提交远程仓(第一次要加-u  : push -u)
 4.git checkout -b dev : 创建并切换分区
@@ -19,3 +19,4 @@ github : zhengshifeng/zheng19920313
 16.git reflog : 查看历史记录的版本号
 17.git remote add origin "github项目路径" : 关联一个远程库
 18.git status :查看文件是否提交
+19.git clone URL : 从远程仓克隆项目
